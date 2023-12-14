@@ -14,11 +14,11 @@
 
 # Fill out the following values
 # The path of your repo on github. Don't include the whole URL, just the part after github.com/KenzieAcademy-SoftwareEngineering/
-export LBC_GROUP_NAME=replacethiswithyourgroupname
+export LBC_GROUP_NAME=pawfectmatch
 export LBC_REPO_NAME=ata-lbc-project-$GITHUB_USERNAME
 
 # Do not modify the rest of these unless you have been instructed to do so.
-export LBC_PROJECT_NAME=lbcproject
+export LBC_PROJECT_NAME=pawfectmatch
 export LBC_PIPELINE_STACK=$LBC_PROJECT_NAME-$LBC_GROUP_NAME
 export LBC_ARTIFACT_BUCKET=$LBC_PROJECT_NAME-$LBC_GROUP_NAME-artifacts
 export LBC_DEPLOY_STACK=$LBC_PROJECT_NAME-$LBC_GROUP_NAME-application
