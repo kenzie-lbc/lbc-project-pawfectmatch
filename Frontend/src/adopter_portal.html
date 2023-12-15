@@ -2,9 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar and Social Media Bar</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="pawfectMatch.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <title>Adopt-a-Companion</title>
 </head>
+
 <body>
+<!-- Navigation Bar -->
+<nav id="navbar">
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <!-- Dropdown Trigger -->
+        <li class="dropdown">
+            <a href="#adopt">Adopt</a>
+            <!-- Dropdown Menu -->
+            <div class="dropdown-content">
+                <a href="furry_guardian.html">Guardian Gateway</a>
+                <a href="adopter_portal.html">Adopt-a-Companion</a>
+            </div>
+        </li>
+        <li><a href="#services">Blog</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+        <li><a href="#about">FAQs</a></li>
+        <li><a href="#donations">Donations</a></li>
+    </ul>
+</nav>
+
 <div class="card">
     <h2>Search Pets by ID</h2>
     <form class="card-content" id="search-pet-form">
@@ -19,4 +47,16 @@
     <h2>Pet Profile:</h2>
     <p id="dog-profile-info"></p></div>
 </body>
+<!-- Floating Social Media Bar -->
+<footer>
+    <aside id="social-media-bar">
+        <ul>
+            <li><a href="https://twitter.com/pawf3ctmatch" target="_blank">Twitter</a></li>
+            <li><a href="https://www.instagram.com/pawf3ctmatch/" target="_blank">Instagram</a></li>
+        </ul>
+    </aside>
+
+    <script src="script.js"></script>
+</footer>
+
 </html>
