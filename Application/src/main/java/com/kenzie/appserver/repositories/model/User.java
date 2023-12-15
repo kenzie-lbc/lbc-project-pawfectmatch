@@ -13,6 +13,7 @@ public class User {
     private String username;
     private String role;
     private String password;
+    private Boolean adopted;
 
     public User() {
     }
@@ -61,8 +62,35 @@ public class User {
         return Objects.hash(uniqueId);
     }
 
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public Object getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Boolean getAdopted() {
+        return adopted;
+    }
+
+    public void setAdopted(Boolean adopted) {
+        this.adopted = adopted;
     }
 }
