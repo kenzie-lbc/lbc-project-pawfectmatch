@@ -10,8 +10,9 @@ import java.util.Objects;
 public class User {
 
     private String uniqueId;
-    private String name;
+    private String username;
     private String role;
+    private String password;
 
     public User() {
     }
@@ -26,9 +27,9 @@ public class User {
         return role;
     }
 
-    @DynamoDBAttribute(attributeName = "Name")
+    @DynamoDBAttribute(attributeName = "Username")
     public String getName() {
-        return name;
+        return username;
     }
 
     public void setId(String uniqueId) {
@@ -36,7 +37,7 @@ public class User {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.username = name;
     }
 
     public void setRole(String role) {
@@ -61,4 +62,7 @@ public class User {
     }
 
 
+    public Object getPassword() {
+        return password;
+    }
 }

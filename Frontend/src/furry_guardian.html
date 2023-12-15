@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="card">
+    <h2>Add a Pet Profile</h2>
+    <form class="card-content" id="add-pet-form">
+        <p class="form-field">
+            <label>Name</label>
+            <input type="text" required class="validated-field" id="pet-name-field">
+        </p>
+        <p class="form-field">
+            <label>Type</label>
+            <input type="text" class="validated-field" id="pet-breed-field">
+        </p>
+        <p class="form-field">
+            <label>Age</label>
+            <input type="number" class="validated-field" id="pet-age-field">
+        </p>
+        <!-- Add more fields as necessary -->
+        <button type="submit">Add Dog</button>
+    </form>
+</div>
+<div class="card">
+    <h2>Search Pets by ID</h2>
+    <form class="card-content" id="search-pet-form">
+        <p class="form-field">
+            <label>Pet ID</label>
+            <input type="text" required class="validated-field" id="pet-id-field">
+        </p>
+        <button type="submit">Search</button>
+    </form>
+</div>
+<div class="card" id="pet-profile-result">
+    <h2>Pet Profile:</h2>
+    <p id="pet-profile-info"></p>
+</div>
+</body>
+</html>

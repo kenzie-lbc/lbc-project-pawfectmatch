@@ -21,6 +21,11 @@ public class PetService {
         // Set PetID using UniqueIdGenerator
         pet.setId(UniqueIdGenerator.generatePetId(pet.getType()));
 
+        // Get the userId of the user creating the pet
+//        String userId = getLoggedInUserId();
+
+        // Set the adoptionId to the userId
+//        pet.setAdoptionId(userId);
         // Save pet using repository
         petRepository.save(pet);
 

@@ -40,8 +40,22 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public String getLoggedInUserId() {
+        // Get the authenticated user details
+        // Return the uniqueId
+        return null;
+    }
+
     // Method to delete a user
     public void deleteUser(String uniqueId) {
         userRepository.deleteById(uniqueId);
+    }
+
+    public User authenticateUser(String username, String password) {
+        User user = userRepository.findByUsername(username);
+        if (user != null && user.getPassword().equals(password)) {
+            return user;
+        }
+        return null;
     }
 }

@@ -10,8 +10,10 @@ import java.util.Objects;
 public class Pet {
 
     private String id;
+    private String adoptionId;
     private String name;
     private String type;
+    private int age;
 
     public Pet() {
     }
@@ -41,6 +43,22 @@ public class Pet {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getAdoptionId() {
+        return adoptionId;
+    }
+
+    public void setAdoptionId(String adoptionId) {
+        this.adoptionId = adoptionId;
     }
 
     @Override

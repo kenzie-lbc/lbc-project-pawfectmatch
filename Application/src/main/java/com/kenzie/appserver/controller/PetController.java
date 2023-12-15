@@ -16,7 +16,7 @@ import java.util.List;
 import static java.util.UUID.randomUUID;
 
 @RestController
-@RequestMapping("/example")
+@RequestMapping("/pets")
 public class PetController {
 
     private final PetService petService;

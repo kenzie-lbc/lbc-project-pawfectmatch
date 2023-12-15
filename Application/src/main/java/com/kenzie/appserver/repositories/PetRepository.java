@@ -12,5 +12,6 @@ public interface PetRepository extends CrudRepository<ExampleRecord, String> {
     // Methods to handle CRUD operations
     Pet save(Pet pet);
     List<Pet> findByType(String type);
+
     // ... other methods
 }
