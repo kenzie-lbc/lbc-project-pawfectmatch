@@ -68,5 +68,6 @@ class ExampleControllerTest {
                 .andExpect(jsonPath("name")
                         .value(is(name)))
                 .andExpect(status().isCreated());
+        
     }
 }
