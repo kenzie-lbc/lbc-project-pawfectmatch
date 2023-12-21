@@ -1,5 +1,8 @@
 package com.kenzie.appserver.service;
 
+import com.kenzie.appserver.repositories.enums.PetType;
+import com.kenzie.appserver.repositories.enums.Role;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,25 +11,25 @@ public class UniqueIdGenerator {
     private static final String ALPHANUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final Set<String> existingIds = new HashSet<>(); // Temporary storage for existing IDs
 
-    public static String generatePetId(String type) {
+    public static String generatePetId(PetType petType) {
         String id;
         do {
             StringBuilder builder = new StringBuilder();
             // Determine the prefix based on the type of pet
-            switch (type.toLowerCase()) {
-                case "dog":
+            switch (petType) {
+                case DOG:
                     builder.append("D");
                     break;
-                case "cat":
+                case CAT:
                     builder.append("C");
                     break;
-                case "reptile":
+                case REPTILE:
                     builder.append("R");
                     break;
-                case "bird":
+                case BIRD:
                     builder.append("B");
                     break;
-                case "fish":
+                case FISH:
                     builder.append("F");
                     break;
                 default:
@@ -46,20 +49,20 @@ public class UniqueIdGenerator {
         return id;
     }
 
-    public static String generateUserId(String role) {
+    public static String generateUserId(Role role) {
         String id;
         do {
             StringBuilder builder = new StringBuilder();
             // Determine the prefix based on the user role
-            switch (role.toLowerCase()) {
-                case "shelter":
+            switch (role) {
+                case SHELTER:
                     builder.append("S");
                     break;
-                case "adopter":
+                case ADOPTER:
                     builder.append("A");
                     break;
-                case "foster":
-                    builder.append("F");
+                case FOSTER:
+                    builder.append("G");
                     break;
                 default:
                     builder.append("U"); // For unspecified roles + future development + unexpected behavior

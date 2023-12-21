@@ -3,6 +3,7 @@ package com.kenzie.appserver.repositories.model;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.kenzie.appserver.repositories.enums.Role;
 
 import java.util.Objects;
 
@@ -11,7 +12,7 @@ public class User {
 
     private String uniqueId;
     private String username;
-    private String role;
+    private Role role;
     private String password;
     private Boolean adopted;
 
@@ -24,7 +25,7 @@ public class User {
         return uniqueId;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
@@ -41,7 +42,7 @@ public class User {
         this.username = name;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

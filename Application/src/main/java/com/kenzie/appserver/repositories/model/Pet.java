@@ -3,6 +3,7 @@ package com.kenzie.appserver.repositories.model;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.kenzie.appserver.repositories.enums.PetType;
 
 import java.util.Objects;
 
@@ -10,10 +11,11 @@ import java.util.Objects;
 public class Pet {
 
     private String id;
-    private String adoptionId;
+    private String adoptionId; //stores uniqueId (shelter/foster)
     private String name;
-    private String type;
+    private PetType petType;
     private int age;
+    private String imageUrl;
 
     public Pet() {
     }
@@ -24,8 +26,8 @@ public class Pet {
         return id;
     }
 
-    public String getType() {
-        return type;
+    public PetType getType() {
+        return petType;
     }
 
     @DynamoDBAttribute(attributeName = "Name")
@@ -41,8 +43,8 @@ public class Pet {
         this.name = name;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setType(PetType petType) {
+        this.petType = petType;
     }
 
     public int getAge() {
@@ -79,4 +81,11 @@ public class Pet {
     }
 
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }
