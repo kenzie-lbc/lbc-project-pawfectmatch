@@ -35,7 +35,7 @@ public class PetController {
 
     @GetMapping("/{type}")
     public ResponseEntity<List<Pet>> getPetsByType(@PathVariable PetType petType) {
-        List<Pet> pets = petService.findPetsByType(petType.toString());
+        List<Pet> pets = petService.findPetsByType(petType);
         return ResponseEntity.ok(pets);
     }
 }
