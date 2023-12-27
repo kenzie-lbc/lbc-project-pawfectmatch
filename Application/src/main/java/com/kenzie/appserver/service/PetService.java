@@ -48,6 +48,15 @@ public class PetService {
         ;return pet;
     }
 
+    public List<Pet> findAllPets() {
+        return (List<Pet>) petRepository.findAll();
+    }
+
+    // TODO - FIX THIS
+//    public List<Pet> findByPetId(String petId) {
+//        return petRepository.findByPetId(petId);
+//    }
+
     // Method to find pets by type
     public List<Pet> findPetsByType(PetType petType) {
         return petRepository.findByType(petType);
