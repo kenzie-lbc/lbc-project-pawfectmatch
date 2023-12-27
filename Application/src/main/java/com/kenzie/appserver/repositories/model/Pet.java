@@ -20,6 +20,14 @@ public class Pet {
     public Pet() {
     }
 
+    public Pet(String id, String name, PetType petType, int age, String imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.petType = petType;
+        this.age = age;
+        this.imageUrl = imageUrl;
+    }
+
 
     @DynamoDBHashKey(attributeName = "Id")
     public String getId() {

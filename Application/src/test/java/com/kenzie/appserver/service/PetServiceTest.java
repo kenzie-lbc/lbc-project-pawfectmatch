@@ -1,6 +1,5 @@
 package com.kenzie.appserver.service;
 
-import com.kenzie.appserver.repositories.ExampleRepository;
 import com.kenzie.appserver.repositories.PetRepository;
 import com.kenzie.appserver.repositories.model.Pet;
 import org.junit.jupiter.api.BeforeEach;

@@ -73,4 +73,9 @@ public class PetService {
     public List<Pet> findCats() {
         return petRepository.findByType(CAT);
     }
+
+    //TODO - ADD NEW PET TO LIST
+    public Pet addNewPet(Pet pet) {
+        return pet;
+    }
 }
