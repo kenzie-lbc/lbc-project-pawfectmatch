@@ -81,7 +81,7 @@ public class UniqueIdGenerator {
         return id;
     }
     public static boolean idExists(String id) {
-        /** TODO Replace this with an actual database query that searches in th
+        /** TODO Replace this with an actual database query that searches in the
          * database for a record with the 'id' and return true if found **/
         return existingIds.contains(id); // Temporary check against the existingIds set
     }
