@@ -34,7 +34,7 @@ public class Pet {
         return id;
     }
 
-    public PetType getType() {
+    public PetType getPetType() {
         return petType;
     }
 
@@ -51,7 +51,7 @@ public class Pet {
         this.name = name;
     }
 
-    public void setType(PetType petType) {
+    public void setPetType(PetType petType) {
         this.petType = petType;
     }
 
