@@ -2,12 +2,15 @@ package com.kenzie.appserver.service;
 
 import com.kenzie.appserver.repositories.UserRepository;
 import com.kenzie.appserver.repositories.model.User;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserService {
+    @Autowired
     private UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {

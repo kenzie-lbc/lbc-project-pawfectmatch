@@ -3,6 +3,7 @@ package com.kenzie.appserver.service;
 import com.kenzie.appserver.repositories.PetRepository;
 import com.kenzie.appserver.repositories.enums.PetType;
 import com.kenzie.appserver.repositories.model.Pet;
+
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -29,9 +30,10 @@ public class PetService {
         if (pet.getAge() <= 0) {
             throw new InvalidPetException("Pet age must be greater than 0");
         }
-// Validate other fields...
+        // Validate other fields...
         // Set PetID using UniqueIdGenerator
-//        pet.setId(UniqueIdGenerator.generatePetId(pet.getType()),
+        String petId = UniqueIdGenerator.generatePetId(pet.getPetType());
+        pet.setId(petId);
 
 //        // Set image
 //        pet.setImageUrl(imageUrl);
@@ -43,9 +45,10 @@ public class PetService {
 //        pet.setAdoptionId(userId);
 
         // Save pet using repository
-//        petRepository.save(pet).toString())
+        petRepository.save(pet);
+
         // Return saved pet
-        ;return pet;
+        return pet;
     }
 
     public List<Pet> findAllPets() {

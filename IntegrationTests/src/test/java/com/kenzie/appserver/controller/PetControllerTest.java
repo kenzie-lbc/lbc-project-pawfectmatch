@@ -41,7 +41,7 @@ class PetControllerTest {
 
         Pet pet = new Pet();
         Pet persistedExample = petService.addNewPet(pet);
-        mvc.perform(get("/example/{id}", persistedExample.getId())
+        mvc.perform(get("/pet/{id}", persistedExample.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("id")
                         .value(is(id)))
@@ -59,7 +59,7 @@ class PetControllerTest {
 
         mapper.registerModule(new JavaTimeModule());
 
-        mvc.perform(post("/example")
+        mvc.perform(post("/pet")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(petCreateRequest)))

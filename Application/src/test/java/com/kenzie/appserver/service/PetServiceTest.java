@@ -25,13 +25,13 @@ public class PetServiceTest {
      *  ------------------------------------------------------------------------ **/
 
     @Test
-    void findById() {
+    void findByPetId() {
         // GIVEN
         String id = randomUUID().toString();
 
         Pet record = new Pet();
         record.setId(id);
-        record.setName("concertname");
+        record.setName("name");
 
         // TODO - Fix call/methods for petService.getPetById
         // WHEN
@@ -45,7 +45,7 @@ public class PetServiceTest {
     }
 
     @Test
-    void findByConcertId_invalid() {
+    void findByPetId_invalid() {
         // GIVEN
         String id = randomUUID().toString();
 

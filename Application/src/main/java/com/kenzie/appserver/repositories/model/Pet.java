@@ -1,17 +1,21 @@
 package com.kenzie.appserver.repositories.model;
 
+import com.kenzie.appserver.repositories.enums.PetType;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import com.kenzie.appserver.repositories.enums.PetType;
 
 import java.util.Objects;
+import javax.validation.constraints.NotBlank;
 
 @DynamoDBTable(tableName = "Pet")
 public class Pet {
 
     private String id;
-    private String adoptionId; //stores uniqueId (shelter/foster)
+    //stores uniqueId (shelter/foster)
+    private String adoptionId;
+    @NotBlank(message = "Pet name is required")
     private String name;
     private PetType petType;
     private int age;
