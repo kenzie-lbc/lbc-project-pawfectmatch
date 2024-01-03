@@ -1,5 +1,6 @@
 package com.kenzie.appserver.repositories.model;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.kenzie.appserver.repositories.enums.PetType;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
@@ -38,6 +39,7 @@ public class Pet {
         return petId;
     }
 
+    @DynamoDBRangeKey(attributeName = "petType")
     public PetType getPetType() {
         return petType;
     }

@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/pet")
@@ -39,7 +40,7 @@ public class PetController {
         this.s3Service = s3Service;
     }
 
-    @PostMapping("/pets")
+    @PostMapping
     public ResponseEntity<PetCreateResponse> createPet(@RequestBody PetCreateRequest petCreateRequest,
                                                  @RequestParam("image") MultipartFile image
     ) throws InvalidPetException, IOException {
@@ -59,14 +60,19 @@ public class PetController {
         return new ResponseEntity<>(petResponse, HttpStatus.CREATED);
     }
 
-
-    @GetMapping("/{type}")
-    public ResponseEntity<List<Pet>> getPetsByType(@PathVariable PetType petType) {
-        List<Pet> pets = petService.findPetsByType(petType);
-        return ResponseEntity.ok(pets);
+    // Get a Pet by ID
+    @GetMapping("/{petId}")
+    public Pet getPetById(@PathVariable String petId) {
+        return (Pet) petService.findByPetId(petId);
     }
 
-    @PostMapping("/upload")
+//    @GetMapping("/{type}")
+//    public ResponseEntity<List<Pet>> getPetsByType(@PathVariable PetType petType) {
+//        List<Pet> pets = petService.findPetsByType(petType);
+//        return ResponseEntity.ok(pets);
+//    }
+
+    @PostMapping("/{petId}/")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         String filename = s3Service.uploadFile(file);
         return ResponseEntity.ok(filename);

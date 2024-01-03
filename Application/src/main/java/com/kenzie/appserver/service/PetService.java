@@ -61,7 +61,7 @@ public class PetService {
     }
 
     // Method to find pets by type
-    public List<Pet> findPetsByType(PetType petType) {
+    public List<Pet> findByPetType(PetType petType) {
         return petRepository.findByPetType(petType);
     }
 
@@ -77,7 +77,7 @@ public class PetService {
         return petRepository.findByPetType(CAT);
     }
 
-    //TODO - ADD NEW PET TO LIST
+    //TODO - ADD NEW PET TO LIST for necessary sibling/friend pairing
     public Pet addNewPet(Pet pet) {
         return pet;
     }

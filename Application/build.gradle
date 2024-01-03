@@ -29,6 +29,9 @@ dependencies {
     implementation 'io.springfox:springfox-swagger-ui:3.0.0'
     implementation 'io.springfox:springfox-swagger2:3.0.0'
 
+    // Spring Security Core (includes BCrypt)
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
     implementation group: 'io.micrometer', name: 'micrometer-core', version: '1.8.3'
     implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.8.3'
     implementation group: 'io.micrometer', name: 'micrometer-registry-cloudwatch2', version: '1.8.3'
