@@ -53,9 +53,10 @@ public class PetService {
     }
 
     // TODO - FIX THIS
-//    public List<Pet> findByPetId(String petId) {
-//        return petRepository.findByPetId(petId);
-//    }
+
+    public List<Pet> findByPetId(String petId) {
+        return petRepository.findByPetId(petId);
+    }
 
     // Method to find pets by type
     public List<Pet> findPetsByType(PetType petType) {
@@ -75,6 +76,7 @@ public class PetService {
     }
 
     //TODO - ADD NEW PET TO LIST
+    // -- is this redundant since we have create pet??
     public Pet addNewPet(Pet pet) {
         return pet;
     }

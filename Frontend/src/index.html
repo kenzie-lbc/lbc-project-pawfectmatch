@@ -14,12 +14,21 @@
 <!-- Navigation Bar -->
 <nav id="navbar">
     <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#adopt">Adopt</a></li>
+        <li><a href="index.html">Home</a></li>
+        <!-- Dropdown Trigger -->
+        <li class="dropdown">
+            <a href="#adopt">Adopt</a>
+            <!-- Dropdown Menu -->
+            <div class="dropdown-content">
+                <a href="furry_guardian.html">Guardian Gateway</a>
+                <a href="adopter_portal.html">Adopt-a-Companion</a>
+            </div>
+        </li>
         <li><a href="#services">Blog</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact Us</a></li>
         <li><a href="#about">FAQs</a></li>
+        <li><a href="#donations">Donations</a></li>
     </ul>
 </nav>
 
@@ -28,50 +37,20 @@
         <a class="header_home" href="index.html">PAWfectMatch</a>
     </div>
 </header>
-<div class="card">
-    <h2>Add a Dog Profile</h2>
-    <form class="card-content" id="add-dog-form">
-        <p class="form-field">
-            <label>Name</label>
-            <input type="text" required class="validated-field" id="dog-name-field">
-        </p>
-        <p class="form-field">
-            <label>Breed</label>
-            <input type="text" class="validated-field" id="dog-breed-field">
-        </p>
-        <p class="form-field">
-            <label>Age</label>
-            <input type="number" class="validated-field" id="dog-age-field">
-        </p>
-        <!-- Add more fields as necessary -->
-        <button type="submit">Add Dog</button>
-    </form>
-</div>
-<div class="card">
-    <h2>Search Dogs by ID</h2>
-    <form class="card-content" id="search-dog-form">
-        <p class="form-field">
-            <label>Dog ID</label>
-            <input type="text" required class="validated-field" id="dog-id-field">
-        </p>
-        <button type="submit">Search</button>
-    </form>
-</div>
-<div class="card" id="dog-profile-result">
-    <h2>Dog Profile:</h2>
-    <p id="dog-profile-info"></p>
-</div>
 
+
+</body>
 <!-- Floating Social Media Bar -->
 <footer>
     <aside id="social-media-bar">
         <ul>
             <li><a href="https://twitter.com/pawf3ctmatch" target="_blank">Twitter</a></li>
-            <li><a href="https://www.instagram.com/pawf3ctmatch/" target="_blank">Instagram</a></li>
+            <li><a href="https://www.instagram.com/pawfectmatchproject/" target="_blank">Instagram</a></li>
         </ul>
     </aside>
 
     <script src="script.js"></script>
 </footer>
-</body>
+
+
 </html>

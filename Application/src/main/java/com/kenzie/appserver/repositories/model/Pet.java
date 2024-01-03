@@ -15,16 +15,18 @@ public class Pet {
     private String name;
     private PetType petType;
     private int age;
+    private String breed; //for queries?
     private String imageUrl;
 
     public Pet() {
     }
 
-    public Pet(String id, String name, PetType petType, int age, String imageUrl) {
+    public Pet(String id, String name, PetType petType, int age, String breed, String imageUrl) {
         this.id = id;
         this.name = name;
         this.petType = petType;
         this.age = age;
+        this.breed = breed;
         this.imageUrl = imageUrl;
     }
 
@@ -69,6 +71,14 @@ public class Pet {
 
     public void setAdoptionId(String adoptionId) {
         this.adoptionId = adoptionId;
+    }
+
+    public String getBreed() {
+        return breed;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
     }
 
     @Override
