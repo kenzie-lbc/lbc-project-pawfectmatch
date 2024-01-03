@@ -6,7 +6,9 @@ import com.kenzie.appserver.repositories.model.Pet;
 
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 import static com.kenzie.appserver.repositories.enums.PetType.CAT;
@@ -15,11 +17,15 @@ import static com.kenzie.appserver.repositories.enums.PetType.DOG;
 @Service
 public class PetService {
 
+
     private final PetRepository petRepository;
+    private final S3Service s3Service;
+
 
     // Constructor
-    public PetService(PetRepository petRepository) {
+    public PetService(PetRepository petRepository, S3Service s3Service) {
         this.petRepository = petRepository;
+        this.s3Service = s3Service;
     }
 
     // Method to handle saving a new pet
@@ -77,8 +83,34 @@ public class PetService {
         return petRepository.findByPetType(CAT);
     }
 
-    //TODO - ADD NEW PET TO LIST for necessary sibling/friend pairing
-    public Pet addNewPet(Pet pet) {
-        return pet;
+    //TODO - ADD UPDATE PET
+
+    public Pet updatePet(Pet pet, MultipartFile file) throws InvalidPetException, IOException {
+        Pet existingPet = petRepository.findById(pet.getPetId()).orElseThrow(() -> new InvalidPetException("Pet not found!"));
+
+        // validate pet object
+        if (StringUtils.isEmpty(pet.getName())) {
+            throw new InvalidPetException("Pet name is required");
+        }
+
+        // upload file and check for success
+        String fileUrl = s3Service.uploadFile(pet, file);
+        boolean isUploaded = !fileUrl.isEmpty();
+
+        if (isUploaded) {
+            // Add a condition to check whether the upload was successful and act on it
+            existingPet.setImageUrl(pet.getImageUrl());
+            existingPet.setName(pet.getName());
+            existingPet.setAge(pet.getAge());
+            existingPet.setPetType(pet.getPetType());
+
+            // update any additional fields...
+
+            // save the pet and return
+            return petRepository.save(existingPet);
+
+        } else {
+            throw new IOException("File failed to upload!");
+        }
     }
 }

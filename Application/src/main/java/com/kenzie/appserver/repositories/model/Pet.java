@@ -35,7 +35,7 @@ public class Pet {
 
 
     @DynamoDBHashKey(attributeName = "petId")
-    public String getId() {
+    public String getPetId() {
         return petId;
     }
 

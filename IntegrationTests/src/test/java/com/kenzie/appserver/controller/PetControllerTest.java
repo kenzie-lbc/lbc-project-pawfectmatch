@@ -40,8 +40,8 @@ class PetControllerTest {
         String name = mockNeat.strings().valStr();
 
         Pet pet = new Pet();
-        Pet persistedExample = petService.addNewPet(pet);
-        mvc.perform(get("/pet/{id}", persistedExample.getId())
+        Pet persistedExample = petService.createPet(pet);
+        mvc.perform(get("/pet/{id}", persistedExample.getPetId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("id")
                         .value(is(id)))

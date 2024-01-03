@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
+import com.kenzie.appserver.repositories.model.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,7 +41,7 @@ public class S3Service {
         this.s3Client = s3Client;
     }
 
-    public String uploadFile(MultipartFile file) throws IOException {
+    public String uploadFile(Pet pet, MultipartFile file) throws IOException {
         String keyName = "IMG" + java.util.UUID.randomUUID();
         String originalFilename = Optional.ofNullable(file.getOriginalFilename()).orElse("");
 
@@ -50,6 +51,10 @@ public class S3Service {
         PutObjectRequest putObjectRequest = new PutObjectRequest(BUCKET_NAME, keyName, file.getInputStream(), metadata)
                 .withCannedAcl(CannedAccessControlList.PublicRead);
         s3Client.putObject(putObjectRequest);
+
+        // Set the URL of the image to the pet Profile picture
+        String imageUrl = s3Client.getUrl(BUCKET_NAME, keyName).toString();
+        pet.setImageUrl(imageUrl);
 
         return s3Client.getUrl(BUCKET_NAME, keyName).toString();
     }

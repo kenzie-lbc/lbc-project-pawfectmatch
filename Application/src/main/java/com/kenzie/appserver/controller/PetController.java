@@ -2,7 +2,6 @@ package com.kenzie.appserver.controller;
 
 import com.kenzie.appserver.controller.model.PetCreateRequest;
 import com.kenzie.appserver.controller.model.PetCreateResponse;
-import com.kenzie.appserver.repositories.enums.PetType;
 import com.kenzie.appserver.repositories.model.Pet;
 
 import com.kenzie.appserver.service.InvalidPetException;
@@ -10,8 +9,6 @@ import com.kenzie.appserver.service.PetService;
 import com.kenzie.appserver.service.S3Service;
 
 import com.amazonaws.services.s3.model.S3Object;
-
-import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -24,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/pet")
@@ -48,11 +43,11 @@ public class PetController {
         pet.setName(petCreateRequest.getName());
         pet.setPetType(petCreateRequest.getPetType());
         pet.setAge(petCreateRequest.getAge());
-        String imageUrl = s3Service.uploadFile(image);
+        String imageUrl = s3Service.uploadFile(pet, image);
         pet.setImageUrl(imageUrl);
         Pet createdPet = petService.createPet(pet);
         PetCreateResponse petResponse = new PetCreateResponse();
-        petResponse.setId(createdPet.getId());
+        petResponse.setId(createdPet.getPetId());
         petResponse.setName(createdPet.getName());
         petResponse.setPetType(createdPet.getPetType());
         petResponse.setAge(createdPet.getAge());
@@ -72,13 +67,17 @@ public class PetController {
 //        return ResponseEntity.ok(pets);
 //    }
 
-    @PostMapping("/{petId}/")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-        String filename = s3Service.uploadFile(file);
-        return ResponseEntity.ok(filename);
+    @PostMapping("/{petId}/upload")
+    public ResponseEntity<String> uploadFile(@PathVariable String petId, @RequestParam
+            ("file") MultipartFile file) throws IOException {
+        Pet pet = (Pet) petService.findByPetId(petId);
+        String imageUrl = s3Service.uploadFile(pet, file);
+        pet.setImageUrl(imageUrl);
+        petService.updatePet(pet, file);
+        return ResponseEntity.ok(imageUrl);
     }
 
-    @GetMapping("/files/{filename}")
+    @GetMapping("/{petId}/image")
     public ResponseEntity<Resource> getFile(@PathVariable String filename) throws IOException {
         S3Object s3Object = s3Service.downloadFile(filename);
         InputStreamResource resource = new InputStreamResource(s3Object.getObjectContent());

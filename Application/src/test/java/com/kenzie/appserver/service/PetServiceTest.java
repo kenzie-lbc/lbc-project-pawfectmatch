@@ -14,11 +14,13 @@ import static org.mockito.Mockito.when;
 public class PetServiceTest {
     private PetRepository petRepository;
     private PetService petService;
+    private  S3Service s3Service;
+
 
     @BeforeEach
     void setup() {
         petRepository = mock(PetRepository.class);
-        petService = new PetService(petRepository);
+        petService = new PetService(petRepository, s3Service);
     }
     /** ------------------------------------------------------------------------
      *  exampleService.findById
