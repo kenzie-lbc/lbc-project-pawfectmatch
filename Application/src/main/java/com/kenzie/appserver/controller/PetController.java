@@ -1,5 +1,7 @@
 package com.kenzie.appserver.controller;
 
+import com.kenzie.appserver.controller.model.PetCreateRequest;
+import com.kenzie.appserver.controller.model.PetCreateResponse;
 import com.kenzie.appserver.repositories.enums.PetType;
 import com.kenzie.appserver.repositories.model.Pet;
 
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,26 +39,24 @@ public class PetController {
         this.s3Service = s3Service;
     }
 
-    @PostMapping
-    public ResponseEntity<Pet> createPet(
-            @RequestParam("image") MultipartFile image,
-            @RequestBody Pet pet
+    @PostMapping("/pets")
+    public ResponseEntity<PetCreateResponse> createPet(@RequestBody PetCreateRequest petCreateRequest,
+                                                 @RequestParam("image") MultipartFile image
     ) throws InvalidPetException, IOException {
-        // Validate pet
-        if (StringUtils.isEmpty(pet.getName())) {
-            throw new InvalidPetException("Pet name is required");
-        }
-        if (pet.getAge() <= 0) {
-            throw new InvalidPetException("Pet age must be greater than 0");
-        }
-        // Save image to S3 or file storage and get URL
+        Pet pet = new Pet();
+        pet.setName(petCreateRequest.getName());
+        pet.setPetType(petCreateRequest.getPetType());
+        pet.setAge(petCreateRequest.getAge());
         String imageUrl = s3Service.uploadFile(image);
-
-        // Set image URL on pet
         pet.setImageUrl(imageUrl);
-
         Pet createdPet = petService.createPet(pet);
-        return ResponseEntity.ok(createdPet);
+        PetCreateResponse petResponse = new PetCreateResponse();
+        petResponse.setId(createdPet.getId());
+        petResponse.setName(createdPet.getName());
+        petResponse.setPetType(createdPet.getPetType());
+        petResponse.setAge(createdPet.getAge());
+        petResponse.setImageUrl(createdPet.getImageUrl());
+        return new ResponseEntity<>(petResponse, HttpStatus.CREATED);
     }
 
 

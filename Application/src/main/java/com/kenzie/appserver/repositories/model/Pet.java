@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @DynamoDBTable(tableName = "Pet")
 public class Pet {
 
-    private String id;
+    private String petId;
     //stores uniqueId (shelter/foster)
     private String adoptionId;
     @NotBlank(message = "Pet name is required")
@@ -25,7 +25,7 @@ public class Pet {
     }
 
     public Pet(String id, String name, PetType petType, int age, String imageUrl) {
-        this.id = id;
+        this.petId = id;
         this.name = name;
         this.petType = petType;
         this.age = age;
@@ -33,22 +33,22 @@ public class Pet {
     }
 
 
-    @DynamoDBHashKey(attributeName = "Id")
+    @DynamoDBHashKey(attributeName = "petId")
     public String getId() {
-        return id;
+        return petId;
     }
 
     public PetType getPetType() {
         return petType;
     }
 
-    @DynamoDBAttribute(attributeName = "Name")
+    @DynamoDBAttribute(attributeName = "name")
     public String getName() {
         return name;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPetId(String petId) {
+        this.petId = petId;
     }
 
     public void setName(String name) {
@@ -84,12 +84,12 @@ public class Pet {
             return false;
         }
         Pet exampleRecord = (Pet) o;
-        return Objects.equals(id, exampleRecord.id);
+        return Objects.equals(petId, exampleRecord.petId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(petId);
     }
 
 

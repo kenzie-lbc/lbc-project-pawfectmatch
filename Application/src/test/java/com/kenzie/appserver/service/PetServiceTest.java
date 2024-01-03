@@ -30,7 +30,7 @@ public class PetServiceTest {
         String id = randomUUID().toString();
 
         Pet record = new Pet();
-        record.setId(id);
+        record.setPetId(id);
         record.setName("name");
 
         // TODO - Fix call/methods for petService.getPetById

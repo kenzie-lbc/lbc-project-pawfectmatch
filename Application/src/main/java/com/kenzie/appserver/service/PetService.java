@@ -33,7 +33,7 @@ public class PetService {
         // Validate other fields...
         // Set PetID using UniqueIdGenerator
         String petId = UniqueIdGenerator.generatePetId(pet.getPetType());
-        pet.setId(petId);
+        pet.setPetId(petId);
 
 //        // Set image
 //        pet.setImageUrl(imageUrl);
@@ -56,25 +56,25 @@ public class PetService {
     }
 
     // TODO - FIX THIS
-//    public List<Pet> findByPetId(String petId) {
-//        return petRepository.findByPetId(petId);
-//    }
+    public List<Pet> findByPetId(String petId) {
+        return petRepository.findByPetId(petId);
+    }
 
     // Method to find pets by type
     public List<Pet> findPetsByType(PetType petType) {
-        return petRepository.findByType(petType);
+        return petRepository.findByPetType(petType);
     }
 
     // Other methods specific to certain pet types
 
     // Method to find dogs
     public List<Pet> findDogs() {
-        return petRepository.findByType(DOG);
+        return petRepository.findByPetType(DOG);
     }
 
     // Method to find cats
     public List<Pet> findCats() {
-        return petRepository.findByType(CAT);
+        return petRepository.findByPetType(CAT);
     }
 
     //TODO - ADD NEW PET TO LIST

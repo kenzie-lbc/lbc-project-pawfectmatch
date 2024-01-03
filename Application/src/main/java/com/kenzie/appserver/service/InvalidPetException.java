@@ -1,6 +1,7 @@
 package com.kenzie.appserver.service;
 
-public class InvalidPetException extends Throwable {
-    public InvalidPetException(String petNameIsRequired) {
+public class InvalidPetException extends RuntimeException {
+    public InvalidPetException(String message) {
+        super(message);
     }
 }
