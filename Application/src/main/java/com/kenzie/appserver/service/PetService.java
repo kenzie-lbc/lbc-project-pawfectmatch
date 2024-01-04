@@ -5,6 +5,9 @@ import com.kenzie.appserver.repositories.enums.PetType;
 import com.kenzie.appserver.repositories.model.Pet;
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -12,6 +15,7 @@ import static com.kenzie.appserver.repositories.enums.PetType.CAT;
 import static com.kenzie.appserver.repositories.enums.PetType.DOG;
 
 @Service
+@RequestMapping
 public class PetService {
 
     private final PetRepository petRepository;
@@ -80,4 +84,25 @@ public class PetService {
     public Pet addNewPet(Pet pet) {
         return pet;
     }
+
+    @GetMapping("/")
+    public List<Pet> getAllPets() {
+        return findAllPets();
+    }
+
+    @GetMapping("/{petId")
+    public List<Pet> getPetById(@PathVariable String petId) {
+        return findByPetId(petId);
+    }
+
+    @GetMapping("/type/{petType}")
+    public List<Pet> getPetsByType(@PathVariable PetType petType) {
+        return findPetsByType(petType);
+    }
+
+    @GetMapping("/dogs")
+    public List<Pet> getDogs() {
+        return findDogs();
+    }
 }
+
