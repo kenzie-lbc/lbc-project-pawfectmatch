@@ -2,23 +2,34 @@ package com.kenzie.appserver.service;
 
 import com.kenzie.appserver.repositories.UserRepository;
 import com.kenzie.appserver.repositories.model.User;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
 @Service
 public class UserService {
+    @Autowired
     private UserRepository userRepository;
-
+//    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     // Method to create a new user
     public User createUser(User user) {
+//        assignUniqueIdToUser(user);
+//        encodeUserPassword(user);
+
         // Generate a unique ID based on the user role before saving
-        String uniqueId = UniqueIdGenerator.generateUserId(user.getRole());
-        user.setId(uniqueId);
+//        String uniqueId = UniqueIdGenerator.generateUserId(user.getRole());
+//        user.setId(uniqueId);
+//
+//        // Hash the password using BCrypt
+//        String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+//        user.setPassword(hashedPassword);
 
         // Save user using repository
         return userRepository.save(user);
@@ -58,4 +69,14 @@ public class UserService {
         }
         return null;
     }
+
+//    private void assignUniqueIdToUser(User user) {
+//        String uniqueId = UniqueIdGenerator.generateUserId(user.getRole());
+//        user.setId(uniqueId);
+//    }
+//
+//    private void encodeUserPassword(User user) {
+//        String hashedPassword = encoder.encode(user.getPassword().toString());
+//        user.setPassword(hashedPassword);
+//    }
 }

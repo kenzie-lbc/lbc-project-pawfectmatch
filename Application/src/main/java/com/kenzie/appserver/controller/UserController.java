@@ -1,13 +1,14 @@
 package com.kenzie.appserver.controller;
 
-import com.kenzie.appserver.controller.model.AuthenticationRequest;
+//import com.kenzie.appserver.controller.model.AuthenticationRequest;
 import com.kenzie.appserver.repositories.model.User;
 import com.kenzie.appserver.service.UserService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
     private final UserService userService;
 
