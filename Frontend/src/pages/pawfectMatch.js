@@ -60,17 +60,18 @@ class PawfectMatch extends BaseClass {
     }
 
     async onCreate(event) {
-        // Prevent the page from refreshing on form submit
         event.preventDefault();
-        this.dataStore.set("pet", null);
+        const name = document.getElementById("create-name-field").value;
+        const petType = document.getElementById("pet-type-field").value;
+        const age = document.getElementById("pet-age-field").value;
+        const imageFile = document.getElementById("pet-image-field").files[0];
+        // Additional fields like imageUrl can be added as needed
 
-        let name = document.getElementById("create-name-field").value;
-
-        const createdPet = await this.client.createPet(name, this.errorHandler);
-        this.dataStore.set("pet", createdPet);
+        const petData = {name, petType, age, imageUrl: ''}; // Include all required fields
+        const createdPet = await this.client.createPet(petData, imageFile, this.errorHandler);
 
         if (createdPet) {
-            this.showMessage(`Created ${createdPet.name}!`)
+            this.showMessage(`Created ID: ${createdPet.petId} for ${createdPet.name}!`);
         } else {
             this.errorHandler("Error creating!  Try again...");
         }

@@ -53,6 +53,9 @@ note right of com.kenzie.appserver.repositories.PetRepository::findByName(String
  ... other methods
 end note
 
+class com.kenzie.appserver.controller.BaseController {
++ ResponseEntity getServiceName()
+}
 enum com.kenzie.appserver.repositories.enums.PetType {
 +  DOG
 +  CAT
@@ -125,6 +128,7 @@ class com.kenzie.appserver.controller.model.PetCreateRequest {
 - String name
 - PetType petType
 - int age
+- String imageUrl
 + String getName()
 + void setName(String)
 + PetType getPetType()
@@ -221,9 +225,6 @@ class com.kenzie.appserver.service.ExampleServiceTest {
 ~ void findById()
 ~ void findByConcertId_invalid()
 }
-class com.kenzie.appserver.controller.BaseController {
-+ ResponseEntity getServiceName()
-}
 class AtaCurriculumSnippetsConventionsPlugin {
 - {static} String MIN_SUPPORTED_GRADLE_VERSION
 + void apply(org.gradle.api.internal.project.ProjectInternal)
@@ -254,6 +255,13 @@ class com.kenzie.appserver.ApplicationStartUpListener {
 class com.kenzie.appserver.config.AmazonS3Config {
 + AmazonS3 amazonS3()
 }
+note top of com.kenzie.appserver.config.AmazonS3Config
+@Configuration
+end note
+note left of com.kenzie.appserver.config.AmazonS3Config::amazonS3()
+    @Bean
+end note
+
 class com.kenzie.appserver.service.UniqueIdGenerator {
 - {static} String ALPHANUMERIC_STRING
 - {static} Set<String> existingIds
@@ -327,7 +335,6 @@ class com.kenzie.appserver.config.DynamoDbConfig {
 ~ String dynamoOverrideEndpoint
 + AmazonDynamoDB amazonDynamoDB(String)
 + Docket api()
-+ AmazonDynamoDB defaultAmazonDynamoDb()
 }
 class com.kenzie.appserver.controller.PetControllerTest {
 - {static} MediaType JSON

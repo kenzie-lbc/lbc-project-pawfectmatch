@@ -3,13 +3,10 @@ package com.kenzie.appserver.controller;
 import com.cloudinary.utils.ObjectUtils;
 import com.kenzie.appserver.controller.model.PetCreateRequest;
 import com.kenzie.appserver.controller.model.PetCreateResponse;
-import com.kenzie.appserver.repositories.PetRepository;
 import com.kenzie.appserver.repositories.model.Pet;
 
 import com.kenzie.appserver.service.InvalidPetException;
 import com.kenzie.appserver.service.PetService;
-import com.kenzie.appserver.service.S3Service;
-
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +40,9 @@ public class PetController {
         this.petService = petService;
     }
 
-    @PostMapping
-    public ResponseEntity<PetCreateResponse> createPet(@RequestBody PetCreateRequest petCreateRequest,
-                                                       @RequestParam("image") MultipartFile image) {
+    @PostMapping(consumes= MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PetCreateResponse> createPet(@RequestPart("petCreateRequest") PetCreateRequest petCreateRequest,
+                                                       @RequestPart("image") MultipartFile image) {
         if (StringUtils.isEmpty(petCreateRequest.getName())) {
             throw new InvalidPetException("Pet name is required");
         }
@@ -53,10 +50,17 @@ public class PetController {
             throw new InvalidPetException("Pet age must be greater than 0");
         }
         try {
+            // Upload image
+            Map uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+            String imageUrl = uploadResult.get("url").toString();
+
+            // Create pet\
             Pet pet = new Pet();
             pet.setName(petCreateRequest.getName());
             pet.setPetType(petCreateRequest.getPetType());
             pet.setAge(petCreateRequest.getAge());
+            pet.setImageUrl(imageUrl);
+
 
             Pet createdPet = petService.createPet(pet, image);
 
@@ -77,7 +81,7 @@ public class PetController {
     }
 
     // Get a Pet by ID
-    @GetMapping("/Pet/{petId}")
+    @GetMapping("/{petId}")
     public ResponseEntity<Pet> getPetById(@PathVariable String petId) {
         try {
             Pet pet = petService.findByPetId(petId);

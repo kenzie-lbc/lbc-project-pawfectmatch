@@ -26,7 +26,7 @@ public class Pet {
 
     // ***For later
     @DynamoDBAttribute(attributeName = "imageUrl")
-    private String imageUrl;
+    private String imageUrl = "";
 
     public Pet() {
     }

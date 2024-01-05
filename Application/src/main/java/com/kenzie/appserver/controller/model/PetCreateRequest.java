@@ -2,21 +2,24 @@ package com.kenzie.appserver.controller.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kenzie.appserver.repositories.enums.PetType;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.constraints.NotEmpty;
 
 public class PetCreateRequest {
     @JsonProperty("petId")
     private String petId;
-    @NotEmpty
+
     @JsonProperty("name")
     private String name;
-    @NotEmpty
+
     @JsonProperty("petType")
     private PetType petType;
 
     @JsonProperty("age")
     private int age;
+    @JsonProperty("imageUrl")
+    private String imageUrl;
 
 
     public String getName() {

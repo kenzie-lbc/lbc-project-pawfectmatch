@@ -44,8 +44,8 @@ public class PetService {
             }
 
             // Image uploading
-            Map uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
-            pet.setImageUrl(uploadResult.get("url").toString());
+//            Map uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+//            pet.setImageUrl(uploadResult.get("url").toString());
             // Set PetID using UniqueIdGenerator
             String petId = UniqueIdGenerator.generatePetId(pet.getPetType());
             pet.setPetId(petId);
@@ -61,7 +61,7 @@ public class PetService {
 
             // Save pet using repository
             pet = petRepository.save(pet);
-        } catch (InvalidPetException | IOException e) {
+        } catch (InvalidPetException e) {
             throw e;
         }
         // Return saved pet
