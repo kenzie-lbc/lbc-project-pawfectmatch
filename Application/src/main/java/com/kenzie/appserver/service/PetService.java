@@ -3,6 +3,8 @@ package com.kenzie.appserver.service;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
+import com.kenzie.appserver.controller.model.PetCreateRequest;
+import com.kenzie.appserver.controller.model.PetCreateResponse;
 import com.kenzie.appserver.repositories.PetRepository;
 import com.kenzie.appserver.repositories.enums.PetType;
 import com.kenzie.appserver.repositories.model.Pet;
@@ -31,43 +33,52 @@ public class PetService {
     }
 
     // Method to handle saving a new pet
-    public Pet createPet(Pet pet, MultipartFile image) throws InvalidPetException, IOException {
-        try {
-            if (StringUtils.isEmpty(pet.getName())) {
-                throw new InvalidPetException("Pet name is required");
-            }
-            if (pet.getAge() <= 0) {
-                throw new InvalidPetException("Pet age must be greater than 0");
-            }
-            if (pet.getPetType() == null) {
-                throw new InvalidPetException("Pet type is required");
-            }
-
-            // Image uploading
-//            Map uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
-//            pet.setImageUrl(uploadResult.get("url").toString());
-            // Set PetID using UniqueIdGenerator
-            String petId = UniqueIdGenerator.generatePetId(pet.getPetType());
-            pet.setPetId(petId);
-
-        // Set image
-//        pet.setImageUrl(imageUrlGenerator());
+//    public Pet createPet(Pet pet, MultipartFile image) throws InvalidPetException, IOException {
+//        try {
+//            if (StringUtils.isEmpty(pet.getName())) {
+//                throw new InvalidPetException("Pet name is required");
+//            }
+//            if (pet.getAge() <= 0) {
+//                throw new InvalidPetException("Pet age must be greater than 0");
+//            }
+//            if (pet.getPetType() == null) {
+//                throw new InvalidPetException("Pet type is required");
+//            }
 //
-//        // Get the userId of the user creating the pet
-//        String userId = getLoggedInUserId();
+//            // Set PetID using UniqueIdGenerator
+//            String petId = UniqueIdGenerator.generatePetId(pet.getPetType());
+//            pet.setPetId(petId);
 //
-//        // Set the adoptionId to the userId
-//        pet.setAdoptionId(userId);
+//
+//        // Set image
+////        pet.setImageUrl(imageUrlGenerator());
+////
+////        // Get the userId of the user creating the pet
+////        String userId = getLoggedInUserId();
+////
+////        // Set the adoptionId to the userId
+////        pet.setAdoptionId(userId);
+//
+//            // Save pet using repository
+//            pet = petRepository.save(pet);
+//        } catch (InvalidPetException e) {
+//            throw e;
+//        }
+//        // Return saved pet
+//        return pet;
+//    }
+    public Pet createPet(PetCreateRequest petCreateRequest) {
+        Pet pet = new Pet();
+        pet.setName(petCreateRequest.getName());
+        pet.setAge(petCreateRequest.getAge());
+        pet.setImageUrl(petCreateRequest.getImageUrl());
 
-            // Save pet using repository
-            pet = petRepository.save(pet);
-        } catch (InvalidPetException e) {
-            throw e;
-        }
-        // Return saved pet
-        return pet;
+        // Save the pet object using your repository
+        Pet savedPet = petRepository.save(pet);
+
+        // Convert to DTO if necessary and return
+        return savedPet;
     }
-
     public List<Pet> findAllPets() {
         return (List<Pet>) petRepository.findAll();
     }
@@ -134,4 +145,25 @@ public class PetService {
             throw new IOException("File failed to upload!");
         }
     }
-}
+
+//    public String handleImageUpload(MultipartFile image) throws IOException {
+//        // Image uploading
+//            Map uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+//            String imageUrl = (String) uploadResult.get("url");
+//
+//        return imageUrl;
+//    }
+    public PetCreateResponse
+    convertToPetCreateResponse(Pet pet) {
+        // Implement the conversion logic
+            PetCreateResponse response = new PetCreateResponse();
+
+            response.setPetId(pet.getPetId());
+            response.setName(pet.getName());
+            response.setAge(pet.getAge());
+            response.setPetType(pet.getPetType());
+            response.setImageUrl(pet.getImageUrl());
+
+            return response;
+        }
+    }

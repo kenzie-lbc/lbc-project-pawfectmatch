@@ -46,58 +46,20 @@ export default class PetClient  extends BaseClass {
     }
 
 
-    async createPet(petData, imageFile, errorCallback) {
+    async createPet(petData, errorCallback) {
+
         try {
-            const imageData = new FormData();
-            imageData.append('file', imageFile);
-            imageData.append('upload_preset', 'ml_default');
-
-            const imageResponse = await axios.post(
-                'https://api.cloudinary.com/v1_1/dehjkkblr/image/upload/f_auto,q_auto', imageData);
-            const imageUrl = imageResponse.data.url;
-
             // Now, create the pet with the image URL included
-            const petPayload = {
-                ...petData,
-                imageUrl: imageUrl // Include the Cloudinary image URL here
-            };
-
-            const response = await this.client.post(`/Pet`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            return response.data;
-        } catch (error) {
-            this.handleError("createPet", error, errorCallback);
-        }
-    }
-
-    async createPet(petData, imageFile, errorCallback) {
-        try {
-            const imageData = new FormData();
-            imageData.append('file', imageFile);
-            imageData.append('upload_preset', 'ml_default');
-
-            const imageResponse = await axios.post(
-                'https://api.cloudinary.com/v1_1/dehjkkblr/image/upload/f_auto,q_auto', imageData);
-            const imageUrl = imageResponse.data.url;
-
-            // Now, create the pet with the image URL included
-            const formData = new FormData();
-            formData.append('petCreateRequest', new Blob([JSON.stringify({
+            const body = {
                 name: petData.name,
                 petType: petData.petType,
                 age: petData.age,
-                imageUrl: imageUrl
-            })], {
-                type: "application/json"
-            }));
-            formData.append('image', imageFile);
+                imageUrl: petData.imageUrl
+            };
 
-            const response = await this.client.post(`/Pet`, formData, {
+            const response = await this.client.post(`/Pet`, body, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'application/json'
                 }
             });
             return response.data;
@@ -109,6 +71,7 @@ export default class PetClient  extends BaseClass {
 
     /**
      * Helper method to log the error and run any error functions.
+     * @param method
      * @param error The error received from the server.
      * @param errorCallback (Optional) A function to execute if the call fails.
      */

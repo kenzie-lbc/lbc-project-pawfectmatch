@@ -40,43 +40,28 @@ public class PetController {
         this.petService = petService;
     }
 
-    @PostMapping(consumes= MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PetCreateResponse> createPet(@RequestPart("petCreateRequest") PetCreateRequest petCreateRequest,
-                                                       @RequestPart("image") MultipartFile image) {
+    @PostMapping
+    public ResponseEntity<PetCreateResponse> createPet(@RequestBody PetCreateRequest petCreateRequest) {
         if (StringUtils.isEmpty(petCreateRequest.getName())) {
             throw new InvalidPetException("Pet name is required");
         }
         if (petCreateRequest.getAge() <= 0) {
             throw new InvalidPetException("Pet age must be greater than 0");
         }
-        try {
-            // Upload image
-            Map uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
-            String imageUrl = uploadResult.get("url").toString();
 
+        try {
             // Create pet\
             Pet pet = new Pet();
             pet.setName(petCreateRequest.getName());
             pet.setPetType(petCreateRequest.getPetType());
             pet.setAge(petCreateRequest.getAge());
-            pet.setImageUrl(imageUrl);
+            pet.setImageUrl(petCreateRequest.getImageUrl());
 
-
-            Pet createdPet = petService.createPet(pet, image);
-
-            PetCreateResponse petResponse = new PetCreateResponse();
-            petResponse.setPetId(createdPet.getPetId());
-            petResponse.setName(createdPet.getName());
-            petResponse.setPetType(createdPet.getPetType());
-            petResponse.setAge(createdPet.getAge());
-            petResponse.setImageUrl(createdPet.getImageUrl());
+            PetCreateResponse petResponse = petService.convertToPetCreateResponse(pet);
 
             return new ResponseEntity<>(petResponse, HttpStatus.CREATED);
         } catch (InvalidPetException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (IOException e) {
-            // Log the exception and return an appropriate response
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
