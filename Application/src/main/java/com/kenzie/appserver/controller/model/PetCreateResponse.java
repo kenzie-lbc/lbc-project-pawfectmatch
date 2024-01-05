@@ -4,27 +4,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kenzie.appserver.repositories.enums.PetType;
 
 public class PetCreateResponse {
-    @JsonProperty("id")
-    private String id;
-
+    @JsonProperty("petId")
+    private String petId;
     @JsonProperty("name")
     private String name;
-
-    @JsonProperty("type")
+    @JsonProperty("petType")
     private PetType petType;
-
     @JsonProperty("age")
     private int age;
-
     @JsonProperty("imageUrl")
     private String imageUrl;
 
-    public String getId() {
-        return id;
+    public String getPetId() {
+        return petId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPetId(String petId) {
+        this.petId = petId;
     }
 
     public String getName() {

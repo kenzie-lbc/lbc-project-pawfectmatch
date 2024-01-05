@@ -1,5 +1,8 @@
 package com.kenzie.appserver.service;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+
 import com.kenzie.appserver.repositories.PetRepository;
 import com.kenzie.appserver.repositories.enums.PetType;
 import com.kenzie.appserver.repositories.model.Pet;
@@ -10,39 +13,45 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static com.kenzie.appserver.repositories.enums.PetType.CAT;
 import static com.kenzie.appserver.repositories.enums.PetType.DOG;
 
 @Service
 public class PetService {
-
-
     private final PetRepository petRepository;
-    private final S3Service s3Service;
+    private final Cloudinary cloudinary;
 
 
     // Constructor
-    public PetService(PetRepository petRepository, S3Service s3Service) {
+    public PetService(PetRepository petRepository, Cloudinary cloudinary) {
         this.petRepository = petRepository;
-        this.s3Service = s3Service;
+        this.cloudinary = cloudinary;
     }
 
     // Method to handle saving a new pet
-    public Pet createPet(Pet pet) throws InvalidPetException {
-        if (StringUtils.isEmpty(pet.getName())) {
-            throw new InvalidPetException("Pet name is required");
-        }
-        if (pet.getAge() <= 0) {
-            throw new InvalidPetException("Pet age must be greater than 0");
-        }
-        // Validate other fields...
-        // Set PetID using UniqueIdGenerator
-        String petId = UniqueIdGenerator.generatePetId(pet.getPetType());
-        pet.setPetId(petId);
+    public Pet createPet(Pet pet, MultipartFile image) throws InvalidPetException, IOException {
+        try {
+            if (StringUtils.isEmpty(pet.getName())) {
+                throw new InvalidPetException("Pet name is required");
+            }
+            if (pet.getAge() <= 0) {
+                throw new InvalidPetException("Pet age must be greater than 0");
+            }
+            if (pet.getPetType() == null) {
+                throw new InvalidPetException("Pet type is required");
+            }
 
-//        // Set image
-//        pet.setImageUrl(imageUrl);
+            // Image uploading
+            Map uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+            pet.setImageUrl(uploadResult.get("url").toString());
+            // Set PetID using UniqueIdGenerator
+            String petId = UniqueIdGenerator.generatePetId(pet.getPetType());
+            pet.setPetId(petId);
+
+        // Set image
+//        pet.setImageUrl(imageUrlGenerator());
 //
 //        // Get the userId of the user creating the pet
 //        String userId = getLoggedInUserId();
@@ -50,9 +59,11 @@ public class PetService {
 //        // Set the adoptionId to the userId
 //        pet.setAdoptionId(userId);
 
-        // Save pet using repository
-        petRepository.save(pet);
-
+            // Save pet using repository
+            pet = petRepository.save(pet);
+        } catch (InvalidPetException | IOException e) {
+            throw e;
+        }
         // Return saved pet
         return pet;
     }
@@ -61,10 +72,17 @@ public class PetService {
         return (List<Pet>) petRepository.findAll();
     }
 
-    // TODO - FIX THIS
-    public List<Pet> findByPetId(String petId) {
-        return petRepository.findByPetId(petId);
+    public Pet findByPetId(String petId) throws InvalidPetException {
+        return petRepository.findById(petId)
+                .orElseThrow(() -> new InvalidPetException("Pet not found!"));
     }
+    // TODO - FIX THIS
+    // Method to find pets by name
+
+    // Search for full pet profile
+//    public List<Pet> findAllByPetId(String petId) {
+//        return petRepository.findPetsByPetId(petId);
+//    }
 
     // Method to find pets by type
     public List<Pet> findByPetType(PetType petType) {
@@ -94,8 +112,11 @@ public class PetService {
         }
 
         // upload file and check for success
-        String fileUrl = s3Service.uploadFile(pet, file);
+        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+        String fileUrl = (String) uploadResult.get("url");
+
         boolean isUploaded = !fileUrl.isEmpty();
+
 
         if (isUploaded) {
             // Add a condition to check whether the upload was successful and act on it
@@ -107,8 +128,8 @@ public class PetService {
             // update any additional fields...
 
             // save the pet and return
-            return petRepository.save(existingPet);
-
+            existingPet = petRepository.save(existingPet);
+            return existingPet;
         } else {
             throw new IOException("File failed to upload!");
         }

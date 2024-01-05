@@ -6,19 +6,19 @@ import com.kenzie.appserver.repositories.enums.PetType;
 import javax.validation.constraints.NotEmpty;
 
 public class PetCreateRequest {
-
+    @JsonProperty("petId")
+    private String petId;
     @NotEmpty
     @JsonProperty("name")
     private String name;
     @NotEmpty
-    @JsonProperty("type")
+    @JsonProperty("petType")
     private PetType petType;
 
     @JsonProperty("age")
     private int age;
 
-    @JsonProperty("imageUrl")
-    private String imageUrl;
+
     public String getName() {
         return name;
     }
@@ -43,11 +43,12 @@ public class PetCreateRequest {
         this.age = age;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+
+    public String getPetId() {
+        return petId;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setPetId(String petId) {
+        this.petId = petId;
     }
 }

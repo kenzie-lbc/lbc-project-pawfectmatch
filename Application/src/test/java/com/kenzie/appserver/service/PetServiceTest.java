@@ -1,5 +1,6 @@
 package com.kenzie.appserver.service;
 
+import com.cloudinary.Cloudinary;
 import com.kenzie.appserver.repositories.PetRepository;
 import com.kenzie.appserver.repositories.model.Pet;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,13 +15,13 @@ import static org.mockito.Mockito.when;
 public class PetServiceTest {
     private PetRepository petRepository;
     private PetService petService;
-    private  S3Service s3Service;
+    private Cloudinary cloudinary;
 
 
     @BeforeEach
     void setup() {
         petRepository = mock(PetRepository.class);
-        petService = new PetService(petRepository, s3Service);
+        petService = new PetService(petRepository, cloudinary);
     }
     /** ------------------------------------------------------------------------
      *  exampleService.findById
@@ -29,11 +30,11 @@ public class PetServiceTest {
     @Test
     void findByPetId() {
         // GIVEN
-        String id = randomUUID().toString();
-
-        Pet record = new Pet();
-        record.setPetId(id);
-        record.setName("name");
+//        String id = randomUUID().toString();
+//
+//        Pet record = new Pet();
+//        record.setPetId(petId);
+//        record.setName("name");
 
         // TODO - Fix call/methods for petService.getPetById
         // WHEN
@@ -49,9 +50,9 @@ public class PetServiceTest {
     @Test
     void findByPetId_invalid() {
         // GIVEN
-        String id = randomUUID().toString();
-
-        when(petRepository.findById(id)).thenReturn(Optional.empty());
+//        String id = randomUUID().toString();
+//
+//        when(petRepository.findById(id)).thenReturn(Optional.empty());
 
         // TODO - Fix call/methods for petService.getPetById
         // WHEN

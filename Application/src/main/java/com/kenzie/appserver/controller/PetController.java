@@ -1,15 +1,17 @@
 package com.kenzie.appserver.controller;
 
+import com.cloudinary.utils.ObjectUtils;
 import com.kenzie.appserver.controller.model.PetCreateRequest;
 import com.kenzie.appserver.controller.model.PetCreateResponse;
+import com.kenzie.appserver.repositories.PetRepository;
 import com.kenzie.appserver.repositories.model.Pet;
 
 import com.kenzie.appserver.service.InvalidPetException;
 import com.kenzie.appserver.service.PetService;
 import com.kenzie.appserver.service.S3Service;
 
-import com.amazonaws.services.s3.model.S3Object;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -20,45 +22,74 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cloudinary.*;
+import com.cloudinary.utils.ObjectUtils;
+
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/pet")
+@RequestMapping("/Pet")
 public class PetController {
 
     private final PetService petService;
-    private final S3Service s3Service;
+
 
     @Autowired
-    PetController(PetService petService, S3Service s3Service) {
+    private Cloudinary cloudinary;
+
+
+    PetController(PetService petService) {
         this.petService = petService;
-        this.s3Service = s3Service;
     }
 
     @PostMapping
     public ResponseEntity<PetCreateResponse> createPet(@RequestBody PetCreateRequest petCreateRequest,
-                                                 @RequestParam("image") MultipartFile image
-    ) throws InvalidPetException, IOException {
-        Pet pet = new Pet();
-        pet.setName(petCreateRequest.getName());
-        pet.setPetType(petCreateRequest.getPetType());
-        pet.setAge(petCreateRequest.getAge());
-        String imageUrl = s3Service.uploadFile(pet, image);
-        pet.setImageUrl(imageUrl);
-        Pet createdPet = petService.createPet(pet);
-        PetCreateResponse petResponse = new PetCreateResponse();
-        petResponse.setId(createdPet.getPetId());
-        petResponse.setName(createdPet.getName());
-        petResponse.setPetType(createdPet.getPetType());
-        petResponse.setAge(createdPet.getAge());
-        petResponse.setImageUrl(createdPet.getImageUrl());
-        return new ResponseEntity<>(petResponse, HttpStatus.CREATED);
+                                                       @RequestParam("image") MultipartFile image) {
+        if (StringUtils.isEmpty(petCreateRequest.getName())) {
+            throw new InvalidPetException("Pet name is required");
+        }
+        if (petCreateRequest.getAge() <= 0) {
+            throw new InvalidPetException("Pet age must be greater than 0");
+        }
+        try {
+            Pet pet = new Pet();
+            pet.setName(petCreateRequest.getName());
+            pet.setPetType(petCreateRequest.getPetType());
+            pet.setAge(petCreateRequest.getAge());
+
+            Pet createdPet = petService.createPet(pet, image);
+
+            PetCreateResponse petResponse = new PetCreateResponse();
+            petResponse.setPetId(createdPet.getPetId());
+            petResponse.setName(createdPet.getName());
+            petResponse.setPetType(createdPet.getPetType());
+            petResponse.setAge(createdPet.getAge());
+            petResponse.setImageUrl(createdPet.getImageUrl());
+
+            return new ResponseEntity<>(petResponse, HttpStatus.CREATED);
+        } catch (InvalidPetException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (IOException e) {
+            // Log the exception and return an appropriate response
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // Get a Pet by ID
-    @GetMapping("/{petId}")
-    public Pet getPetById(@PathVariable String petId) {
-        return (Pet) petService.findByPetId(petId);
+    @GetMapping("/Pet/{petId}")
+    public ResponseEntity<Pet> getPetById(@PathVariable String petId) {
+        try {
+            Pet pet = petService.findByPetId(petId);
+            if (pet != null) {
+                return new ResponseEntity<>(pet, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            // log the error message and return a general error message to the client
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 //    @GetMapping("/{type}")
@@ -67,25 +98,4 @@ public class PetController {
 //        return ResponseEntity.ok(pets);
 //    }
 
-    @PostMapping("/{petId}/upload")
-    public ResponseEntity<String> uploadFile(@PathVariable String petId, @RequestParam
-            ("file") MultipartFile file) throws IOException {
-        Pet pet = (Pet) petService.findByPetId(petId);
-        String imageUrl = s3Service.uploadFile(pet, file);
-        pet.setImageUrl(imageUrl);
-        petService.updatePet(pet, file);
-        return ResponseEntity.ok(imageUrl);
-    }
-
-    @GetMapping("/{petId}/image")
-    public ResponseEntity<Resource> getFile(@PathVariable String filename) throws IOException {
-        S3Object s3Object = s3Service.downloadFile(filename);
-        InputStreamResource resource = new InputStreamResource(s3Object.getObjectContent());
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(s3Object.getObjectMetadata().getContentType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"" + filename + "\"")
-                .body(resource);
-    }
 }

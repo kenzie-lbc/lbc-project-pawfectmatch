@@ -11,13 +11,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@EnableScan
+//@EnableScan
 @Repository
 public interface UserRepository extends CrudRepository<User, String> {
     // Methods to handle CRUD operations
     User save(User user);
 
-    @Query
+//    @Query
     User findByUsername(String username);
     // ... other methods
 

@@ -41,8 +41,5 @@ public class DynamoDbConfig {
                 .build();
     }
 
-    @Bean(name = "amazonDynamoDB")
-    public AmazonDynamoDB defaultAmazonDynamoDb() {
-        return AmazonDynamoDBClientBuilder.defaultClient();
-    }
+
 }

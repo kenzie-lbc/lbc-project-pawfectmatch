@@ -6,7 +6,6 @@
     <title>Navbar and Social Media Bar</title>
     <script type="text/javascript" src="pages/pawfectMatch.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <title>Guardian Gateway</title>
 </head>
 
@@ -36,31 +35,37 @@
     <h2>Add a Pet!</h2>
     <form class="card-content" id="add-pet-form">
         <p class="form-field">
-            <label>Name</label>
+            <label for="pet-name-field">Name</label>
             <input type="text" required class="validated-field" id="pet-name-field">
         </p>
         <p class="form-field">
-            <label>Type</label>
-            <input type="text" class="validated-field" id="pet-breed-field">
+            <label for="pet-type-field">Type</label>
+            <select id="pet-type-field" class="validated-field">
+                <option value="DOG">Dog</option>
+                <option value="CAT">Cat</option>
+                <option value="BIRD">Bird</option>
+                <option value="REPTILE">Reptile</option>
+                <option value="FISH">Fish</option>
+                <option value="Exotic">Exotic</option>
+            </select>
         </p>
         <p class="form-field">
-            <label>Age</label>
+            <label for="pet-age-field">Age (Years)</label>
             <input type="number" class="validated-field" id="pet-age-field">
         </p>
         <p class="form-field">
-            <label>Image</label>
+            <label for="pet-image-field">Image</label>
             <input type="file" id="pet-image-field">
         </p>
-        <p/>
         <!-- Add more fields as necessary -->
-        <button type="submit">Add Dog</button>
+        <button type="submit">Add Pet</button>
     </form>
 </div>
 <div class="card">
     <h2>Search Pets by ID</h2>
     <form class="card-content" id="search-pet-form">
         <p class="form-field">
-            <label>Pet ID</label>
+            <label for="pet-id-field">Pet ID</label>
             <input type="text" required class="validated-field" id="pet-id-field">
         </p>
         <button type="submit">Search</button>
