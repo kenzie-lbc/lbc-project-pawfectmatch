@@ -11,48 +11,38 @@ import javax.validation.constraints.NotBlank;
 
 @DynamoDBTable(tableName = "Pet")
 public class Pet {
-
-    private String id;
-    private String adoptionId; //stores uniqueId (shelter/foster)
-    private String name;
-    private PetType petType;
-    private int age;
-    private String breed; //for queries?
-    private String imageUrl;
     @Id
     @DynamoDBHashKey(attributeName = "petId")
     private String petId;
+//    private String breed; //for queries?
+    @DynamoDBAttribute(attributeName = "age")
+    private int age;
     @DynamoDBTypeConvertedEnum
     private PetType petType;
     //stores uniqueId (shelter/foster)
-    private String adoptionId;
+//    private String adoptionId;
     @DynamoDBAttribute(attributeName = "name")
     private String name;
-
-    @DynamoDBAttribute(attributeName = "age")
-    private int age;
-
-    // ***For later
     @DynamoDBAttribute(attributeName = "imageUrl")
     private String imageUrl = "";
 
     public Pet() {
     }
 
-    public Pet(String id, String name, PetType petType, int age, String breed, String imageUrl) {
-        this.id = id;
+    public Pet(String petId, String name, PetType petType, int age,
+//               String breed,
+               String imageUrl) {
+        this.petId = petId;
         this.name = name;
         this.petType = petType;
         this.age = age;
-        this.breed = breed;
+//        this.breed = breed;
         this.imageUrl = imageUrl;
     }
-
 
     public String getPetId() {
         return petId;
     }
-
 
     public PetType getPetType() {
         return petType;
@@ -62,7 +52,6 @@ public class Pet {
     public String getName() {
         return name;
     }
-
 
     public void setPetId(String petId) {
         this.petId = petId;
@@ -84,22 +73,22 @@ public class Pet {
         this.age = age;
     }
 
-    public String getAdoptionId() {
-        return adoptionId;
-    }
+//    public String getAdoptionId() {
+//        return adoptionId;
+//    }
+//
+//    public void setAdoptionId(String adoptionId) {
+//        this.adoptionId = adoptionId;
+//    }
 
-    public void setAdoptionId(String adoptionId) {
-        this.adoptionId = adoptionId;
-    }
-
-    public String getBreed() {
-        return breed;
-    }
-
-    public void setBreed(String breed) {
-        this.breed = breed;
-    }
-
+//    public String getBreed() {
+//        return breed;
+//    }
+//
+//    public void setBreed(String breed) {
+//        this.breed = breed;
+//    }
+//
 
     @Override
     public boolean equals(Object o) {
