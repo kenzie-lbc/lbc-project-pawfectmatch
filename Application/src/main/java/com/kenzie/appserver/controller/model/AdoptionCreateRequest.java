@@ -1,2 +1,5 @@
-package com.kenzie.appserver.controller.model;public class AdoptionCreateRequest {
+package com.kenzie.appserver.controller.model;
+
+public class AdoptionCreateRequest {
+
 }

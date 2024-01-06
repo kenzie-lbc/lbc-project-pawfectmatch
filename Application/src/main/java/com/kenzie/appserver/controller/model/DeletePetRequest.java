@@ -1,2 +1,5 @@
-package com.kenzie.appserver.controller.model;public class DeletePetRequest {
+package com.kenzie.appserver.controller.model;
+
+public class DeletePetRequest {
+
 }

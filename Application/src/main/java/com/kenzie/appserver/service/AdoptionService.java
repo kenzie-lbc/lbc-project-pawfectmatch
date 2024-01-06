@@ -1,5 +1,7 @@
-package com.kenzie.appserver.service.model;
+package com.kenzie.appserver.service;
 
+import com.kenzie.appserver.repositories.AdoptionRepository;
+import com.kenzie.appserver.repositories.model.AdoptedPet;
 import com.kenzie.appserver.repositories.model.AdoptionRecord;
 import com.kenzie.appserver.repositories.model.Pet;
 import com.kenzie.appserver.repositories.model.User;
@@ -13,20 +15,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdoptionService {
-    private PetService petService;
+    private AdoptionService adoptionService;
     private UserService userService;
+    private PetService petService;
+    private AdoptionRepository adoptionRepository;
 
-public AdoptionService(PetService petService, UserService userService) {
-    this.petService = petService;
+public AdoptionService(AdoptionService adoptionService, UserService userService, PetService petService) {
+    this.adoptionService = adoptionService;
     this.userService = userService;
+    this.petService = petService;
 }
 
-    public Pet adoptPet(String id, String username, String dateOfAdoption) {
+    public AdoptedPet adoptPet(String id, String username, String dateOfAdoption) {
         // Your code here
+        //AdoptedPet pet = adoptionService.findPetById(id);
         Pet pet = petService.findPetById(id);
 
         if (pet == null) {
             throw new PetNotFoundException("Pet not found");
+        }
+        if (!pet.isAdopted()) {
+            throw new PetAlreadyAdoptedException("Pet already adopted");
         }
 
         AdoptionRecord adoptionRecord = new AdoptionRecord(
@@ -34,7 +43,7 @@ public AdoptionService(PetService petService, UserService userService) {
         adoptionRecord.setPetId(id),
         adoptionRecord.setDateOfAdoption(dateOfAdoption));
 
-        adoptionRecord.save(adoptionRecord);
+        adoptionRepository.saveRecord(adoptionRecord);
 
         Pet adoptedPet = new Pet(
                 pet.getAdoptionId(),
@@ -44,10 +53,18 @@ public AdoptionService(PetService petService, UserService userService) {
                 pet.getAge()
 
         );
-        pet.setAdopted(true);
 
+        adoptedPet.setAdopted(true);
 
-        return adoptedPet;
+        petService.updatePet(adoptedPet);
+
+        AdoptedPet adoptedPet1 = new AdoptedPet(
+                adoptionRecord.getDateOfAdoption(),
+                adoptionRecord.getUsername(),
+                adoptionRecord.getPetId()
+        );
+
+        return adoptedPet1;
     }
 
     public List<Pet> findAllAdoptedPets() {

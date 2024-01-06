@@ -2,6 +2,7 @@ package com.kenzie.appserver.controller;
 
 import com.kenzie.appserver.controller.model.ExampleCreateRequest;
 import com.kenzie.appserver.controller.model.ExampleResponse;
+import com.kenzie.appserver.repositories.PetRepository;
 import com.kenzie.appserver.repositories.model.Pet;
 import com.kenzie.appserver.service.ExampleService;
 import com.kenzie.appserver.service.PetService;
@@ -36,4 +37,12 @@ public class PetController {
         List<Pet> pets = petService.findPetsByType(type);
         return ResponseEntity.ok(pets);
     }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deletePetById(@PathVariable("petId") String id) {
+        petService.deletePet(id);
+        return ResponseEntity.status(204).build();
+    }
+
 }

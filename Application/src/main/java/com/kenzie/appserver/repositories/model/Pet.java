@@ -15,7 +15,14 @@ public class Pet {
     private String type;
     private int age;
 
-    public Pet() {
+    private boolean isAdopted = Boolean.FALSE;
+
+    public Pet(String id, String adoptionId, String name, String type, int age) {
+        this.id = id;
+        this.adoptionId = adoptionId;
+        this.name = name;
+        this.age = age;
+        this.type = type;
     }
 
 
@@ -45,6 +52,7 @@ public class Pet {
         this.type = type;
     }
 
+    @DynamoDBAttribute(attributeName = "Age")
     public int getAge() {
         return age;
     }
@@ -53,12 +61,22 @@ public class Pet {
         this.age = age;
     }
 
+    @DynamoDBAttribute(attributeName = "AdoptionId")
     public String getAdoptionId() {
         return adoptionId;
     }
 
     public void setAdoptionId(String adoptionId) {
         this.adoptionId = adoptionId;
+    }
+
+    @DynamoDBAttribute(attributeName = "isAdopted")
+    public boolean isAdopted() {
+        return isAdopted;
+    }
+
+    public void setAdopted(boolean isAdopted) {
+        isAdopted = isAdopted;
     }
 
     @Override
