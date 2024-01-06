@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.kenzie.appserver.repositories.enums.PetType.CAT;
 import static com.kenzie.appserver.repositories.enums.PetType.DOG;
@@ -112,37 +113,36 @@ public class PetService {
         return petRepository.findByPetType(CAT);
     }
 
-    //TODO - ADD UPDATE PET
+    // Method to update a pet
 
-    public Pet updatePet(Pet pet, MultipartFile file) throws InvalidPetException, IOException {
-        Pet existingPet = petRepository.findById(pet.getPetId()).orElseThrow(() -> new InvalidPetException("Pet not found!"));
-
-        // validate pet object
-        if (StringUtils.isEmpty(pet.getName())) {
-            throw new InvalidPetException("Pet name is required");
+    public Pet updatePet(Pet updatedPet) {
+        // Ensure that the updated pet has a valid ID
+        if (updatedPet.getPetId() == null || updatedPet.getPetId().isEmpty()) {
+            // Handle the case where the ID is not provided
+            // You may throw an exception or handle it according to the application's logic
+            // For simplicity, let's assume it's an invalid update
+            throw new IllegalArgumentException("Pet ID is required for update");
         }
 
-        // upload file and check for success
-        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-        String fileUrl = (String) uploadResult.get("url");
+        // Check if the pet with the given ID exists
+        Optional<Pet> existingPetOptional = petRepository.findById(updatedPet.getPetId());
+        if (existingPetOptional.isPresent()) {
+            // If the pet exists, update its properties
+            Pet existingPet = existingPetOptional.get();
 
-        boolean isUploaded = !fileUrl.isEmpty();
+            // Update properties based on your requirements
+            existingPet.setName(updatedPet.getName());
+            existingPet.setPetType(updatedPet.getPetType());
+            existingPet.setAge(updatedPet.getAge());
+            existingPet.setImageUrl(updatedPet.getImageUrl());
 
-
-        if (isUploaded) {
-            // Add a condition to check whether the upload was successful and act on it
-            existingPet.setImageUrl(pet.getImageUrl());
-            existingPet.setName(pet.getName());
-            existingPet.setAge(pet.getAge());
-            existingPet.setPetType(pet.getPetType());
-
-            // update any additional fields...
-
-            // save the pet and return
-            existingPet = petRepository.save(existingPet);
-            return existingPet;
+            // Save the updated pet using the repository
+            return petRepository.save(existingPet);
         } else {
-            throw new IOException("File failed to upload!");
+            // Handle the case where the pet with the given ID is not found
+            // You may throw an exception or handle it according to the application's logic
+            // For simplicity, let's assume it's an invalid update
+            throw new IllegalArgumentException("Pet not found with ID: " + updatedPet.getPetId());
         }
     }
 
