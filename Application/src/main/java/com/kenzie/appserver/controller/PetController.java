@@ -20,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -37,33 +36,14 @@ public class PetController {
 
     private final PetService petService;
 
-
     @Autowired
     private Cloudinary cloudinary;
 
-
-    PetController(PetService petService) {
+    public PetController(PetService petService) {
         this.petService = petService;
     }
 
     @PostMapping
-    public ResponseEntity<Pet> createPet(@RequestParam("image") MultipartFile image, @RequestBody Pet pet) throws InvalidPetException {
-        // Save image to S3 or file storage and get URL
-//        String imageUrl = s3Service.uploadFile(image);
-
-        // Set image URL on pet
-//        pet.setImageUrl(imageUrl);
-
-        Pet createdPet = petService.createPet(pet);
-        return ResponseEntity.ok(createdPet);
-    }
-
-
-    @GetMapping("/{type}")
-    public ResponseEntity<List<Pet>> getPetsByType(@PathVariable PetType petType) {
-        List<Pet> pets = petService.findPetsByType(petType);
-        return ResponseEntity.ok(pets);
-    }
     public ResponseEntity<PetCreateResponse> createPet(@RequestBody PetCreateRequest petCreateRequest) {
         if (StringUtils.isEmpty(petCreateRequest.getName())) {
             throw new InvalidPetException("Pet name is required");
@@ -103,11 +83,10 @@ public class PetController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-//    @GetMapping("/{type}")
-//    public ResponseEntity<List<Pet>> getPetsByType(@PathVariable PetType petType) {
-//        List<Pet> pets = petService.findPetsByType(petType);
-//        return ResponseEntity.ok(pets);
-//    }
+    @GetMapping("/{petType}")
+    public ResponseEntity<List<Pet>> getPetsByType(@PathVariable PetType petType) {
+        List<Pet> pets = petService.findByPetType(petType);
+        return ResponseEntity.ok(pets);
+    }
 
 }
