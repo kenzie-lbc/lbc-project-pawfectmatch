@@ -1,9 +1,11 @@
 package com.kenzie.appserver.repositories.model;
 
+
+import com.kenzie.appserver.repositories.enums.Role;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import com.kenzie.appserver.repositories.enums.Role;
 
 import java.util.Objects;
 

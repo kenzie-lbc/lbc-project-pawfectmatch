@@ -9,7 +9,9 @@ import java.util.Set;
 public class UniqueIdGenerator {
 
     private static final String ALPHANUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    private static final Set<String> existingIds = new HashSet<>(); // Temporary storage for existing IDs
+
+    // Temporary storage for existing IDs
+    private static final Set<String> existingIds = new HashSet<>();
 
     public static String generatePetId(PetType petType) {
         String id;
@@ -33,16 +35,20 @@ public class UniqueIdGenerator {
                     builder.append("F");
                     break;
                 default:
-                    builder.append("X"); // Prefix for exotic or unspecified pets
+
+                    // Prefix for exotic or unspecified pets
+                    builder.append("X");
                     break;
             }
             // Generate the random alphanumeric part
             for (int i = 0; i < 8; i++) {
-                int character = (int)(Math.random() * ALPHANUMERIC_STRING.length());
+
+                int character = (int) (Math.random() * ALPHANUMERIC_STRING.length());
                 builder.append(ALPHANUMERIC_STRING.charAt(character));
             }
             id = builder.toString();
-        } while (idExists(id)); // Ensure the ID is unique
+            // Ensure the ID is unique
+        } while (idExists(id));
 
         /**TODO Add to existing IDs, remove this line when integrating with a real database*/
         existingIds.add(id);
@@ -65,24 +71,30 @@ public class UniqueIdGenerator {
                     builder.append("G");
                     break;
                 default:
-                    builder.append("U"); // For unspecified roles + future development + unexpected behavior
+
+                    // For unspecified roles + future development + unexpected behavior
+                    builder.append("U");
                     break;
             }
             // Generate the random alphanumeric part
             for (int i = 0; i < 8; i++) {
-                int character = (int)(Math.random() * ALPHANUMERIC_STRING.length());
+
+                int character = (int) (Math.random() * ALPHANUMERIC_STRING.length());
                 builder.append(ALPHANUMERIC_STRING.charAt(character));
             }
             id = builder.toString();
-        } while (idExists(id)); // Ensure the ID is unique
+            // Ensure the ID is unique
+        } while (idExists(id));
 
         /**TODO Add to existing IDs, remove this line when integrating with a real database*/
-        existingIds.add(id); //
+        existingIds.add(id);
         return id;
     }
+
     public static boolean idExists(String id) {
         /** TODO Replace this with an actual database query that searches in the
          * database for a record with the 'id' and return true if found **/
-        return existingIds.contains(id); // Temporary check against the existingIds set
+        // Temporary check against the existingIds set
+        return existingIds.contains(id);
     }
 }

@@ -1,11 +1,13 @@
 package com.kenzie.appserver.repositories.model;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.kenzie.appserver.repositories.enums.PetType;
 
+import org.springframework.data.annotation.Id;
+
 import java.util.Objects;
+import javax.validation.constraints.NotBlank;
 
 @DynamoDBTable(tableName = "Pet")
 public class Pet {
@@ -17,6 +19,22 @@ public class Pet {
     private int age;
     private String breed; //for queries?
     private String imageUrl;
+    @Id
+    @DynamoDBHashKey(attributeName = "petId")
+    private String petId;
+    @DynamoDBTypeConvertedEnum
+    private PetType petType;
+    //stores uniqueId (shelter/foster)
+    private String adoptionId;
+    @DynamoDBAttribute(attributeName = "name")
+    private String name;
+
+    @DynamoDBAttribute(attributeName = "age")
+    private int age;
+
+    // ***For later
+    @DynamoDBAttribute(attributeName = "imageUrl")
+    private String imageUrl = "";
 
     public Pet() {
     }
@@ -31,22 +49,23 @@ public class Pet {
     }
 
 
-    @DynamoDBHashKey(attributeName = "Id")
-    public String getId() {
-        return id;
+    public String getPetId() {
+        return petId;
     }
+
 
     public PetType getPetType() {
         return petType;
     }
 
-    @DynamoDBAttribute(attributeName = "Name")
+
     public String getName() {
         return name;
     }
 
-    public void setId(String id) {
-        this.id = id;
+
+    public void setPetId(String petId) {
+        this.petId = petId;
     }
 
     public void setName(String name) {
@@ -81,6 +100,7 @@ public class Pet {
         this.breed = breed;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -89,13 +109,18 @@ public class Pet {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Pet exampleRecord = (Pet) o;
-        return Objects.equals(id, exampleRecord.id);
+
+        Pet pet = (Pet) o;
+        return Objects.equals(getPetId(), pet.getPetId())
+                && Objects.equals(getName(), pet.getName())
+                // ensure that the values compared can't be null or handle null values
+                && getPetType() == pet.getPetType();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+
+        return Objects.hash(getPetId(), getName(), getPetType());
     }
 
 

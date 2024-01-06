@@ -1,0 +1,364 @@
+@startuml
+class com.kenzie.appserver.controller.PetController {
+- PetService petService
+- Cloudinary cloudinary
+~ <<Create>> PetController(PetService)
++ ResponseEntity<PetCreateResponse> createPet(PetCreateRequest,MultipartFile)
++ ResponseEntity<Pet> getPetById(String)
+}note left of com.kenzie.appserver.controller.PetController::getPetById(String)
+ Get a Pet by ID
+end note
+
+class com.kenzie.appserver.config.ExecutorServiceConfig {
++ TaskExecutor executorService()
+}
+class com.kenzie.appserver.Application {
+- Cloudinary cloudinary
++ {static} void main(String[])
+}
+class com.kenzie.appserver.service.UserService {
+- UserRepository userRepository
++ <<Create>> UserService(UserRepository)
++ User createUser(User)
++ User findUserByUsername(String)
++ User updateUser(User)
++ String getLoggedInUserId()
++ void deleteUser(String)
++ User authenticateUser(String,String)
+}note left of com.kenzie.appserver.service.UserService::UserService(UserRepository)
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+end note
+note right of com.kenzie.appserver.service.UserService::createUser(User)
+ Method to create a new user
+end note
+note left of com.kenzie.appserver.service.UserService::findUserByUsername(String)
+ Method to find a user by username
+end note
+note right of com.kenzie.appserver.service.UserService::updateUser(User)
+ Method to update a user
+end note
+note left of com.kenzie.appserver.service.UserService::deleteUser(String)
+ Method to delete a user
+end note
+
+interface com.kenzie.appserver.repositories.PetRepository {
+~ Pet findByPetId(String)
+~ List<Pet> findByPetType(PetType)
+~ List<Pet> findByName(String)
+~ List<Pet> findByAge(int)
+}note left of com.kenzie.appserver.repositories.PetRepository::findByPetId(String)
+ Methods to handle CRUD operations
+end note
+note right of com.kenzie.appserver.repositories.PetRepository::findByName(String)
+ ... other methods
+end note
+
+class com.kenzie.appserver.controller.BaseController {
++ ResponseEntity getServiceName()
+}
+enum com.kenzie.appserver.repositories.enums.PetType {
++  DOG
++  CAT
++  BIRD
++  REPTILE
++  FISH
++  EXOTIC
+}
+interface com.kenzie.appserver.repositories.UserRepository {
+~ User save(User)
+~ User findByUsername(String)
+}
+note top of com.kenzie.appserver.repositories.UserRepository
+@EnableScan
+end note
+note left of com.kenzie.appserver.repositories.UserRepository::save(User)
+ Methods to handle CRUD operations
+end note
+note right of com.kenzie.appserver.repositories.UserRepository::findByUsername(String)
+    @Query
+end note
+
+class com.kenzie.appserver.DynamoDbInitializer {
+- {static} GenericContainer<?> dynamoDb
+- {static} GenericContainer<?> getDynamoDbInstance()
++ void initialize(ConfigurableApplicationContext)
+}
+class com.kenzie.appserver.service.S3Service {
+- AmazonS3 s3Client
+- {static} String BUCKET_NAME
+- {static} Map<String,String> CONTENT_TYPES
+- {static} String DEFAULT_CONTENT_TYPE
++ <<Create>> S3Service(AmazonS3)
++ String uploadFile(Pet,MultipartFile)
++ S3Object downloadFile(String)
+- String getContentType(String)
+}
+class com.kenzie.appserver.repositories.model.User {
+- String uniqueId
+- String username
+- Role role
+- String password
+- Boolean adopted
++ <<Create>> User()
++ String getId()
++ Role getRole()
++ String getName()
++ void setId(String)
++ void setName(String)
++ void setRole(Role)
++ boolean equals(Object)
++ int hashCode()
++ String getUniqueId()
++ void setUniqueId(String)
++ String getUsername()
++ void setUsername(String)
++ Object getPassword()
++ void setPassword(String)
++ Boolean getAdopted()
++ void setAdopted(Boolean)
+}
+class com.kenzie.appserver.config.CloudinaryConfig {
+- String cloudName
+- String apiKey
+- String apiSecret
++ Cloudinary cloudinary()
+}
+class com.kenzie.appserver.controller.model.PetCreateRequest {
+- String petId
+- String name
+- PetType petType
+- int age
+- String imageUrl
++ String getName()
++ void setName(String)
++ PetType getPetType()
++ void setPetType(PetType)
++ int getAge()
++ void setAge(int)
++ String getPetId()
++ void setPetId(String)
+}
+class AtaCurriculumJavaConventionsPlugin {
+- {static} String MIN_SUPPORTED_GRADLE_VERSION
++ void apply(org.gradle.api.internal.project.ProjectInternal)
+- {static} ScriptSource scriptSource(Class<?>)
+- {static} void assertSupportedByCurrentGradleVersion()
+}
+note top of AtaCurriculumJavaConventionsPlugin
+
+ * Precompiled ata-curriculum.java-conventions script plugin.
+ *
+end note
+
+class com.kenzie.appserver.controller.ExampleControllerTest {
+- MockMvc mvc
+~ ExampleService exampleService
+- MockNeat mockNeat
+- ObjectMapper mapper
++ void getById_Exists()
++ void createExample_CreateSuccessful()
+}
+class com.kenzie.appserver.repositories.model.Pet {
+- String petId
+- PetType petType
+- String adoptionId
+- String name
+- int age
+- String imageUrl
++ <<Create>> Pet()
++ <<Create>> Pet(String,String,PetType,int,String)
++ String getPetId()
++ PetType getPetType()
++ String getName()
++ void setPetId(String)
++ void setName(String)
++ void setPetType(PetType)
++ int getAge()
++ void setAge(int)
++ String getAdoptionId()
++ void setAdoptionId(String)
++ boolean equals(Object)
++ int hashCode()
++ String getImageUrl()
++ void setImageUrl(String)
+}note left of com.kenzie.appserver.repositories.model.Pet::adoptionId
+stores uniqueId (shelter/foster)
+end note
+note right of com.kenzie.appserver.repositories.model.Pet::imageUrl
+ ***For later
+end note
+
+class com.kenzie.appserver.service.PetService {
+- PetRepository petRepository
+- Cloudinary cloudinary
++ <<Create>> PetService(PetRepository,Cloudinary)
++ Pet createPet(Pet,MultipartFile)
++ List<Pet> findAllPets()
++ Pet findByPetId(String)
++ List<Pet> findByPetType(PetType)
++ List<Pet> findDogs()
++ List<Pet> findCats()
++ Pet updatePet(Pet,MultipartFile)
+}note left of com.kenzie.appserver.service.PetService::PetService(PetRepository,Cloudinary)
+ Constructor
+end note
+note right of com.kenzie.appserver.service.PetService::createPet(Pet,MultipartFile)
+ Method to handle saving a new pet
+end note
+note left of com.kenzie.appserver.service.PetService::findByPetType(PetType)
+ Method to find pets by type
+end note
+note right of com.kenzie.appserver.service.PetService::findDogs()
+ Method to find dogs
+end note
+note left of com.kenzie.appserver.service.PetService::findCats()
+ Method to find cats
+end note
+
+class com.kenzie.appserver.service.InvalidPetException {
++ <<Create>> InvalidPetException(String)
+}
+class com.kenzie.appserver.service.ExampleServiceTest {
+- ExampleRepository exampleRepository
+- PetService exampleService
+~ void setup()
+~ void findById()
+~ void findByConcertId_invalid()
+}
+class AtaCurriculumSnippetsConventionsPlugin {
+- {static} String MIN_SUPPORTED_GRADLE_VERSION
++ void apply(org.gradle.api.internal.project.ProjectInternal)
+- {static} ScriptSource scriptSource(Class<?>)
+- {static} void assertSupportedByCurrentGradleVersion()
+}
+note top of AtaCurriculumSnippetsConventionsPlugin
+
+ * Precompiled ata-curriculum.snippets-conventions script plugin.
+ *
+end note
+
+enum com.kenzie.appserver.repositories.enums.Role {
++  SHELTER
++  ADOPTER
++  FOSTER
+- String role
+~ <<Create>> Role(String)
++ String getName()
++ {static} Role fromString(String)
+}note left of com.kenzie.appserver.repositories.enums.Role::fromString(String)
+ ***REPLACE "name" with a better naming convention***
+end note
+
+class com.kenzie.appserver.ApplicationStartUpListener {
++ void onApplicationEvent(ContextRefreshedEvent)
+}
+class com.kenzie.appserver.config.AmazonS3Config {
++ AmazonS3 amazonS3()
+}
+note top of com.kenzie.appserver.config.AmazonS3Config
+@Configuration
+end note
+note left of com.kenzie.appserver.config.AmazonS3Config::amazonS3()
+    @Bean
+end note
+
+class com.kenzie.appserver.service.UniqueIdGenerator {
+- {static} String ALPHANUMERIC_STRING
+- {static} Set<String> existingIds
++ {static} String generatePetId(PetType)
++ {static} String generateUserId(Role)
++ {static} boolean idExists(String)
+}note left of com.kenzie.appserver.service.UniqueIdGenerator::existingIds
+ Temporary storage for existing IDs
+end note
+
+class com.kenzie.appserver.controller.UserController {
+- UserService userService
++ <<Create>> UserController(UserService)
++ ResponseEntity<User> createUser(User)
++ ResponseEntity<User> getUserByUsername(String)
++ ResponseEntity<User> updateUser(User)
++ ResponseEntity<Void> deleteUser(String)
+}
+class AtaCurriculumDaggerConventionsPlugin {
+- {static} String MIN_SUPPORTED_GRADLE_VERSION
++ void apply(org.gradle.api.internal.project.ProjectInternal)
+- {static} ScriptSource scriptSource(Class<?>)
+- {static} void assertSupportedByCurrentGradleVersion()
+}
+note top of AtaCurriculumDaggerConventionsPlugin
+
+ * Precompiled ata-curriculum.dagger-conventions script plugin.
+ *
+end note
+
+class com.kenzie.appserver.service.PetServiceTest {
+- PetRepository petRepository
+- PetService petService
+- Cloudinary cloudinary
+~ void setup()
+~ void findByPetId()
+~ void findByPetId_invalid()
+}
+class com.kenzie.appserver.Scheduler {
+}
+class AtaCurriculumIntegrationTestConventionsPlugin {
+- {static} String MIN_SUPPORTED_GRADLE_VERSION
++ void apply(org.gradle.api.internal.project.ProjectInternal)
+- {static} ScriptSource scriptSource(Class<?>)
+- {static} void assertSupportedByCurrentGradleVersion()
+}
+note top of AtaCurriculumIntegrationTestConventionsPlugin
+
+ * Precompiled ata-curriculum.integration-test-conventions script plugin.
+ *
+end note
+
+class com.kenzie.appserver.controller.model.PetCreateResponse {
+- String petId
+- String name
+- PetType petType
+- int age
+- String imageUrl
++ String getPetId()
++ void setPetId(String)
++ String getName()
++ void setName(String)
++ PetType getPetType()
++ void setPetType(PetType)
++ int getAge()
++ void setAge(int)
++ String getImageUrl()
++ void setImageUrl(String)
+}
+class com.kenzie.appserver.config.DynamoDbConfig {
+~ String dynamoOverrideEndpoint
++ AmazonDynamoDB amazonDynamoDB(String)
++ Docket api()
+}
+class com.kenzie.appserver.controller.PetControllerTest {
+- {static} MediaType JSON
+- MockMvc mvc
+- PetService petService
+- MockNeat mockNeat
+- ObjectMapper mapper
++ void setUp()
+- ObjectMapper createObjectMapper()
++ void getById_Exists()
++ void createPet_CreateSuccessful()
+}
+note top of com.kenzie.appserver.controller.PetControllerTest
+@IntegrationTest
+end note
+
+
+
+org.springframework.data.repository.CrudRepository <|-- com.kenzie.appserver.repositories.PetRepository
+org.springframework.data.repository.CrudRepository <|-- com.kenzie.appserver.repositories.UserRepository
+org.springframework.context.ApplicationContextInitializer <|.. com.kenzie.appserver.DynamoDbInitializer
+Plugin <|.. AtaCurriculumJavaConventionsPlugin
+com.kenzie.appserver.service.RuntimeException <|-- com.kenzie.appserver.service.InvalidPetException
+Plugin <|.. AtaCurriculumSnippetsConventionsPlugin
+Plugin <|.. AtaCurriculumDaggerConventionsPlugin
+Plugin <|.. AtaCurriculumIntegrationTestConventionsPlugin
+@enduml

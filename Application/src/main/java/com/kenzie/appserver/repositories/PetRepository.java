@@ -1,27 +1,36 @@
 package com.kenzie.appserver.repositories;
 
+
+import com.kenzie.appserver.service.PetService;
+
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.kenzie.appserver.repositories.enums.PetType;
 import com.kenzie.appserver.repositories.model.Pet;
-import com.kenzie.appserver.service.PetService;
+
 import org.socialsignin.spring.data.dynamodb.repository.EnableScan;
+
+import org.socialsignin.spring.data.dynamodb.repository.Query;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @EnableScan
+
+@Repository
 public interface PetRepository extends CrudRepository<Pet, String> {
+
     // Methods to handle CRUD operations
-    Pet save(Pet pet);
+    Pet findByPetId(String petId);
 
-
-
-    //query methods
-
-    List<Pet> findByPetId(String PetId);
-    List<Pet> findByBreed(String breed);
-
-    List<Pet> findByType(PetType petType);
-
+    List<Pet> findByPetType(PetType petType);
 
     // ... other methods
+    List<Pet> findByName(String name);
+    List<Pet> findByAge(int age);
+    List<Pet> findByBreed(String breed);
+
+//    List<Pet> findPetsByPetId(String petId);
+
 }
