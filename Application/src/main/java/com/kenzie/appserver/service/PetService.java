@@ -56,6 +56,7 @@ public class PetService {
         // Convert to DTO if necessary and return
         return savedPet;
     }
+
     public List<Pet> findAllPets() {
         return (List<Pet>) petRepository.findAll();
     }
@@ -75,19 +76,19 @@ public class PetService {
 
     public void updatePet(Pet pet) {
 
-        if (petRepository.existsById(pet.getId())) {
-            Pet pet1 = new Pet(
-                    pet.getAdoptionId(),
-                    pet.getId(),
-                    pet.getName(),
-                    pet.getType(),
-                    pet.getAge()
-                    );
-        }
+//        if (petRepository.existsById(pet.getPetId())) {
+//            Pet pet1 = new Pet(
+////                    pet.getAdoptionId(),
+//                    pet.getPetId(),
+//                    pet.getName(),
+//                    pet.getPetType(),
+//                    pet.getAge()
+//            );
+//        }
     }
 
     // Method to find pets by type
-      //if statement for isDeleted?
+    //if statement for isDeleted?
     public List<Pet> findByPetType(PetType petType) {
         return petRepository.findByPetType(petType);
 
@@ -122,95 +123,79 @@ public class PetService {
     public List<Pet> getDogs() {
         return petRepository.findByPetType(DOG);
     }
+
     // Method to find cats
     public List<Pet> findCats() {
         return petRepository.findByPetType(CAT);
     }
 
-//TODO - ADD UPDATE PET
-public Pet updatePet(Pet pet, MultipartFile file) throws InvalidPetException, IOException {
-    Pet existingPet = petRepository.findById(pet.getPetId()).orElseThrow(() -> new InvalidPetException("Pet not found!"));
+    //TODO - ADD UPDATE PET
+    public Pet updatePet(Pet pet, MultipartFile file) throws InvalidPetException, IOException {
+        Pet existingPet = petRepository.findById(pet.getPetId()).orElseThrow(() -> new InvalidPetException("Pet not found!"));
 
-    // validate pet object
-    if (StringUtils.isEmpty(pet.getName())) {
-        throw new InvalidPetException("Pet name is required");
-    }
-
-    // upload file and check for success
-    Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-    String fileUrl = (String) uploadResult.get("url");
-
-    boolean isUploaded = !fileUrl.isEmpty();
-
-
-    if (isUploaded) {
-        // Add a condition to check whether the upload was successful and act on it
-        existingPet.setImageUrl(pet.getImageUrl());
-        existingPet.setName(pet.getName());
-        existingPet.setAge(pet.getAge());
-        existingPet.setPetType(pet.getPetType());
-
-        // update any additional fields...
-
-        // save the pet and return
-        existingPet = petRepository.save(existingPet);
-        return existingPet;
-    } else {
-        throw new IOException("File failed to upload!");
-    }
-
-    public List<Pet> findAllPets() {
-        List<Pet> pets = new ArrayList<>();
-
-        Iterable<Pet> petIterator = petRepository.findAllPets();
-        for(Pet pet : petIterator) {
-            pets.add(new Pet(pet.getId(),
-                    pet.getName(),
-                    pet.getAdoptionId(),
-                    pet.getType(),
-                    pet.getAge()));
-
+        // validate pet object
+        if (StringUtils.isEmpty(pet.getName())) {
+            throw new InvalidPetException("Pet name is required");
         }
 
-        return pets;
-    }
-    public List<Pet> findAllAdoptablePets() {
-        List<Pet> adoptablePets = new ArrayList<>();
+        // upload file and check for success
+        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+        String fileUrl = (String) uploadResult.get("url");
 
-        Iterable<Pet> petIterator = petRepository.findAllPets();
-        for(Pet pet : petIterator) {
-            if (pet.isAdopted()) {
-                adoptablePets.add(pet);
-            }
+        boolean isUploaded = !fileUrl.isEmpty();
 
+
+        if (isUploaded) {
+            // Add a condition to check whether the upload was successful and act on it
+            existingPet.setImageUrl(pet.getImageUrl());
+            existingPet.setName(pet.getName());
+            existingPet.setAge(pet.getAge());
+            existingPet.setPetType(pet.getPetType());
+
+            // update any additional fields...
+
+            // save the pet and return
+            existingPet = petRepository.save(existingPet);
+            return existingPet;
+        } else {
+            throw new IOException("File failed to upload!");
         }
-
-        return adoptablePets;
     }
+//    public List<Pet> findAllAdoptablePets() {
+//        List<Pet> adoptablePets = new ArrayList<>();
+//
+//        Iterable<Pet> petIterator = petRepository.findAllPets();
+//        for(Pet pet : petIterator) {
+//            if (pet.isAdopted()) {
+//                adoptablePets.add(pet);
+//            }
+//
+//        }
+//
+//        return adoptablePets;
+//    }
 
-    public Pet findPetById(String id) {
+    public Pet findPetById(String petId) {
         List<Pet> pets = petRepository.findAllPets();
-        for(Pet pet: pets) {
-            if (pet.getId() == id)
+        for (Pet pet : pets) {
+            if (pet.getPetId() == petId)
                 return pet;
         }
         return null;
     }
-    public void deletePet(String id) {
-        Pet pet1 = petRepository.findPetById(id);
-        if (pet1.isAdopted()) {
-            //does adoptPet() add pet to Adopted Pet table?
-            petRepository.deleteById(id);
-        }
+
+    public void deletePet(String petId) {
+        Pet pet1 = petRepository.findByPetId(petId);
+//        if (pet1.isAdopted()) {
+        //does adoptPet() add pet to Adopted Pet table?
+        petRepository.deleteById(petId);
+//        }
     }
-    public void softDeletePet(String id) {
-        Pet pet = findPetById(id);
-        pet.setAdopted(true);
-    }
+//    public void softDeletePet(String id) {
+//        Pet pet = findPetById(id);
+//        pet.setAdopted(true);
+//    }
 
-
-
-}
 
 //    public String handleImageUpload(MultipartFile image) throws IOException {
 //        // Image uploading
@@ -220,16 +205,16 @@ public Pet updatePet(Pet pet, MultipartFile file) throws InvalidPetException, IO
 //        return imageUrl;
 //    }
 
-public PetCreateResponse convertToPetCreateResponse(Pet pet) {
-    // Implement the conversion logic
-    PetCreateResponse response = new PetCreateResponse();
+    public PetCreateResponse convertToPetCreateResponse(Pet pet) {
+        // Implement the conversion logic
+        PetCreateResponse response = new PetCreateResponse();
 
-    response.setPetId(pet.getPetId());
-    response.setName(pet.getName());
-    response.setAge(pet.getAge());
-    response.setPetType(pet.getPetType());
-    response.setImageUrl(pet.getImageUrl());
+        response.setPetId(pet.getPetId());
+        response.setName(pet.getName());
+        response.setAge(pet.getAge());
+        response.setPetType(pet.getPetType());
+        response.setImageUrl(pet.getImageUrl());
 
-    return response;
-}
+        return response;
     }
+}

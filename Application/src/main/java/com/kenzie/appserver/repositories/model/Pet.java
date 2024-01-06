@@ -26,16 +26,10 @@ public class Pet {
     @DynamoDBAttribute(attributeName = "imageUrl")
     private String imageUrl = "";
 
-    private boolean isAdopted = Boolean.FALSE;
+    public boolean isAdopted = Boolean.FALSE;
 
-    public Pet(String id, String adoptionId, String name, String type, int age) {
-        this.id = id;
-        this.adoptionId = adoptionId;
-        this.name = name;
-        this.age = age;
-        this.type = type;
-    }
-
+public Pet() {
+}
     public Pet(String petId, String name, PetType petType, int age,
 //               String breed,
                String imageUrl) {
@@ -130,4 +124,5 @@ public class Pet {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
 }
