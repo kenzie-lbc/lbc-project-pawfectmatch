@@ -12,13 +12,6 @@ import javax.validation.constraints.NotBlank;
 @DynamoDBTable(tableName = "Pet")
 public class Pet {
 
-    private String id;
-    private String adoptionId; //stores uniqueId (shelter/foster)
-    private String name;
-    private PetType petType;
-    private int age;
-    private String breed; //for queries?
-    private String imageUrl;
     @Id
     @DynamoDBHashKey(attributeName = "petId")
     private String petId;
@@ -36,11 +29,15 @@ public class Pet {
     @DynamoDBAttribute(attributeName = "imageUrl")
     private String imageUrl = "";
 
+    @DynamoDBAttribute(attributeName = "breed")
+    private String breed;
+
+    
     public Pet() {
     }
 
     public Pet(String id, String name, PetType petType, int age, String breed, String imageUrl) {
-        this.id = id;
+        this.petId = id;
         this.name = name;
         this.petType = petType;
         this.age = age;
