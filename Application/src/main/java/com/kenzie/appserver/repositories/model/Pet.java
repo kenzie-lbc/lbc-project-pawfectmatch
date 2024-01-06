@@ -32,7 +32,7 @@ public class Pet {
     @DynamoDBAttribute(attributeName = "breed")
     private String breed;
 
-    
+
     public Pet() {
     }
 

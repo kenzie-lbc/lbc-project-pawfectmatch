@@ -104,6 +104,19 @@ public class PetController {
         }
     }
 
+
+    @GetMapping("/")
+    public List<Pet> getAllPets() {
+        return findAllPets();
+    }
+
+    @GetMapping("/dogs")
+    public List<Pet> getDogs() {
+        return findDogs();
+    }
+
+
+
 //    @GetMapping("/{type}")
 //    public ResponseEntity<List<Pet>> getPetsByType(@PathVariable PetType petType) {
 //        List<Pet> pets = petService.findPetsByType(petType);
