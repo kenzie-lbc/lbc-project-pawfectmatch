@@ -1,5 +1,8 @@
 package com.kenzie.appserver.controller;
 
+import com.kenzie.appserver.repositories.enums.PetType;
+import com.kenzie.appserver.repositories.model.Pet;
+
 import com.cloudinary.utils.ObjectUtils;
 import com.kenzie.appserver.controller.model.PetCreateRequest;
 import com.kenzie.appserver.controller.model.PetCreateResponse;
@@ -18,6 +21,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
 
 import com.cloudinary.*;
 import com.cloudinary.utils.ObjectUtils;
@@ -41,6 +47,23 @@ public class PetController {
     }
 
     @PostMapping
+    public ResponseEntity<Pet> createPet(@RequestParam("image") MultipartFile image, @RequestBody Pet pet) throws InvalidPetException {
+        // Save image to S3 or file storage and get URL
+//        String imageUrl = s3Service.uploadFile(image);
+
+        // Set image URL on pet
+//        pet.setImageUrl(imageUrl);
+
+        Pet createdPet = petService.createPet(pet);
+        return ResponseEntity.ok(createdPet);
+    }
+
+
+    @GetMapping("/{type}")
+    public ResponseEntity<List<Pet>> getPetsByType(@PathVariable PetType petType) {
+        List<Pet> pets = petService.findPetsByType(petType);
+        return ResponseEntity.ok(pets);
+    }
     public ResponseEntity<PetCreateResponse> createPet(@RequestBody PetCreateRequest petCreateRequest) {
         if (StringUtils.isEmpty(petCreateRequest.getName())) {
             throw new InvalidPetException("Pet name is required");

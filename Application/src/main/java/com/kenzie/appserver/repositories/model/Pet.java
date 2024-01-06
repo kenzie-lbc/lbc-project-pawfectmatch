@@ -1,5 +1,6 @@
 package com.kenzie.appserver.repositories.model;
 
+
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.kenzie.appserver.repositories.enums.PetType;
 
@@ -11,6 +12,13 @@ import javax.validation.constraints.NotBlank;
 @DynamoDBTable(tableName = "Pet")
 public class Pet {
 
+    private String id;
+    private String adoptionId; //stores uniqueId (shelter/foster)
+    private String name;
+    private PetType petType;
+    private int age;
+    private String breed; //for queries?
+    private String imageUrl;
     @Id
     @DynamoDBHashKey(attributeName = "petId")
     private String petId;
@@ -31,24 +39,30 @@ public class Pet {
     public Pet() {
     }
 
-    public Pet(String petId, String name, PetType petType, int age, String imageUrl) {
-        this.petId = petId;
+    public Pet(String id, String name, PetType petType, int age, String breed, String imageUrl) {
+        this.id = id;
         this.name = name;
         this.petType = petType;
         this.age = age;
+        this.breed = breed;
         this.imageUrl = imageUrl;
     }
 
+
     public String getPetId() {
-            return petId;
-        }
+        return petId;
+    }
+
+
     public PetType getPetType() {
         return petType;
     }
 
+
     public String getName() {
         return name;
     }
+
 
     public void setPetId(String petId) {
         this.petId = petId;
@@ -78,6 +92,15 @@ public class Pet {
         this.adoptionId = adoptionId;
     }
 
+    public String getBreed() {
+        return breed;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -86,6 +109,7 @@ public class Pet {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
+
         Pet pet = (Pet) o;
         return Objects.equals(getPetId(), pet.getPetId())
                 && Objects.equals(getName(), pet.getName())
@@ -95,6 +119,7 @@ public class Pet {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(getPetId(), getName(), getPetType());
     }
 

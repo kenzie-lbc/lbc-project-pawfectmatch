@@ -1,5 +1,6 @@
 package com.kenzie.appserver.repositories.model;
 
+
 import com.kenzie.appserver.repositories.enums.Role;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
