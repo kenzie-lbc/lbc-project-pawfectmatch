@@ -8,6 +8,8 @@ import com.kenzie.appserver.controller.model.PetCreateRequest;
 import com.kenzie.appserver.controller.model.PetCreateResponse;
 import com.kenzie.appserver.repositories.PetRepository;
 import com.kenzie.appserver.repositories.enums.PetType;
+
+// import com.kenzie.appserver.repositories.model.AdoptedPet;
 import com.kenzie.appserver.repositories.model.Pet;
 
 import io.micrometer.core.instrument.util.StringUtils;
@@ -17,16 +19,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static com.kenzie.appserver.repositories.enums.PetType.CAT;
 import static com.kenzie.appserver.repositories.enums.PetType.DOG;
 
+
+
+
 @Service
 public class PetService {
     private final PetRepository petRepository;
     private final Cloudinary cloudinary;
+
 
     // Constructor
     public PetService(PetRepository petRepository, Cloudinary cloudinary) {
@@ -65,9 +73,24 @@ public class PetService {
 //        return petRepository.findPetsByPetId(petId);
 //    }
 
+    public void updatePet(Pet pet) {
+
+        if (petRepository.existsById(pet.getId())) {
+            Pet pet1 = new Pet(
+                    pet.getAdoptionId(),
+                    pet.getId(),
+                    pet.getName(),
+                    pet.getType(),
+                    pet.getAge()
+                    );
+        }
+    }
+
     // Method to find pets by type
+      //if statement for isDeleted?
     public List<Pet> findByPetType(PetType petType) {
         return petRepository.findByPetType(petType);
+
     }
 
     // Other methods specific to certain pet types
@@ -135,6 +158,58 @@ public Pet updatePet(Pet pet, MultipartFile file) throws InvalidPetException, IO
     } else {
         throw new IOException("File failed to upload!");
     }
+
+    public List<Pet> findAllPets() {
+        List<Pet> pets = new ArrayList<>();
+
+        Iterable<Pet> petIterator = petRepository.findAllPets();
+        for(Pet pet : petIterator) {
+            pets.add(new Pet(pet.getId(),
+                    pet.getName(),
+                    pet.getAdoptionId(),
+                    pet.getType(),
+                    pet.getAge()));
+
+        }
+
+        return pets;
+    }
+    public List<Pet> findAllAdoptablePets() {
+        List<Pet> adoptablePets = new ArrayList<>();
+
+        Iterable<Pet> petIterator = petRepository.findAllPets();
+        for(Pet pet : petIterator) {
+            if (pet.isAdopted()) {
+                adoptablePets.add(pet);
+            }
+
+        }
+
+        return adoptablePets;
+    }
+
+    public Pet findPetById(String id) {
+        List<Pet> pets = petRepository.findAllPets();
+        for(Pet pet: pets) {
+            if (pet.getId() == id)
+                return pet;
+        }
+        return null;
+    }
+    public void deletePet(String id) {
+        Pet pet1 = petRepository.findPetById(id);
+        if (pet1.isAdopted()) {
+            //does adoptPet() add pet to Adopted Pet table?
+            petRepository.deleteById(id);
+        }
+    }
+    public void softDeletePet(String id) {
+        Pet pet = findPetById(id);
+        pet.setAdopted(true);
+    }
+
+
+
 }
 
 //    public String handleImageUpload(MultipartFile image) throws IOException {

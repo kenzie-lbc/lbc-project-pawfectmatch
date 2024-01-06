@@ -1,13 +1,10 @@
 package com.kenzie.appserver.controller;
 
-import com.kenzie.appserver.repositories.enums.PetType;
-import com.kenzie.appserver.repositories.model.Pet;
-
-import com.cloudinary.utils.ObjectUtils;
 import com.kenzie.appserver.controller.model.PetCreateRequest;
 import com.kenzie.appserver.controller.model.PetCreateResponse;
 import com.kenzie.appserver.repositories.model.Pet;
-
+import com.kenzie.appserver.repositories.enums.PetType;
+import com.kenzie.appserver.repositories.PetRepository;
 import com.kenzie.appserver.service.InvalidPetException;
 import com.kenzie.appserver.service.PetService;
 
@@ -22,13 +19,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+import java.util.Map;
+import java.io.IOException;
 
 import com.cloudinary.*;
 import com.cloudinary.utils.ObjectUtils;
 
-import java.io.IOException;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/Pet")
@@ -87,6 +83,14 @@ public class PetController {
     public ResponseEntity<List<Pet>> getPetsByType(@PathVariable PetType petType) {
         List<Pet> pets = petService.findByPetType(petType);
         return ResponseEntity.ok(pets);
+    }
+
+
+
+    @DeleteMapping("/{petId}")
+    public ResponseEntity deletePetById(@PathVariable("petId") String id) {
+        petService.deletePet(id);
+        return ResponseEntity.status(204).build();
     }
 
 }
