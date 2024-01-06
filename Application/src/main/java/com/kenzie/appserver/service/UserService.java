@@ -11,6 +11,7 @@ import java.util.List;
 
 @Service
 public class UserService {
+
     @Autowired
     private UserRepository userRepository;
 //    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -20,6 +21,7 @@ public class UserService {
 
     // Method to create a new user
     public User createUser(User user) {
+
 //        assignUniqueIdToUser(user);
 //        encodeUserPassword(user);
 

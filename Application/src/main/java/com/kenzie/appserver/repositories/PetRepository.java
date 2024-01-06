@@ -1,5 +1,8 @@
 package com.kenzie.appserver.repositories;
 
+
+import com.kenzie.appserver.service.PetService;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.kenzie.appserver.repositories.enums.PetType;
 import com.kenzie.appserver.repositories.model.Pet;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @EnableScan
+
 @Repository
 public interface PetRepository extends CrudRepository<Pet, String> {
 
@@ -25,6 +29,8 @@ public interface PetRepository extends CrudRepository<Pet, String> {
     // ... other methods
     List<Pet> findByName(String name);
     List<Pet> findByAge(int age);
+    List<Pet> findByBreed(String breed);
+
 //    List<Pet> findPetsByPetId(String petId);
 
 }

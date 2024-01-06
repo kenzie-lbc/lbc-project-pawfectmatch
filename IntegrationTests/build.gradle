@@ -25,6 +25,7 @@ dependencies {
     testImplementation("org.springframework:spring-tx:5.3.16")
 
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
 //    implementation 'org.springframework.boot:spring-boot-starter-security'
 
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.0'

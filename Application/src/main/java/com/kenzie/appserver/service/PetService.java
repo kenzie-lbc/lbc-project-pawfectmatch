@@ -1,5 +1,6 @@
 package com.kenzie.appserver.service;
 
+
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
@@ -21,6 +22,7 @@ import static com.kenzie.appserver.repositories.enums.PetType.CAT;
 import static com.kenzie.appserver.repositories.enums.PetType.DOG;
 
 @Service
+
 public class PetService {
     private final PetRepository petRepository;
     private final Cloudinary cloudinary;
@@ -83,6 +85,7 @@ public class PetService {
         return (List<Pet>) petRepository.findAll();
     }
 
+
     public Pet findByPetId(String petId) throws InvalidPetException {
         return petRepository.findById(petId)
                 .orElseThrow(() -> new InvalidPetException("Pet not found!"));
@@ -104,11 +107,42 @@ public class PetService {
 
     // Method to find dogs
     public List<Pet> findDogs() {
+
         return petRepository.findByPetType(DOG);
     }
 
     // Method to find cats
     public List<Pet> findCats() {
+        return petRepository.findByType(CAT);
+    }
+
+    //TODO - ADD NEW PET TO LIST
+    // -- is this redundant since we have create pet??
+    public Pet addNewPet(Pet pet) {
+        return pet;
+    }
+
+    @GetMapping("/")
+    public List<Pet> getAllPets() {
+        return findAllPets();
+    }
+
+    @GetMapping("/{petId")
+    public List<Pet> getPetById(@PathVariable String petId) {
+        return findByPetId(petId);
+    }
+
+    @GetMapping("/type/{petType}")
+    public List<Pet> getPetsByType(@PathVariable PetType petType) {
+        return findPetsByType(petType);
+    }
+
+    @GetMapping("/dogs")
+    public List<Pet> getDogs() {
+        return findDogs();
+    }
+}
+
         return petRepository.findByPetType(CAT);
     }
 

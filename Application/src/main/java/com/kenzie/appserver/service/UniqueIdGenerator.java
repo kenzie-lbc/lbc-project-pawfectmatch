@@ -9,6 +9,7 @@ import java.util.Set;
 public class UniqueIdGenerator {
 
     private static final String ALPHANUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
     // Temporary storage for existing IDs
     private static final Set<String> existingIds = new HashSet<>();
 
@@ -34,12 +35,14 @@ public class UniqueIdGenerator {
                     builder.append("F");
                     break;
                 default:
+
                     // Prefix for exotic or unspecified pets
                     builder.append("X");
                     break;
             }
             // Generate the random alphanumeric part
             for (int i = 0; i < 8; i++) {
+
                 int character = (int) (Math.random() * ALPHANUMERIC_STRING.length());
                 builder.append(ALPHANUMERIC_STRING.charAt(character));
             }
@@ -68,12 +71,14 @@ public class UniqueIdGenerator {
                     builder.append("G");
                     break;
                 default:
+
                     // For unspecified roles + future development + unexpected behavior
                     builder.append("U");
                     break;
             }
             // Generate the random alphanumeric part
             for (int i = 0; i < 8; i++) {
+
                 int character = (int) (Math.random() * ALPHANUMERIC_STRING.length());
                 builder.append(ALPHANUMERIC_STRING.charAt(character));
             }

@@ -1,5 +1,6 @@
 package com.kenzie.appserver.service;
 
+
 import com.cloudinary.Cloudinary;
 import com.kenzie.appserver.repositories.PetRepository;
 import com.kenzie.appserver.repositories.model.Pet;
@@ -15,12 +16,14 @@ import static org.mockito.Mockito.when;
 public class PetServiceTest {
     private PetRepository petRepository;
     private PetService petService;
+
     private Cloudinary cloudinary;
 
 
     @BeforeEach
     void setup() {
         petRepository = mock(PetRepository.class);
+
         petService = new PetService(petRepository, cloudinary);
     }
     /** ------------------------------------------------------------------------
@@ -28,6 +31,7 @@ public class PetServiceTest {
      *  ------------------------------------------------------------------------ **/
 
     @Test
+
     void findByPetId() {
         // GIVEN
 //        String id = randomUUID().toString();
@@ -48,6 +52,7 @@ public class PetServiceTest {
     }
 
     @Test
+
     void findByPetId_invalid() {
         // GIVEN
 //        String id = randomUUID().toString();
