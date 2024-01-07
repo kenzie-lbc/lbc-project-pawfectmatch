@@ -8,10 +8,12 @@ import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @DynamoDBTable(tableName = "Pet")
 public class Pet {
     @Id
+    @NotNull
     @DynamoDBHashKey(attributeName = "petId")
     private String petId;
 //    private String breed; //for queries?
@@ -19,16 +21,19 @@ public class Pet {
     private int age;
     @DynamoDBTypeConvertedEnum
     private PetType petType;
-    //stores uniqueId (shelter/foster)
-//    private String adoptionId;
+
     @DynamoDBAttribute(attributeName = "name")
     private String name;
     @DynamoDBAttribute(attributeName = "imageUrl")
     private String imageUrl = "";
 
-    public Pet() {
-    }
+    //stores userId (shelter/foster)
+//    private String adoptionId;
+    //    @DynamoDBAttribute(attributeName = "isAdopted")
+    public boolean isAdopted = Boolean.FALSE;
 
+public Pet() {
+}
     public Pet(String petId, String name, PetType petType, int age,
 //               String breed,
                String imageUrl) {
@@ -65,6 +70,7 @@ public class Pet {
         this.petType = petType;
     }
 
+    @DynamoDBAttribute(attributeName = "Age")
     public int getAge() {
         return age;
     }
@@ -73,22 +79,24 @@ public class Pet {
         this.age = age;
     }
 
-//    public String getAdoptionId() {
-//        return adoptionId;
-//    }
-//
-//    public void setAdoptionId(String adoptionId) {
-//        this.adoptionId = adoptionId;
-//    }
+//     @DynamoDBAttribute(attributeName = "AdoptionId")
+//     public String getAdoptionId() {
+//         return adoptionId;
+//     }
 
-//    public String getBreed() {
-//        return breed;
-//    }
-//
-//    public void setBreed(String breed) {
-//        this.breed = breed;
-//    }
-//
+//     public void setAdoptionId(String adoptionId) {
+//         this.adoptionId = adoptionId;
+//     }
+// >>>>>>> chelseasbranch
+
+//     @DynamoDBAttribute(attributeName = "isAdopted")
+//     public boolean isAdopted() {
+//         return isAdopted;
+//     }
+
+//     public void setAdopted(boolean isAdopted) {
+//         isAdopted = isAdopted;
+//     }
 
     @Override
     public boolean equals(Object o) {
@@ -120,4 +128,5 @@ public class Pet {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
 }

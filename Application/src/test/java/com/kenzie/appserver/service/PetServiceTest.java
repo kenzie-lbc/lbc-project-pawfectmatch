@@ -4,6 +4,7 @@ package com.kenzie.appserver.service;
 import com.cloudinary.Cloudinary;
 import com.kenzie.appserver.repositories.PetRepository;
 import com.kenzie.appserver.repositories.model.Pet;
+import com.kenzie.appserver.service.utils.UniqueIdGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +17,7 @@ import static org.mockito.Mockito.when;
 public class PetServiceTest {
     private PetRepository petRepository;
     private PetService petService;
+    private UniqueIdGenerator uniqueIdGenerator;
 
     private Cloudinary cloudinary;
 
@@ -24,7 +26,7 @@ public class PetServiceTest {
     void setup() {
         petRepository = mock(PetRepository.class);
 
-        petService = new PetService(petRepository, cloudinary);
+        petService = new PetService(petRepository, cloudinary, uniqueIdGenerator);
     }
     /** ------------------------------------------------------------------------
      *  exampleService.findById

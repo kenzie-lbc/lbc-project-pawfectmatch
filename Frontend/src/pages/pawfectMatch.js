@@ -1,6 +1,6 @@
 import BaseClass from "../util/baseClass";
 import DataStore from "../util/DataStore";
-import PetClient from "../api/petClient";
+import PetClient from "../api/PetClient";
 import axios from "axios";
 
 /**
