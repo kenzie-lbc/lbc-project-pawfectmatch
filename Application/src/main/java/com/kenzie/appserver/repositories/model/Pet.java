@@ -27,7 +27,7 @@ public class Pet {
     @DynamoDBAttribute(attributeName = "imageUrl")
     private String imageUrl = "";
 
-    //stores uniqueId (shelter/foster)
+    //stores userId (shelter/foster)
 //    private String adoptionId;
     //    @DynamoDBAttribute(attributeName = "isAdopted")
     public boolean isAdopted = Boolean.FALSE;

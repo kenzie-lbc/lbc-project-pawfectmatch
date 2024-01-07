@@ -12,15 +12,13 @@ import com.kenzie.appserver.repositories.enums.PetType;
 // import com.kenzie.appserver.repositories.model.AdoptedPet;
 import com.kenzie.appserver.repositories.model.Pet;
 
+import com.kenzie.appserver.service.utils.UniqueIdGenerator;
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,32 +30,36 @@ import static com.kenzie.appserver.repositories.enums.PetType.DOG;
 public class PetService {
     private final PetRepository petRepository;
     private final Cloudinary cloudinary;
+    private final UniqueIdGenerator uniqueIdGenerator;
 
 
     // Constructor
-    public PetService(PetRepository petRepository, Cloudinary cloudinary) {
+    public PetService(PetRepository petRepository, Cloudinary cloudinary, UniqueIdGenerator uniqueIdGenerator) {
         this.petRepository = petRepository;
         this.cloudinary = cloudinary;
+        this.uniqueIdGenerator = uniqueIdGenerator;
     }
 
     // Method to handle saving a new pet
 
     public Pet createPet(PetCreateRequest petCreateRequest) {
         Pet pet = new Pet();
-        pet.setPetType(petCreateRequest.getPetType());
+        PetType petType = petCreateRequest.getPetType();
+
+
+        pet.setPetId(uniqueIdGenerator.generatePetId(petType));
+
+        pet.setPetType(petType);
         pet.setName(petCreateRequest.getName());
         pet.setAge(petCreateRequest.getAge());
         pet.setImageUrl(petCreateRequest.getImageUrl());
 
         // Call UniqueIdGenerator to create petId, then 'set'
-        String petId = UniqueIdGenerator.generatePetId(pet.getPetType());
-        pet.setPetId(petId);
 
         // Save the pet object using your repository
-        Pet savedPet = petRepository.save(pet);
 
         // Convert to DTO if necessary and return
-        return savedPet;
+        return  petRepository.save(pet);
     }
 
 

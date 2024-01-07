@@ -42,10 +42,9 @@ public class PetCreateRequest {
         return petType;
     }
 
-    public void setPetType(PetType type) {
-        this.petType = petType;
+    public void setPetType(String petType) {
+        this.petType = PetType.valueOf(petType.toUpperCase());
     }
-
     public int getAge() {
         return age;
     }
