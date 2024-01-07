@@ -1,4 +1,4 @@
-package com.kenzie.appserver.service;
+package com.kenzie.appserver.service.exceptions;
 
 public class PetNotFoundException extends RuntimeException{
         public PetNotFoundException(String petId) {

@@ -12,6 +12,7 @@ import com.kenzie.appserver.repositories.enums.PetType;
 // import com.kenzie.appserver.repositories.model.AdoptedPet;
 import com.kenzie.appserver.repositories.model.Pet;
 
+import com.kenzie.appserver.service.exceptions.InvalidPetException;
 import com.kenzie.appserver.service.utils.UniqueIdGenerator;
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.stereotype.Service;

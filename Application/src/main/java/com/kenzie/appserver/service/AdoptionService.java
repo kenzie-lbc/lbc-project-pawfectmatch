@@ -1,18 +1,6 @@
 package com.kenzie.appserver.service;
 
 //import com.kenzie.appserver.repositories.AdoptionRepository;
-import com.kenzie.appserver.repositories.model.AdoptedPet;
-import com.kenzie.appserver.repositories.model.AdoptionRecord;
-import com.kenzie.appserver.repositories.model.Pet;
-import com.kenzie.appserver.repositories.model.User;
-import com.kenzie.appserver.service.PetNotFoundException;
-import com.kenzie.appserver.service.PetService;
-import com.kenzie.appserver.service.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AdoptionService {
     private AdoptionService adoptionService;
