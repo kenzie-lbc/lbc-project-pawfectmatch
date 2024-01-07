@@ -28,8 +28,8 @@ public AdoptionService(AdoptionService adoptionService, UserService userService,
 
 //    public AdoptedPet adoptPet(String petId, String username, String dateOfAdoption) {
 //        // Your code here
-//        //AdoptedPet pet = adoptionService.findPetById(id);
-//        Pet pet = petService.findByPetId(petId);
+//        //AdoptedPet pet = adoptionService.findPetByPetId(id);
+//        Pet pet = petService.findByPetPetId(petId);
 //
 //        if (pet == null) {
 //            throw new PetNotFoundException("Pet not found");
@@ -47,9 +47,9 @@ public AdoptionService(AdoptionService adoptionService, UserService userService,
 //
 //        Pet adoptedPet = new Pet(
 //                pet.getAdoptionId(),
-//                pet.getId(),
+//                pet.getPetId(),
 //                pet.getName(),
-//                pet.getType(),
+//                pet.getPetType(),
 //                pet.getAge()
 //
 //        );

@@ -14,7 +14,7 @@ public class UniqueIdGenerator {
     private static final Set<String> existingIds = new HashSet<>();
 
     public static String generatePetId(PetType petType) {
-        String id;
+        String id = "";
         do {
             StringBuilder builder = new StringBuilder();
             // Determine the prefix based on the type of pet

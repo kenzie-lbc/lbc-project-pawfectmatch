@@ -28,8 +28,6 @@ import static com.kenzie.appserver.repositories.enums.PetType.CAT;
 import static com.kenzie.appserver.repositories.enums.PetType.DOG;
 
 
-
-
 @Service
 public class PetService {
     private final PetRepository petRepository;
@@ -46,19 +44,20 @@ public class PetService {
 
     public Pet createPet(PetCreateRequest petCreateRequest) {
         Pet pet = new Pet();
+        pet.setPetType(petCreateRequest.getPetType());
         pet.setName(petCreateRequest.getName());
         pet.setAge(petCreateRequest.getAge());
         pet.setImageUrl(petCreateRequest.getImageUrl());
+
+        // Call UniqueIdGenerator to create petId, then 'set'
+        String petId = UniqueIdGenerator.generatePetId(pet.getPetType());
+        pet.setPetId(petId);
 
         // Save the pet object using your repository
         Pet savedPet = petRepository.save(pet);
 
         // Convert to DTO if necessary and return
         return savedPet;
-    }
-
-    public List<Pet> findAllPets() {
-        return (List<Pet>) petRepository.findAll();
     }
 
 
@@ -68,24 +67,6 @@ public class PetService {
     }
     // TODO - FIX THIS
     // Method to find pets by name
-
-    // Search for full pet profile
-//    public List<Pet> findAllByPetId(String petId) {
-//        return petRepository.findPetsByPetId(petId);
-//    }
-
-    public void updatePet(Pet pet) {
-
-//        if (petRepository.existsById(pet.getPetId())) {
-//            Pet pet1 = new Pet(
-////                    pet.getAdoptionId(),
-//                    pet.getPetId(),
-//                    pet.getName(),
-//                    pet.getPetType(),
-//                    pet.getAge()
-//            );
-//        }
-    }
 
     // Method to find pets by type
     //if statement for isDeleted?
@@ -97,29 +78,14 @@ public class PetService {
     // Other methods specific to certain pet types
 
     //TODO - ADD NEW PET TO LIST
-    // -- is this redundant since we have create pet??
+    // -- is this redundant since we have create pet?? negative
     // --> For favorites list - can remove if we decide to have favorites list as separate beast on its own
     public Pet addNewPet(Pet pet) {
         return pet;
     }
 
-    @GetMapping("/Pet")
-    public List<Pet> getAllPets() {
-        return findAllPets();
-    }
-
-    @GetMapping("/Pet/{petId")
-    public List<Pet> getPetById(@PathVariable String petId) {
-        return (List<Pet>) findByPetId(petId);
-    }
-
-    @GetMapping("/Pet/{petType}/")
-    public List<Pet> getPetsByType(@PathVariable PetType petType) {
-        return findByPetType(petType);
-    }
 
     // Method to find dogs
-    @GetMapping("/Pet/{petType}")
     public List<Pet> getDogs() {
         return petRepository.findByPetType(DOG);
     }
@@ -174,15 +140,6 @@ public class PetService {
 //
 //        return adoptablePets;
 //    }
-
-    public Pet findPetById(String petId) {
-        List<Pet> pets = petRepository.findAllPets();
-        for (Pet pet : pets) {
-            if (pet.getPetId() == petId)
-                return pet;
-        }
-        return null;
-    }
 
     public void deletePet(String petId) {
         Pet pet1 = petRepository.findByPetId(petId);

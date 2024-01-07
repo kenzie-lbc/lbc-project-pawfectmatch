@@ -33,10 +33,14 @@ public class PetController {
     private final PetService petService;
 
     @Autowired
+    private PetRepository petRepository;
+
+    @Autowired
     private Cloudinary cloudinary;
 
     public PetController(PetService petService) {
         this.petService = petService;
+
     }
 
     @PostMapping
@@ -49,24 +53,24 @@ public class PetController {
         }
 
         try {
-            // Create pet\
-            Pet pet = new Pet();
-            pet.setName(petCreateRequest.getName());
-            pet.setPetType(petCreateRequest.getPetType());
-            pet.setAge(petCreateRequest.getAge());
-            pet.setImageUrl(petCreateRequest.getImageUrl());
-
+            // Save and convert the pet object
+            Pet pet = petService.createPet(petCreateRequest);
             PetCreateResponse petResponse = petService.convertToPetCreateResponse(pet);
-
             return new ResponseEntity<>(petResponse, HttpStatus.CREATED);
         } catch (InvalidPetException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/Pet")
+    public ResponseEntity<List<Pet>> getAllPets() {
+        // Cast to List as findAll returns Iterable
+        List<Pet> pets = petRepository.findAll();
+        return new ResponseEntity<>(pets, HttpStatus.OK);
+    }
 
     // Get a Pet by ID
-    @GetMapping("/{petId}")
-    public ResponseEntity<Pet> getPetById(@PathVariable String petId) {
+    @GetMapping("/petId/{petId}")
+    public ResponseEntity<Pet> getByPetId(@PathVariable String petId) {
         try {
             Pet pet = petService.findByPetId(petId);
             if (pet != null) {
@@ -79,17 +83,16 @@ public class PetController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/{petType}")
-    public ResponseEntity<List<Pet>> getPetsByType(@PathVariable PetType petType) {
+    @GetMapping("/petType/{petType}")
+    public ResponseEntity<List<Pet>> getByPetType(@PathVariable PetType petType) {
         List<Pet> pets = petService.findByPetType(petType);
         return ResponseEntity.ok(pets);
     }
 
 
-
-    @DeleteMapping("/{petId}")
-    public ResponseEntity deletePetById(@PathVariable("petId") String id) {
-        petService.deletePet(id);
+    @DeleteMapping("/petId/{petId}")
+    public ResponseEntity<Void> deletePet(@PathVariable("petId") String petId) {
+        petService.deletePet(petId);
         return ResponseEntity.status(204).build();
     }
 

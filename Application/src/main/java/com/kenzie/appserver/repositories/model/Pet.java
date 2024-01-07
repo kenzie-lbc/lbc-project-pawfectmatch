@@ -8,10 +8,12 @@ import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @DynamoDBTable(tableName = "Pet")
 public class Pet {
     @Id
+    @NotNull
     @DynamoDBHashKey(attributeName = "petId")
     private String petId;
 //    private String breed; //for queries?
@@ -19,13 +21,15 @@ public class Pet {
     private int age;
     @DynamoDBTypeConvertedEnum
     private PetType petType;
-    //stores uniqueId (shelter/foster)
-//    private String adoptionId;
+
     @DynamoDBAttribute(attributeName = "name")
     private String name;
     @DynamoDBAttribute(attributeName = "imageUrl")
     private String imageUrl = "";
 
+    //stores uniqueId (shelter/foster)
+//    private String adoptionId;
+    //    @DynamoDBAttribute(attributeName = "isAdopted")
     public boolean isAdopted = Boolean.FALSE;
 
 public Pet() {
