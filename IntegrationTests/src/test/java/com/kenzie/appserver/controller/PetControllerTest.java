@@ -22,6 +22,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
+import static org.apache.commons.lang3.ArrayUtils.newInstance;
 import static org.hamcrest.Matchers.is;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -227,8 +228,8 @@ class PetControllerTest {
 
     }
 
-@Test
-    public void testUpdatePetProfile_Success() throws Exception{
+    @Test
+    public void testUpdatePetProfile_Success() throws Exception {
 //// GIVEN
 //    String petId = UUID.randomUUID().toString();
 //    String name = "Fluffy";
@@ -247,7 +248,7 @@ class PetControllerTest {
 //    petCreateRequest.setName(newName);
 //    petCreateRequest.setImageUrl(imageUrl);
 
-    //UpdatePetRequest???
+        //UpdatePetRequest???
 
 //    MultipartFile file = mock(MultipartFile.class);
 //    Pet updatedPet = new Pet(petId, newName, type, age, imageUrl))
@@ -275,40 +276,61 @@ class PetControllerTest {
 //            .andExpect(jsonPath("imageUrl")
 //                    .value(is(imageUrl)))
 //            .andExpect(status().isOk());
-}
+    }
 
-@Test
-    public void testFilterPetsByBreed_SpecificBreed() throws Exception {
-    PetCreateRequest petCreateRequest1 = new PetCreateRequest();
-    petCreateRequest1.setPetId(UUID.randomUUID().toString());
-    petCreateRequest1.setName("Binx");
-    petCreateRequest1.setPetType(PetType.CAT.toString());
-    petCreateRequest1.setImageUrl(UUID.randomUUID().toString());
-    petCreateRequest1.setAge(3);
+    @Test
+    public void testFilterPetsByBreed_SpecificBreed_Sucessful() throws Exception {
+        PetCreateRequest petCreateRequest1 = new PetCreateRequest();
+        petCreateRequest1.setPetId(UUID.randomUUID().toString());
+        petCreateRequest1.setName("Binx");
+        petCreateRequest1.setPetType(PetType.CAT.toString());
+        petCreateRequest1.setImageUrl(UUID.randomUUID().toString());
+        petCreateRequest1.setAge(3);
 
-    Pet persistedPet1 = petService.createPet(petCreateRequest1);
+        Pet persistedPet1 = petService.createPet(petCreateRequest1);
 
-    PetCreateRequest petCreateRequest2 = new PetCreateRequest();
-    petCreateRequest2.setPetId(UUID.randomUUID().toString());
-    petCreateRequest2.setPetType(PetType.CAT.toString());
-    petCreateRequest2.setName("Louie");
-    petCreateRequest2.setImageUrl(UUID.randomUUID().toString());
-    petCreateRequest2.setAge(5);
+        PetCreateRequest petCreateRequest2 = new PetCreateRequest();
+        petCreateRequest2.setPetId(UUID.randomUUID().toString());
+        petCreateRequest2.setPetType(PetType.CAT.toString());
+        petCreateRequest2.setName("Louie");
+        petCreateRequest2.setImageUrl(UUID.randomUUID().toString());
+        petCreateRequest2.setAge(5);
 
-    Pet persistedPet2 = petService.createPet(petCreateRequest2);
+        Pet persistedPet2 = petService.createPet(petCreateRequest2);
 
-    // WHEN
-    ResultActions actions = mvc.perform(get("/petType/{petType}", PetType.CAT)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
+        // WHEN
+        ResultActions actions = mvc.perform(get("/petType/{petType}", PetType.CAT)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
-    // THEN
-    String responseBody = actions.andReturn().getResponse().getContentAsString();
-    List<PetCreateResponse> listPetTypeCat = mapper.readValue(responseBody, new TypeReference<List<PetCreateResponse>>(){});
-    assertThat(listPetTypeCat.size()).isEqualTo(2);
+        // THEN
+        String responseBody = actions.andReturn().getResponse().getContentAsString();
+        List<PetCreateResponse> listPetTypeCat = mapper.readValue(responseBody, new TypeReference<List<PetCreateResponse>>() {
+        });
+        assertThat(listPetTypeCat.size()).isEqualTo(2);
 
 
-}
+    }
+
+    @Test
+    public void testFilterPetsByBreed_SpecificBreed_DoesNotExist() throws Exception {
+//        PetType type = PetType.valueOf(Null);
+//
+//        PetCreateRequest petCreateRequest = new PetCreateRequest();
+//        petCreateRequest.setPetType(type);
+//
+//
+//        mapper.registerModule(new JavaTimeModule());
+//
+//        // WHEN
+//        mvc.perform(post("/reservedtickets")
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(mapper.writeValueAsString(petCreateRequest)))
+//                // THEN
+//                .andExpect(status().isBadRequest());
+    }
+
 }
 
