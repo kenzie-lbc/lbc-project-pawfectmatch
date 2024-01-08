@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 
 import com.kenzie.appserver.controller.model.PetCreateRequest;
+import com.kenzie.appserver.repositories.enums.PetType;
 import com.kenzie.appserver.repositories.model.Pet;
 import com.kenzie.appserver.service.PetService;
 
@@ -28,6 +29,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.springframework.test.web.servlet.MockMvc;
 
 //@IntegrationTest
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.kenzie.appserver.repositories.model.Pet;
+import com.kenzie.appserver.service.PetService;
+import net.andreinc.mockneat.MockNeat;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.time.LocalDate;
+import java.util.UUID;
+
+import static org.apache.commons.lang3.ArrayUtils.get;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+
 class PetControllerTest {
     private static final MediaType JSON = MediaType.APPLICATION_JSON;
 
@@ -79,4 +106,93 @@ class PetControllerTest {
 //                        .value(is(petCreateRequest.getName())))
 //                .andExpect(status().isCreated());
     }
-}
+
+
+   @Test
+    public void testDeletePetById_Success() throws Exception {
+       // GIVEN
+//       String id = UUID.randomUUID().toString();
+//       String adoptionId = UUID.randomUUID().toString();
+//       String name = mockNeat.strings().valStr();
+//       int age = 1;
+//       PetType type = PetType.DOG;
+//
+//       Pet pet = new Pet(id, adoptionId, type, age, name);
+//
+//       // WHEN
+//       mvc.perform(delete("/petId/{petId}", pet.getPetId())
+//                       .accept(MediaType.APPLICATION_JSON))
+//               // THEN
+//               .andExpect(status().isNoContent());
+//       assertThat(petService.findByPetId(id)).isNull();
+   }
+   @Test
+    public void testDeletePetByID_NonexistentPet() throws Exception {
+       // GIVEN
+//       String id = UUID.randomUUID().toString();
+//
+//       PetCreateRequest petCreateRequest = new PetCreateRequest();
+//       petCreateRequest.setPetId(id);
+//
+//       mapper.registerModule(new JavaTimeModule());
+//
+//       // WHEN
+//       mvc.perform(delete("/petId/{petId}")
+//                       .accept(MediaType.APPLICATION_JSON)
+//                       .contentType(MediaType.APPLICATION_JSON)
+//                      .content(mapper.writeValueAsString(petCreateRequest)))
+//               // THEN
+//               .andExpect(status().isBadRequest());
+
+   }
+
+   @Test
+    public void testGetPetDetailsById_Success() throws Exception {
+//       String id = UUID.randomUUID().toString();
+//       String name = "Fido";
+//       int age = 1;
+//       String imageUrl = UUID.randomUUID().toString();
+//       PetType type = PetType.DOG;
+//
+//       Pet pet = new Pet(id, name, type, age, imageUrl);
+//       Pet persistedPet = petService.findByPetId(id);
+//
+//
+//       assertEquals(persistedPet.getName(), name);
+//       assertEquals(persistedPet.getAge(), age);
+//       assertEquals(persistedPet.getPetType(), type);
+
+//       mvc.perform(
+//                       get("/Pet/{id}", id)
+//                               .accept(MediaType.APPLICATION_JSON))
+//               .andExpect(status().isOk())
+//               .andExpect(jsonPath("adoptionId").value(is(adoptionId)))
+//               .andExpect(jsonPath("name").value(is(name)))
+//               .andExpect(jsonPath("age").value(is(age)))
+//               .andExpect(jsonPath("type").value(is(type)));
+//
+
+
+   }
+   @Test
+    public void testGetPetDetailsById_NonexistentPet() throws Exception {
+       // GIVEN
+//       String invalidId = UUID.randomUUID().toString();
+//
+//       //petService.deletePet(invalidId);
+//
+//       mapper.registerModule(new JavaTimeModule());
+
+       // WHEN
+//       mvc.perform(get("/Pet/{petId}")
+//                       .accept(MediaType.APPLICATION_JSON)
+//                       .contentType(MediaType.APPLICATION_JSON)
+//                      .content(mapper.writeValueAsString(?CreateRequest)))
+//               // THEN
+//               .andExpect(status().isBadRequest());
+
+   }
+
+
+   }
+
