@@ -12,7 +12,7 @@ import java.util.Objects;
 @DynamoDBTable(tableName = "User")
 public class User {
 
-    private String uniqueId;
+    private String userId;
     private String username;
     private Role role;
     private String password;
@@ -23,8 +23,8 @@ public class User {
 
 
     @DynamoDBHashKey(attributeName = "Id")
-    public String getId() {
-        return uniqueId;
+    public String getUserId() {
+        return userId;
     }
 
     public Role getRole() {
@@ -36,8 +36,8 @@ public class User {
         return username;
     }
 
-    public void setId(String uniqueId) {
-        this.uniqueId = uniqueId;
+    public void setId(String userId) {
+        this.userId = userId;
     }
 
     public void setName(String name) {
@@ -57,20 +57,16 @@ public class User {
             return false;
         }
         User exampleRecord = (User) o;
-        return Objects.equals(uniqueId, exampleRecord.uniqueId);
+        return Objects.equals(userId, exampleRecord.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uniqueId);
+        return Objects.hash(userId);
     }
 
-    public String getUniqueId() {
-        return uniqueId;
-    }
-
-    public void setUniqueId(String uniqueId) {
-        this.uniqueId = uniqueId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {

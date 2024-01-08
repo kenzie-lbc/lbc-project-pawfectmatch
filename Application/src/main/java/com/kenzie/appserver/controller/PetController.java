@@ -1,35 +1,23 @@
 package com.kenzie.appserver.controller;
 
-import com.kenzie.appserver.repositories.enums.PetType;
-import com.kenzie.appserver.repositories.model.Pet;
-
-import com.cloudinary.utils.ObjectUtils;
 import com.kenzie.appserver.controller.model.PetCreateRequest;
 import com.kenzie.appserver.controller.model.PetCreateResponse;
 import com.kenzie.appserver.repositories.model.Pet;
-
-import com.kenzie.appserver.service.InvalidPetException;
+import com.kenzie.appserver.repositories.enums.PetType;
+import com.kenzie.appserver.repositories.PetRepository;
+import com.kenzie.appserver.service.exceptions.InvalidPetException;
 import com.kenzie.appserver.service.PetService;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-
 import com.cloudinary.*;
-import com.cloudinary.utils.ObjectUtils;
 
-import java.io.IOException;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/Pet")
@@ -37,33 +25,18 @@ public class PetController {
 
     private final PetService petService;
 
+    @Autowired
+    private PetRepository petRepository;
 
     @Autowired
     private Cloudinary cloudinary;
 
-
-    PetController(PetService petService) {
+    public PetController(PetService petService) {
         this.petService = petService;
+
     }
 
     @PostMapping
-    public ResponseEntity<Pet> createPet(@RequestParam("image") MultipartFile image, @RequestBody Pet pet) throws InvalidPetException {
-        // Save image to S3 or file storage and get URL
-//        String imageUrl = s3Service.uploadFile(image);
-
-        // Set image URL on pet
-//        pet.setImageUrl(imageUrl);
-
-        Pet createdPet = petService.createPet(pet);
-        return ResponseEntity.ok(createdPet);
-    }
-
-
-    @GetMapping("/{type}")
-    public ResponseEntity<List<Pet>> getPetsByType(@PathVariable PetType petType) {
-        List<Pet> pets = petService.findPetsByType(petType);
-        return ResponseEntity.ok(pets);
-    }
     public ResponseEntity<PetCreateResponse> createPet(@RequestBody PetCreateRequest petCreateRequest) {
         if (StringUtils.isEmpty(petCreateRequest.getName())) {
             throw new InvalidPetException("Pet name is required");
@@ -73,24 +46,24 @@ public class PetController {
         }
 
         try {
-            // Create pet\
-            Pet pet = new Pet();
-            pet.setName(petCreateRequest.getName());
-            pet.setPetType(petCreateRequest.getPetType());
-            pet.setAge(petCreateRequest.getAge());
-            pet.setImageUrl(petCreateRequest.getImageUrl());
-
+            // Save and convert the pet object
+            Pet pet = petService.createPet(petCreateRequest);
             PetCreateResponse petResponse = petService.convertToPetCreateResponse(pet);
-
             return new ResponseEntity<>(petResponse, HttpStatus.CREATED);
         } catch (InvalidPetException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/Pet")
+    public ResponseEntity<List<Pet>> getAllPets() {
+        // Cast to List as findAll returns Iterable
+        List<Pet> pets = petRepository.findAll();
+        return new ResponseEntity<>(pets, HttpStatus.OK);
+    }
 
     // Get a Pet by ID
-    @GetMapping("/{petId}")
-    public ResponseEntity<Pet> getPetById(@PathVariable String petId) {
+    @GetMapping("/petId/{petId}")
+    public ResponseEntity<Pet> getByPetId(@PathVariable String petId) {
         try {
             Pet pet = petService.findByPetId(petId);
             if (pet != null) {
@@ -103,24 +76,17 @@ public class PetController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-    @GetMapping("/")
-    public List<Pet> getAllPets() {
-        return findAllPets();
-    }
-
-    @GetMapping("/dogs")
-    public List<Pet> getDogs() {
-        return findDogs();
+    @GetMapping("/petType/{petType}")
+    public ResponseEntity<List<Pet>> getByPetType(@PathVariable PetType petType) {
+        List<Pet> pets = petService.findByPetType(petType);
+        return ResponseEntity.ok(pets);
     }
 
 
-
-//    @GetMapping("/{type}")
-//    public ResponseEntity<List<Pet>> getPetsByType(@PathVariable PetType petType) {
-//        List<Pet> pets = petService.findPetsByType(petType);
-//        return ResponseEntity.ok(pets);
-//    }
+    @DeleteMapping("/petId/{petId}")
+    public ResponseEntity<Void> deletePet(@PathVariable("petId") String petId) {
+        petService.deletePet(petId);
+        return ResponseEntity.status(204).build();
+    }
 
 }

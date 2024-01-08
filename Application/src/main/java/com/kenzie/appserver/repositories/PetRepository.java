@@ -17,7 +17,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @EnableScan
-
 @Repository
 public interface PetRepository extends CrudRepository<Pet, String> {
 
@@ -25,13 +24,12 @@ public interface PetRepository extends CrudRepository<Pet, String> {
     Pet findByPetId(String petId);
 
     List<Pet> findByPetType(PetType petType);
-
+    Pet save(Pet pet);
+    List<Pet> findAll();
     // ... other methods
     List<Pet> findByName(String name);
     List<Pet> findByAge(int age);
-    List<Pet> findByBreed(String breed);
-
-    List<Pet> findByType(PetType petType);
+//    List<Pet> findByBreed(String breed);
 
 //    List<Pet> findPetsByPetId(String petId);
 

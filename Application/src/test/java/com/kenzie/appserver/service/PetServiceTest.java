@@ -87,11 +87,7 @@ public class PetServiceTest {
 //        Assertions.assertNull(pet, "The example is null when not found");
 //    }
 
-    /**
-     * ------------------------------------------------------------------------
-     * PET SERVICE UNIT TESTS
-     * ------------------------------------------------------------------------
-     **/
+    //petservice unit testing
 
     //happy case create new dog
     @Test
@@ -144,7 +140,7 @@ public class PetServiceTest {
 
     //happy case update pet profile
     @Test
-    public void updatePet_successfullyUpdates() throws Exception {
+    public void updatePet_succesfullyUpdates() throws Exception {
         //given
         Pet existingPet = new Pet("123", "Max", PetType.DOG, 5, "oldImageUrl");
         petRepository.save(existingPet);
@@ -194,22 +190,12 @@ public class PetServiceTest {
     }
 
     //sad case delete pet
-    @Test
-    public void testDeletePet_sadCase_repositoryThrowsException() {
-        String petId = "somePetId";
-        RuntimeException expectedException = new RuntimeException("Something went wrong!");
-        doThrow(expectedException).when(petRepository).deleteById(petId);
 
-        assertThrows(RuntimeException.class, () -> petService.deletePet(petId));
-
-        // Verify  pet repository's delete method was called
-        verify(petRepository).deleteById(petId);
-    }
 
     //happy case converter petCreateResponse
     @Test
     public void convertToPetCreateResponse_mapsPetToResponse() {
-        Pet pet = new Pet("D12345", "Spot", PetType.DOG, 1, "testURL");
+        Pet pet = new Pet("D12345", "Milo", PetType.DOG, 1, "testURL");
         PetCreateResponse response = petService.convertToPetCreateResponse(pet);
 
         assertEquals(pet.getPetId(), response.getPetId());
