@@ -114,7 +114,6 @@ public class PetService {
     }
 
     // Method to update a pet
-
     public Pet updatePet(Pet updatedPet) {
         // Ensure that the updated pet has a valid ID
         if (updatedPet.getPetId() == null || updatedPet.getPetId().isEmpty()) {
@@ -146,7 +145,8 @@ public class PetService {
         }
     }
 
-//    public String handleImageUpload(MultipartFile image) throws IOException {
+
+    //    public String handleImageUpload(MultipartFile image) throws IOException {
 //        // Image uploading
 //            Map uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
 //            String imageUrl = (String) uploadResult.get("url");

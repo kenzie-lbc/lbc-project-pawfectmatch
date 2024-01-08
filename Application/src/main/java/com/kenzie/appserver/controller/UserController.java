@@ -35,9 +35,9 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Pet> updatePet(@PathVariable String id, @RequestBody Pet updatedPet) {
-        // Set the ID in the Pet object before updating
         updatedPet.setPetId(id);
 
+        updatedPet.setPetId(id);
         Pet updatedPetResult = petService.updatePet(updatedPet);
         return ResponseEntity.ok(updatedPetResult);
     }
