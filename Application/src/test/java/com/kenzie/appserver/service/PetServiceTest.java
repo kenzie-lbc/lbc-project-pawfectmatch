@@ -190,7 +190,17 @@ public class PetServiceTest {
     }
 
     //sad case delete pet
+    @Test
+    public void testDeletePet_sadCase_repositoryThrowsException() {
+        String petId = "somePetId";
+        RuntimeException expectedException = new RuntimeException("Something went wrong!");
+        doThrow(expectedException).when(petRepository).deleteById(petId);
 
+        assertThrows(RuntimeException.class, () -> petService.deletePet(petId));
+
+        // Verify  pet repository's delete method was called
+        verify(petRepository).deleteById(petId);
+    }
 
     //happy case converter petCreateResponse
     @Test
