@@ -15,6 +15,7 @@ public AdoptionService(AdoptionService adoptionService, UserService userService,
 }
 
 
+
 //    public AdoptedPet adoptPet(String petId, String username, String dateOfAdoption) {
 //        // Your code here
 //        //AdoptedPet pet = adoptionService.findPetByPetId(id);
@@ -70,6 +71,7 @@ public AdoptionService(AdoptionService adoptionService, UserService userService,
 //        return adoptablePets;
 //    }
 
+
     /*public AdoptedPet adoptPet(String id, String username, String dateOfAdoption) {
         // Your code here
         //AdoptedPet pet = adoptionService.findPetById(id);
@@ -124,5 +126,6 @@ public AdoptionService(AdoptionService adoptionService, UserService userService,
 
         return adoptablePets;
     }*/
+
 
 }

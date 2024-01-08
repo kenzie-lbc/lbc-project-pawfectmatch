@@ -21,6 +21,7 @@ import org.springframework.http.MediaType;
 
 import static org.hamcrest.Matchers.is;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -29,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.springframework.test.web.servlet.MockMvc;
 
 //@IntegrationTest
+
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -40,6 +42,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -47,7 +50,6 @@ import java.util.UUID;
 import static org.apache.commons.lang3.ArrayUtils.get;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -108,9 +110,9 @@ class PetControllerTest {
     }
 
 
-   @Test
+    @Test
     public void testDeletePetById_Success() throws Exception {
-       // GIVEN
+        // GIVEN
 //       String id = UUID.randomUUID().toString();
 //       String adoptionId = UUID.randomUUID().toString();
 //       String name = mockNeat.strings().valStr();
@@ -125,10 +127,13 @@ class PetControllerTest {
 //               // THEN
 //               .andExpect(status().isNoContent());
 //       assertThat(petService.findByPetId(id)).isNull();
-   }
-   @Test
+
+    }
+
+    @Test
     public void testDeletePetByID_NonexistentPet() throws Exception {
-       // GIVEN
+        // GIVEN
+
 //       String id = UUID.randomUUID().toString();
 //
 //       PetCreateRequest petCreateRequest = new PetCreateRequest();
@@ -144,10 +149,12 @@ class PetControllerTest {
 //               // THEN
 //               .andExpect(status().isBadRequest());
 
-   }
 
-   @Test
+    }
+
+    @Test
     public void testGetPetDetailsById_Success() throws Exception {
+
 //       String id = UUID.randomUUID().toString();
 //       String name = "Fido";
 //       int age = 1;
@@ -162,6 +169,7 @@ class PetControllerTest {
 //       assertEquals(persistedPet.getAge(), age);
 //       assertEquals(persistedPet.getPetType(), type);
 
+
 //       mvc.perform(
 //                       get("/Pet/{id}", id)
 //                               .accept(MediaType.APPLICATION_JSON))
@@ -173,26 +181,44 @@ class PetControllerTest {
 //
 
 
-   }
-   @Test
-    public void testGetPetDetailsById_NonexistentPet() throws Exception {
-       // GIVEN
+    }
+
+    @Test
+    public void testSearchPetsById_InvalidId() throws Exception {
+        // GIVEN
 //       String invalidId = UUID.randomUUID().toString();
-//
-//       //petService.deletePet(invalidId);
 //
 //       mapper.registerModule(new JavaTimeModule());
 
-       // WHEN
+        // WHEN
 //       mvc.perform(get("/Pet/{petId}")
 //                       .accept(MediaType.APPLICATION_JSON)
 //                       .contentType(MediaType.APPLICATION_JSON)
 //                      .content(mapper.writeValueAsString(?CreateRequest)))
 //               // THEN
 //               .andExpect(status().isBadRequest());
+    }
 
-   }
+    @Test
+    public void testGetPetDetailsById_NonexistentPet() throws Exception {
+//        // GIVEN
+//        String id = UUID.randomUUID().toString();
+//
+//        Pet persistedPet = petService.findByPetId(id);
+//
+//        ResultActions actions = mvc.perform(get("/petId/{petId}", persistedPet.getPetId())
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                // THEN
+//                .andExpect(status().isNoContent());
+//
+//        assertNull(persistedPet.getPetId());
+//        assertNull(persistedPet.getPetType());
+//        //assertNull(persistedPet.getAge());
+//        assertNull(persistedPet.getName());
+//        assertNull(persistedPet.getImageUrl());
 
 
-   }
+    }
+}
 
