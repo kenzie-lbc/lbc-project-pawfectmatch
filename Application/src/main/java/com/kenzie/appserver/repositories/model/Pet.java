@@ -1,55 +1,73 @@
 package com.kenzie.appserver.repositories.model;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.kenzie.appserver.repositories.enums.PetType;
+
+import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @DynamoDBTable(tableName = "Pet")
 public class Pet {
-
-    private String id;
-    private String adoptionId;
-    private String name;
-    private String type;
+    @Id
+    @NotNull
+    @DynamoDBHashKey(attributeName = "petId")
+    private String petId;
+//    private String breed; //for queries?
+    @DynamoDBAttribute(attributeName = "age")
     private int age;
+    @DynamoDBTypeConvertedEnum
+    private PetType petType;
 
-    private boolean isAdopted = Boolean.FALSE;
+    @DynamoDBAttribute(attributeName = "name")
+    private String name;
+    @DynamoDBAttribute(attributeName = "imageUrl")
+    private String imageUrl = "";
 
-    public Pet(String id, String adoptionId, String name, String type, int age) {
-        this.id = id;
-        this.adoptionId = adoptionId;
+    //stores userId (shelter/foster)
+//    private String adoptionId;
+    //    @DynamoDBAttribute(attributeName = "isAdopted")
+    public boolean isAdopted = Boolean.FALSE;
+
+public Pet() {
+}
+    public Pet(String petId, String name, PetType petType, int age,
+//               String breed,
+               String imageUrl) {
+        this.petId = petId;
         this.name = name;
+        this.petType = petType;
         this.age = age;
-        this.type = type;
+//        this.breed = breed;
+        this.imageUrl = imageUrl;
+    }
+
+    public String getPetId() {
+        return petId;
+    }
+
+    public PetType getPetType() {
+        return petType;
     }
 
 
-    @DynamoDBHashKey(attributeName = "Id")
-    public String getId() {
-        return id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    @DynamoDBAttribute(attributeName = "Name")
     public String getName() {
         return name;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPetId(String petId) {
+        this.petId = petId;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setPetType(PetType petType) {
+        this.petType = petType;
     }
 
     @DynamoDBAttribute(attributeName = "Age")
@@ -61,23 +79,24 @@ public class Pet {
         this.age = age;
     }
 
-    @DynamoDBAttribute(attributeName = "AdoptionId")
-    public String getAdoptionId() {
-        return adoptionId;
-    }
+//     @DynamoDBAttribute(attributeName = "AdoptionId")
+//     public String getAdoptionId() {
+//         return adoptionId;
+//     }
 
-    public void setAdoptionId(String adoptionId) {
-        this.adoptionId = adoptionId;
-    }
+//     public void setAdoptionId(String adoptionId) {
+//         this.adoptionId = adoptionId;
+//     }
+// >>>>>>> chelseasbranch
 
-    @DynamoDBAttribute(attributeName = "isAdopted")
-    public boolean isAdopted() {
-        return isAdopted;
-    }
+//     @DynamoDBAttribute(attributeName = "isAdopted")
+//     public boolean isAdopted() {
+//         return isAdopted;
+//     }
 
-    public void setAdopted(boolean isAdopted) {
-        isAdopted = isAdopted;
-    }
+//     public void setAdopted(boolean isAdopted) {
+//         isAdopted = isAdopted;
+//     }
 
     @Override
     public boolean equals(Object o) {
@@ -87,14 +106,27 @@ public class Pet {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Pet exampleRecord = (Pet) o;
-        return Objects.equals(id, exampleRecord.id);
+
+        Pet pet = (Pet) o;
+        return Objects.equals(getPetId(), pet.getPetId())
+                && Objects.equals(getName(), pet.getName())
+                // ensure that the values compared can't be null or handle null values
+                && getPetType() == pet.getPetType();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+
+        return Objects.hash(getPetId(), getName(), getPetType());
     }
 
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
 }

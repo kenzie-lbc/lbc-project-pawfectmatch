@@ -24,11 +24,20 @@ dependencies {
     implementation 'com.google.guava:guava:31.1-jre'
     implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '2.9.3'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-cache', version: '2.6.3'
-    
+
+
+    // Spring Security Core (includes BCrypt)
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    //cloudinary
+    implementation 'com.cloudinary:cloudinary-http44:1.34.0'
 
     implementation group: 'io.micrometer', name: 'micrometer-core', version: '1.8.3'
     implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.8.3'
     implementation group: 'io.micrometer', name: 'micrometer-registry-cloudwatch2', version: '1.8.3'
+
+    implementation 'software.amazon.awssdk:s3:2.17.56'
+    implementation 'com.amazonaws:aws-java-sdk-dynamodb'
 
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-aws-actuator', version: '2.2.6.RELEASE'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'

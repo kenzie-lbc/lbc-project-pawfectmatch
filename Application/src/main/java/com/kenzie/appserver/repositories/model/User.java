@@ -1,5 +1,8 @@
 package com.kenzie.appserver.repositories.model;
 
+
+import com.kenzie.appserver.repositories.enums.Role;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
@@ -9,9 +12,9 @@ import java.util.Objects;
 @DynamoDBTable(tableName = "User")
 public class User {
 
-    private String uniqueId;
+    private String userId;
     private String username;
-    private String role;
+    private Role role;
     private String password;
     private Boolean adopted;
 
@@ -20,11 +23,11 @@ public class User {
 
 
     @DynamoDBHashKey(attributeName = "Id")
-    public String getId() {
-        return uniqueId;
+    public String getUserId() {
+        return userId;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
@@ -33,15 +36,15 @@ public class User {
         return username;
     }
 
-    public void setId(String uniqueId) {
-        this.uniqueId = uniqueId;
+    public void setId(String userId) {
+        this.userId = userId;
     }
 
     public void setName(String name) {
         this.username = name;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -54,20 +57,16 @@ public class User {
             return false;
         }
         User exampleRecord = (User) o;
-        return Objects.equals(uniqueId, exampleRecord.uniqueId);
+        return Objects.equals(userId, exampleRecord.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uniqueId);
+        return Objects.hash(userId);
     }
 
-    public String getUniqueId() {
-        return uniqueId;
-    }
-
-    public void setUniqueId(String uniqueId) {
-        this.uniqueId = uniqueId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
