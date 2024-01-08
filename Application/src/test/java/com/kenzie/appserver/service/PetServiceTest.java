@@ -9,6 +9,7 @@ import com.kenzie.appserver.repositories.PetRepository;
 import com.kenzie.appserver.repositories.UserRepository;
 import com.kenzie.appserver.repositories.enums.PetType;
 import com.kenzie.appserver.repositories.model.Pet;
+
 import com.kenzie.appserver.service.exceptions.InvalidPetException;
 import com.kenzie.appserver.service.utils.UniqueIdGenerator;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,6 +33,7 @@ public class PetServiceTest {
     private PetRepository petRepository;
     @InjectMocks
     private PetService petService;
+
     @Mock
     private UniqueIdGenerator uniqueIdGenerator;
 
