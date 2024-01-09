@@ -44,32 +44,32 @@ public class PetService {
     // Method to handle saving a new pet
 
     public Pet createPet(PetCreateRequest petCreateRequest) {
-        Pet pet = new Pet();
+        if (petCreateRequest == null) {
+            throw new InvalidPetException("Pet request cannot be null!");
+        }
+
         PetType petType = petCreateRequest.getPetType();
+        if (petType == null) {
+            throw new InvalidPetException("Pet type cannot be null!");
+        }
+        // Call UniqueIdGenerator to create petId, then 'set'
+        String petId = uniqueIdGenerator.generatePetId(petType);
 
-
-        pet.setPetId(uniqueIdGenerator.generatePetId(petType));
-
+        Pet pet = new Pet();
+        pet.setPetId(petId);
         pet.setPetType(petType);
         pet.setName(petCreateRequest.getName());
         pet.setAge(petCreateRequest.getAge());
         pet.setImageUrl(petCreateRequest.getImageUrl());
 
-        // Call UniqueIdGenerator to create petId, then 'set'
-
         // Save the pet object using your repository
-
-        // Convert to DTO if necessary and return
         return  petRepository.save(pet);
     }
-
 
     public Pet findByPetId(String petId) throws InvalidPetException {
         return petRepository.findById(petId)
                 .orElseThrow(() -> new InvalidPetException("Pet not found!"));
     }
-    // TODO - FIX THIS
-    // Method to find pets by name
 
     // Method to find pets by type
     //if statement for isDeleted?
@@ -79,14 +79,6 @@ public class PetService {
     }
 
     // Other methods specific to certain pet types
-
-    //TODO - ADD NEW PET TO LIST
-    // -- is this redundant since we have create pet?? negative
-    // --> For favorites list - can remove if we decide to have favorites list as separate beast on its own
-    public Pet addNewPet(Pet pet) {
-        return pet;
-    }
-
 
     // Method to find dogs
     public List<Pet> getDogs() {
@@ -99,53 +91,26 @@ public class PetService {
     }
 
     //TODO - ADD UPDATE PET
-    public Pet updatePet(Pet pet, MultipartFile file) throws InvalidPetException, IOException {
-        Pet existingPet = petRepository.findById(pet.getPetId()).orElseThrow(() -> new InvalidPetException("Pet not found!"));
+// Update Pet method
+    public Pet updatePet(Pet pet) throws InvalidPetException {
+        Pet existingPet = petRepository.findById(pet.getPetId())
+                .orElseThrow(() -> new InvalidPetException("Pet not found!"));
 
-        // validate pet object
-        if (StringUtils.isEmpty(pet.getName())) {
-            throw new InvalidPetException("Pet name is required");
-        }
-
-        // upload file and check for success
-        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-        String fileUrl = (String) uploadResult.get("url");
-
-        boolean isUploaded = !fileUrl.isEmpty();
-
-
-        if (isUploaded) {
-            // Add a condition to check whether the upload was successful and act on it
-            existingPet.setImageUrl(pet.getImageUrl());
+        // Validate pet name
+        if (!StringUtils.isEmpty(pet.getName())) {
             existingPet.setName(pet.getName());
-            existingPet.setAge(pet.getAge());
-            existingPet.setPetType(pet.getPetType());
-
-            // update any additional fields...
-
-            // save the pet and return
-            existingPet = petRepository.save(existingPet);
-            return existingPet;
-        } else {
-            throw new IOException("File failed to upload!");
         }
+
+        // Validate pet age
+        if (pet.getAge() > 0) {
+            existingPet.setAge(pet.getAge());
+        }
+
+        return petRepository.save(existingPet);
     }
-//    public List<Pet> findAllAdoptablePets() {
-//        List<Pet> adoptablePets = new ArrayList<>();
-//
-//        Iterable<Pet> petIterator = petRepository.findAllPets();
-//        for(Pet pet : petIterator) {
-//            if (pet.isAdopted()) {
-//                adoptablePets.add(pet);
-//            }
-//
-//        }
-//
-//        return adoptablePets;
-//    }
 
     public void deletePet(String petId) {
-        Pet pet1 = petRepository.findByPetId(petId);
+//        Pet pet1 = petRepository.findByPetId(petId);
 //        if (pet1.isAdopted()) {
         //does adoptPet() add pet to Adopted Pet table?
         petRepository.deleteById(petId);
@@ -154,15 +119,6 @@ public class PetService {
 //    public void softDeletePet(String id) {
 //        Pet pet = findPetById(id);
 //        pet.setAdopted(true);
-//    }
-
-
-//    public String handleImageUpload(MultipartFile image) throws IOException {
-//        // Image uploading
-//            Map uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
-//            String imageUrl = (String) uploadResult.get("url");
-//
-//        return imageUrl;
 //    }
 
     public PetCreateResponse convertToPetCreateResponse(Pet pet) {
@@ -177,4 +133,26 @@ public class PetService {
 
         return response;
     }
+
+//    public List<Pet> findAllAdoptablePets() {
+//        List<Pet> adoptablePets = new ArrayList<>();
+//
+//        Iterable<Pet> petIterator = petRepository.findAllPets();
+//        for(Pet pet : petIterator) {
+//            if (pet.isAdopted()) {
+//                adoptablePets.add(pet);
+//            }
+//
+//        }
+//
+//        return adoptablePets;
+//    }
+
+    //    public String handleImageUpload(MultipartFile image) throws IOException {
+//        // Image uploading
+//            Map uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+//            String imageUrl = (String) uploadResult.get("url");
+//
+//        return imageUrl;
+//    }
 }

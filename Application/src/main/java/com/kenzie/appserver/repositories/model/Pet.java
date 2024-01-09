@@ -1,7 +1,8 @@
 package com.kenzie.appserver.repositories.model;
 
-
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConvertedEnum;
+
 import com.kenzie.appserver.repositories.enums.PetType;
 
 import org.springframework.data.annotation.Id;
@@ -20,6 +21,7 @@ public class Pet {
     @DynamoDBAttribute(attributeName = "age")
     private int age;
     @DynamoDBTypeConvertedEnum
+    @DynamoDBAttribute(attributeName = "petType")
     private PetType petType;
 
     @DynamoDBAttribute(attributeName = "name")
@@ -30,7 +32,7 @@ public class Pet {
     //stores userId (shelter/foster)
 //    private String adoptionId;
     //    @DynamoDBAttribute(attributeName = "isAdopted")
-    public boolean isAdopted = Boolean.FALSE;
+//    public boolean isAdopted = Boolean.FALSE;
 
 public Pet() {
 }
@@ -87,7 +89,6 @@ public Pet() {
 //     public void setAdoptionId(String adoptionId) {
 //         this.adoptionId = adoptionId;
 //     }
-// >>>>>>> chelseasbranch
 
 //     @DynamoDBAttribute(attributeName = "isAdopted")
 //     public boolean isAdopted() {
