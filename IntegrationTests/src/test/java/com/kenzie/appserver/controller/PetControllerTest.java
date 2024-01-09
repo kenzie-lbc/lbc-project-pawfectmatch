@@ -233,23 +233,23 @@ class PetControllerTest {
     }
 
     @Test
-    public void testGetPetDetailsById_NonexistentPet() {
-//        // GIVEN
-//        String id = UUID.randomUUID().toString();
-//
-//        Pet persistedPet = petService.findByPetId(id);
-//
-//        ResultActions actions = mvc.perform(get("/petId/{petId}", persistedPet.getPetId())
-//                        .accept(MediaType.APPLICATION_JSON)
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                // THEN
-//                .andExpect(status().isNoContent());
-//
-//        assertNull(persistedPet.getPetId());
-//        assertNull(persistedPet.getPetType());
-//        //assertNull(persistedPet.getAge());
-//        assertNull(persistedPet.getName());
-//        assertNull(persistedPet.getImageUrl());
+    public void testGetPetDetailsById_NonexistentPet() throws Exception {
+        // GIVEN
+        String id = UUID.randomUUID().toString();
+
+        Pet persistedPet = petService.findByPetId(id);
+
+        ResultActions actions = mvc.perform(get("/petId/{petId}", persistedPet.getPetId())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                // THEN
+                .andExpect(status().isNoContent());
+
+        assertNull(persistedPet.getPetId());
+        assertNull(persistedPet.getPetType());
+        //assertNull(persistedPet.getAge());
+        assertNull(persistedPet.getName());
+        assertNull(persistedPet.getImageUrl());
 
 
     }
@@ -356,6 +356,38 @@ class PetControllerTest {
 //                        .content(mapper.writeValueAsString(petCreateRequest)))
 //                // THEN
 //                .andExpect(status().isBadRequest());
+    }
+    public void getAllPets_Sucessful() throws Exception {
+        PetCreateRequest petCreateRequest1 = new PetCreateRequest();
+        petCreateRequest1.setPetId(UUID.randomUUID().toString());
+        petCreateRequest1.setName("Binx");
+        petCreateRequest1.setPetType(PetType.CAT.toString());
+        petCreateRequest1.setImageUrl(UUID.randomUUID().toString());
+        petCreateRequest1.setAge(3);
+
+        Pet persistedPet1 = petService.createPet(petCreateRequest1);
+
+        PetCreateRequest petCreateRequest2 = new PetCreateRequest();
+        petCreateRequest2.setPetId(UUID.randomUUID().toString());
+        petCreateRequest2.setPetType(PetType.DOG.toString());
+        petCreateRequest2.setName("Louie");
+        petCreateRequest2.setImageUrl(UUID.randomUUID().toString());
+        petCreateRequest2.setAge(5);
+
+        Pet persistedPet2 = petService.createPet(petCreateRequest2);
+
+        ResultActions actions = mvc.perform(get("/pets")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        String responseBody = actions.andReturn().getResponse().getContentAsString();
+        List<PetCreateResponse> listAllPets = mapper.readValue(responseBody, new TypeReference<List<PetCreateResponse>>() {
+        });
+        assertThat(listAllPets.size()).isEqualTo(2);
+
+
+
     }
 
 
