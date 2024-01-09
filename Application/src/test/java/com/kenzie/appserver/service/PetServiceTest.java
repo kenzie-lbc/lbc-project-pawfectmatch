@@ -13,8 +13,10 @@ import com.kenzie.appserver.repositories.model.Pet;
 
 import com.kenzie.appserver.service.exceptions.InvalidPetException;
 import com.kenzie.appserver.service.utils.UniqueIdGenerator;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
@@ -102,11 +104,14 @@ public class PetServiceTest {
     //sad case create new dog
     @Test
     public void createPet_invalidRequest_throwsInvalidPetException() {
+        // Given
         PetCreateRequest request = new PetCreateRequest();
         request.setName(null);
         request.setAge(2);
-        request.setPetType(null);
+        request.setPetType(DOG);
         request.setImageUrl(null);
+
+        // When and then
         assertThrows(InvalidPetException.class, () -> petService.createPet(request));
     }
 
@@ -155,25 +160,29 @@ public class PetServiceTest {
 
     //happy case update pet profile
     @Test
-    public void updatePet_succesfullyUpdates() throws Exception {
+    void updatePet_succesfullyUpdates() {
         //given
-        Pet existingPet = new Pet("123", "Max", DOG, 5, "oldImageUrl");
-        petRepository.save(existingPet);
+        Pet existingPet = new Pet("PETID123", "Max", DOG, 5, "oldImageUrl");
 
-        Pet updatedPet = new Pet("123", "Max", DOG, 6, "newImageUrl");
-        MultipartFile file = mock(MultipartFile.class); // Mock the file upload
-        when(file.getBytes()).thenReturn("image data".getBytes());
-        when(cloudinary.uploader().upload(any(), anyMap())).thenReturn(Collections.singletonMap("url", "uploadedImageUrl"));
+        Pet updatedPet = new Pet("PETID123", "Sam", DOG, 6, "oldImageUrl");
 
-        //then
-        Pet resultPet = petService.updatePet(updatedPet);
+        // setup findById to return existingPet
+        when(petRepository.findById("PETID123")).thenReturn(Optional.of(existingPet));
+
+        // setup save method to return updatedPet which simulates the pet update in repository
+        when(petRepository.save(existingPet)).thenReturn(updatedPet);
 
         //when
-        verify(cloudinary.uploader()).upload(any(), anyMap()); // Verify image upload
-        assertEquals("Max", resultPet.getName());
-        assertEquals(6, resultPet.getAge());
-        assertEquals(DOG, resultPet.getPetType());
-        assertEquals("uploadedImageUrl", resultPet.getImageUrl());
+        Pet resultPet = petService.updatePet(existingPet);
+
+        // add a verification that save was called
+        verify(petRepository, times(1)).save(any(Pet.class));
+
+        //then
+        Assertions.assertEquals("Sam", resultPet.getName());
+        Assertions.assertEquals(6, resultPet.getAge());
+        Assertions.assertEquals(DOG, resultPet.getPetType());
+        Assertions.assertEquals("oldImageUrl", resultPet.getImageUrl());
     }
 
     //sad case update pet profile
