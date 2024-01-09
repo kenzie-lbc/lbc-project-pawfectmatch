@@ -2,19 +2,19 @@ package com.kenzie.appserver.service;
 
 //import com.kenzie.appserver.repositories.AdoptionRepository;
 
-public class AdoptionService {
-    private AdoptionService adoptionService;
-    private UserService userService;
-    private PetService petService;
+//public class AdoptionService {
+//    private AdoptionService adoptionService;
+//    private UserService userService;
+//    private PetService petService;
 //    private AdoptionRepository adoptionRepository;
 
-public AdoptionService(AdoptionService adoptionService, UserService userService, PetService petService) {
-    this.adoptionService = adoptionService;
-    this.userService = userService;
-    this.petService = petService;
-}
-
-
+//public AdoptionService(AdoptionService adoptionService, UserService userService, PetService petService) {
+//    this.adoptionService = adoptionService;
+//    this.userService = userService;
+//    this.petService = petService;
+//}
+//
+//
 
 //    public AdoptedPet adoptPet(String petId, String username, String dateOfAdoption) {
 //        // Your code here
@@ -128,4 +128,4 @@ public AdoptionService(AdoptionService adoptionService, UserService userService,
     }*/
 
 
-}
+//}
