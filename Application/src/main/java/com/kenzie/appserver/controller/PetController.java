@@ -56,6 +56,7 @@ public class PetController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+<<<<<<< Updated upstream
 
     @PutMapping("/{petId}")
     public ResponseEntity<Pet> updatePet(@PathVariable String petId, @RequestBody Pet updatedPet) {
@@ -69,11 +70,27 @@ public class PetController {
     }
 
     @GetMapping
+=======
+<<<<<<< HEAD
+    @GetMapping("/Pet")
+>>>>>>> Stashed changes
     public ResponseEntity<List<Pet>> getAllPets() {
         // Cast to List as findAll returns Iterable
         List<Pet> pets = petRepository.findAll();
         return new ResponseEntity<>(pets, HttpStatus.OK);
     }
+=======
+<<<<<<< Updated upstream
+=======
+    @GetMapping("/Pet")
+    public ResponseEntity<List<Pet>> getAllPets() {
+        // Cast to List as findAll returns Iterable
+        List<Pet> pets = petService.findAllPets();
+
+        return new ResponseEntity<>(pets, HttpStatus.OK);
+    }
+>>>>>>> Stashed changes
+>>>>>>> johnbranch
 
     // Get a Pet by ID
     @GetMapping("/{petId}")

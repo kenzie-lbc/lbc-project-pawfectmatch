@@ -50,6 +50,11 @@ module.exports = {
       filename: 'adopter_portal.html',
       inject: false
     }),
+    new HtmlWebpackPlugin({
+      template: './src/about.html',
+      filename: 'about.html',
+      inject: false
+    }),
     new CopyPlugin({
       patterns: [
         {
