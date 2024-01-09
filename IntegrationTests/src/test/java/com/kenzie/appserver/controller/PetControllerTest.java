@@ -117,37 +117,42 @@ class PetControllerTest {
 
     @Test
     public void createPet_CreateSuccessful() throws Exception {
-//        PetCreateRequest petCreateRequest = new PetCreateRequest();
-//        petCreateRequest.setName(mockNeat.strings().valStr());
-//
-//        mvc.perform(post("/Pet")
-//                        .accept(JSON)
-//                        .contentType(JSON)
-//                        .content(mapper.writeValueAsString(petCreateRequest)))
-//                .andExpect(jsonPath("$.id")
-//                        .exists())
-//                .andExpect(jsonPath("$.name")
-//                        .value(is(petCreateRequest.getName())))
-//                .andExpect(status().isCreated());
+        PetCreateRequest petCreateRequest = new PetCreateRequest();
+        petCreateRequest.setName(mockNeat.strings().valStr());
+
+        mvc.perform(post("/Pet")
+                        .accept(JSON)
+                        .contentType(JSON)
+                        .content(mapper.writeValueAsString(petCreateRequest)))
+                .andExpect(jsonPath("$.id")
+                        .exists())
+                .andExpect(jsonPath("$.name")
+                        .value(is(petCreateRequest.getName())))
+                .andExpect(status().isCreated());
     }
 
     @Test
-    public void testDeletePetById_Success() {
+    public void testDeletePetById_Success() throws Exception{
         // GIVEN
-//       String id = UUID.randomUUID().toString();
-//       String adoptionId = UUID.randomUUID().toString();
-//       String name = mockNeat.strings().valStr();
-//       int age = 1;
-//       PetType type = PetType.DOG;
-//
-//       Pet pet = new Pet(id, adoptionId, type, age, name);
-//
-//       // WHEN
-//       mvc.perform(delete("/petId/{petId}", pet.getPetId())
-//                       .accept(MediaType.APPLICATION_JSON))
-//               // THEN
-//               .andExpect(status().isNoContent());
-//       assertThat(petService.findByPetId(id)).isNull();
+       String name = "Spike";
+       int age = 1;
+       PetType type = PetType.DOG;
+       String imageUrl = UUID.randomUUID().toString();
+
+       PetCreateRequest petCreateRequest = new PetCreateRequest();
+       petCreateRequest.setPetType(type.toString());
+       petCreateRequest.setAge(age);
+       petCreateRequest.setName(name);
+       petCreateRequest.setImageUrl(imageUrl);
+
+       Pet pet = petService.createPet(petCreateRequest);
+
+       // WHEN
+       mvc.perform(delete("/petId/{petId}", pet.getPetId())
+                       .accept(MediaType.APPLICATION_JSON))
+               // THEN
+               .andExpect(status().isNoContent());
+       assertThat(petService.findByPetId(pet.getPetId())).isNull();
 
     }
 
@@ -155,20 +160,20 @@ class PetControllerTest {
     public void testDeletePetByID_NonexistentPet() throws Exception {
         // GIVEN
 
-//       String id = UUID.randomUUID().toString();
-//
-//       PetCreateRequest petCreateRequest = new PetCreateRequest();
-//       petCreateRequest.setPetId(id);
-//
-//       mapper.registerModule(new JavaTimeModule());
-//
-//       // WHEN
-//       mvc.perform(delete("/petId/{petId}")
-//                       .accept(MediaType.APPLICATION_JSON)
-//                       .contentType(MediaType.APPLICATION_JSON)
-//                      .content(mapper.writeValueAsString(petCreateRequest)))
-//               // THEN
-//               .andExpect(status().isBadRequest());
+       String id = UUID.randomUUID().toString();
+
+       PetCreateRequest petCreateRequest = new PetCreateRequest();
+       petCreateRequest.setPetId(id);
+
+       mapper.registerModule(new JavaTimeModule());
+
+       // WHEN
+       mvc.perform(delete("/petId/{petId}")
+                       .accept(MediaType.APPLICATION_JSON)
+                       .contentType(MediaType.APPLICATION_JSON)
+                      .content(mapper.writeValueAsString(petCreateRequest)))
+               // THEN
+               .andExpect(status().isBadRequest());
 
 
     }
@@ -176,19 +181,23 @@ class PetControllerTest {
     @Test
     public void testGetPetDetailsById_Success() throws Exception {
 
-//       String id = UUID.randomUUID().toString();
-//       String name = "Fido";
-//       int age = 1;
-//       String imageUrl = UUID.randomUUID().toString();
-//       PetType type = PetType.DOG;
-//
-//       Pet pet = new Pet(id, name, type, age, imageUrl);
-//       Pet persistedPet = petService.findByPetId(id);
-//
-//
-//       assertEquals(persistedPet.getName(), name);
-//       assertEquals(persistedPet.getAge(), age);
-//       assertEquals(persistedPet.getPetType(), type);
+       String name = "Fido";
+       int age = 1;
+       String imageUrl = UUID.randomUUID().toString();
+       PetType type = PetType.DOG;
+
+        PetCreateRequest petCreateRequest = new PetCreateRequest();
+        petCreateRequest.setPetType(type.toString());
+        petCreateRequest.setAge(age);
+        petCreateRequest.setName(name);
+        petCreateRequest.setImageUrl(imageUrl);
+
+       Pet pet = petService.createPet(petCreateRequest);
+
+
+       assertEquals(pet.getName(), name);
+       assertEquals(pet.getAge(), age);
+       assertEquals(pet.getPetType(), type);
 
 
 //       mvc.perform(
@@ -207,17 +216,20 @@ class PetControllerTest {
     @Test
     public void testSearchPetsById_InvalidId() throws Exception {
         // GIVEN
-//       String invalidId = UUID.randomUUID().toString();
-//
-//       mapper.registerModule(new JavaTimeModule());
+       String invalidId = UUID.randomUUID().toString();
 
-        // WHEN
-//       mvc.perform(get("/Pet/{petId}")
-//                       .accept(MediaType.APPLICATION_JSON)
-//                       .contentType(MediaType.APPLICATION_JSON)
-//                      .content(mapper.writeValueAsString(?CreateRequest)))
-//               // THEN
-//               .andExpect(status().isBadRequest());
+       PetCreateRequest petCreateRequest = new PetCreateRequest();
+       petCreateRequest.setPetId(invalidId);
+
+       mapper.registerModule(new JavaTimeModule());
+
+         //WHEN
+       mvc.perform(get("/petId/{petId}")
+                       .accept(MediaType.APPLICATION_JSON)
+                       .contentType(MediaType.APPLICATION_JSON)
+                      .content(mapper.writeValueAsString(petCreateRequest)))
+               // THEN
+               .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -338,13 +350,15 @@ class PetControllerTest {
 //        mapper.registerModule(new JavaTimeModule());
 //
 //        // WHEN
-//        mvc.perform(post("/reservedtickets")
+//        mvc.perform(get("/petType/{petType}", type)
 //                        .accept(MediaType.APPLICATION_JSON)
 //                        .contentType(MediaType.APPLICATION_JSON)
 //                        .content(mapper.writeValueAsString(petCreateRequest)))
 //                // THEN
 //                .andExpect(status().isBadRequest());
     }
+
+
 
 }
 
