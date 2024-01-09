@@ -1,29 +1,25 @@
 package com.kenzie.appserver.controller;
 
-import com.cloudinary.utils.ObjectUtils;
 import com.kenzie.appserver.controller.model.PetCreateRequest;
 import com.kenzie.appserver.controller.model.PetCreateResponse;
 import com.kenzie.appserver.repositories.model.Pet;
-
-import com.kenzie.appserver.service.InvalidPetException;
+import com.kenzie.appserver.repositories.enums.PetType;
+import com.kenzie.appserver.repositories.PetRepository;
+import com.kenzie.appserver.service.exceptions.InvalidPetException;
 import com.kenzie.appserver.service.PetService;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.cloudinary.*;
-import com.cloudinary.utils.ObjectUtils;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
+
+import com.cloudinary.*;
+import org.springframework.web.multipart.MultipartFile;
+
 
 @RestController
 @RequestMapping("/Pet")
@@ -31,13 +27,15 @@ public class PetController {
 
     private final PetService petService;
 
+    @Autowired
+    private PetRepository petRepository;
 
     @Autowired
     private Cloudinary cloudinary;
 
-
-    PetController(PetService petService) {
+    public PetController(PetService petService) {
         this.petService = petService;
+
     }
 
     @PostMapping
@@ -50,24 +48,36 @@ public class PetController {
         }
 
         try {
-            // Create pet\
-            Pet pet = new Pet();
-            pet.setName(petCreateRequest.getName());
-            pet.setPetType(petCreateRequest.getPetType());
-            pet.setAge(petCreateRequest.getAge());
-            pet.setImageUrl(petCreateRequest.getImageUrl());
-
+            // Save and convert the pet object
+            Pet pet = petService.createPet(petCreateRequest);
             PetCreateResponse petResponse = petService.convertToPetCreateResponse(pet);
-
             return new ResponseEntity<>(petResponse, HttpStatus.CREATED);
         } catch (InvalidPetException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
+    @PutMapping("/{petId}")
+    public ResponseEntity<Pet> updatePet(@PathVariable String petId, @RequestBody Pet updatedPet) {
+        try {
+            updatedPet.setPetId(petId);
+            updatedPet = petService.updatePet(updatedPet);
+            return new ResponseEntity<>(updatedPet, HttpStatus.OK);
+        } catch (InvalidPetException ie){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Pet>> getAllPets() {
+        // Cast to List as findAll returns Iterable
+        List<Pet> pets = petRepository.findAll();
+        return new ResponseEntity<>(pets, HttpStatus.OK);
+    }
+
     // Get a Pet by ID
     @GetMapping("/{petId}")
-    public ResponseEntity<Pet> getPetById(@PathVariable String petId) {
+    public ResponseEntity<Pet> getByPetId(@PathVariable String petId) {
         try {
             Pet pet = petService.findByPetId(petId);
             if (pet != null) {
@@ -80,11 +90,17 @@ public class PetController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/{petType}")
+    public ResponseEntity<List<Pet>> getByPetType(@PathVariable PetType petType) {
+        List<Pet> pets = petService.findByPetType(petType);
+        return ResponseEntity.ok(pets);
+    }
 
-//    @GetMapping("/{type}")
-//    public ResponseEntity<List<Pet>> getPetsByType(@PathVariable PetType petType) {
-//        List<Pet> pets = petService.findPetsByType(petType);
-//        return ResponseEntity.ok(pets);
-//    }
+
+    @DeleteMapping("/{petId}")
+    public ResponseEntity<Void> deletePet(@PathVariable("petId") String petId) {
+        petService.deletePet(petId);
+        return ResponseEntity.status(204).build();
+    }
 
 }

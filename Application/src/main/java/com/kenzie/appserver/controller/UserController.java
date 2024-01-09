@@ -42,9 +42,9 @@ public class UserController {
         return ResponseEntity.ok(updatedPetResult);
     }
 
-    @DeleteMapping("/{uniqueId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String uniqueId) {
-        userService.deleteUser(uniqueId);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
+        userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
 }

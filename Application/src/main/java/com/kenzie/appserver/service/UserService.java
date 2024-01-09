@@ -11,6 +11,7 @@ import java.util.List;
 
 @Service
 public class UserService {
+
     @Autowired
     private UserRepository userRepository;
 //    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -20,12 +21,13 @@ public class UserService {
 
     // Method to create a new user
     public User createUser(User user) {
-//        assignUniqueIdToUser(user);
+
+//        assignUserIdToUser(user);
 //        encodeUserPassword(user);
 
-        // Generate a unique ID based on the user role before saving
-//        String uniqueId = UniqueIdGenerator.generateUserId(user.getRole());
-//        user.setId(uniqueId);
+        // Generate a user ID based on the user role before saving
+//        String userId = UserIdGenerator.generateUserId(user.getRole());
+//        user.setId(userId);
 //
 //        // Hash the password using BCrypt
 //        String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
@@ -53,13 +55,13 @@ public class UserService {
 
     public String getLoggedInUserId() {
         // Get the authenticated user details
-        // Return the uniqueId
+        // Return the userId
         return null;
     }
 
     // Method to delete a user
-    public void deleteUser(String uniqueId) {
-        userRepository.deleteById(uniqueId);
+    public void deleteUser(String userId) {
+        userRepository.deleteById(userId);
     }
 
     public User authenticateUser(String username, String password) {
@@ -70,9 +72,9 @@ public class UserService {
         return null;
     }
 
-//    private void assignUniqueIdToUser(User user) {
-//        String uniqueId = UniqueIdGenerator.generateUserId(user.getRole());
-//        user.setId(uniqueId);
+//    private void assignUserIdToUser(User user) {
+//        String userId = UserIdGenerator.generateUserId(user.getRole());
+//        user.setId(userId);
 //    }
 //
 //    private void encodeUserPassword(User user) {

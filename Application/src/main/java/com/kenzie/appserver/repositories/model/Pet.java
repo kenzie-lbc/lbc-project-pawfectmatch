@@ -1,50 +1,60 @@
 package com.kenzie.appserver.repositories.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConvertedEnum;
+
 import com.kenzie.appserver.repositories.enums.PetType;
 
 import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @DynamoDBTable(tableName = "Pet")
 public class Pet {
-
     @Id
+    @NotNull
     @DynamoDBHashKey(attributeName = "petId")
     private String petId;
-    @DynamoDBTypeConvertedEnum
-    private PetType petType;
-    //stores uniqueId (shelter/foster)
-    private String adoptionId;
-    @DynamoDBAttribute(attributeName = "name")
-    private String name;
-
+//    private String breed; //for queries?
     @DynamoDBAttribute(attributeName = "age")
     private int age;
+    @DynamoDBTypeConvertedEnum
+    @DynamoDBAttribute(attributeName = "petType")
+    private PetType petType;
 
-    // ***For later
+    @DynamoDBAttribute(attributeName = "name")
+    private String name;
     @DynamoDBAttribute(attributeName = "imageUrl")
     private String imageUrl = "";
 
-    public Pet() {
-    }
+    //stores userId (shelter/foster)
+//    private String adoptionId;
+    //    @DynamoDBAttribute(attributeName = "isAdopted")
+//    public boolean isAdopted = Boolean.FALSE;
 
-    public Pet(String petId, String name, PetType petType, int age, String imageUrl) {
+public Pet() {
+}
+    public Pet(String petId, String name, PetType petType, int age,
+//               String breed,
+               String imageUrl) {
         this.petId = petId;
         this.name = name;
         this.petType = petType;
         this.age = age;
+//        this.breed = breed;
         this.imageUrl = imageUrl;
     }
 
     public String getPetId() {
-            return petId;
-        }
+        return petId;
+    }
+
     public PetType getPetType() {
         return petType;
     }
+
 
     public String getName() {
         return name;
@@ -62,6 +72,7 @@ public class Pet {
         this.petType = petType;
     }
 
+    @DynamoDBAttribute(attributeName = "Age")
     public int getAge() {
         return age;
     }
@@ -70,13 +81,23 @@ public class Pet {
         this.age = age;
     }
 
-    public String getAdoptionId() {
-        return adoptionId;
-    }
+//     @DynamoDBAttribute(attributeName = "AdoptionId")
+//     public String getAdoptionId() {
+//         return adoptionId;
+//     }
 
-    public void setAdoptionId(String adoptionId) {
-        this.adoptionId = adoptionId;
-    }
+//     public void setAdoptionId(String adoptionId) {
+//         this.adoptionId = adoptionId;
+//     }
+
+//     @DynamoDBAttribute(attributeName = "isAdopted")
+//     public boolean isAdopted() {
+//         return isAdopted;
+//     }
+
+//     public void setAdopted(boolean isAdopted) {
+//         isAdopted = isAdopted;
+//     }
 
     @Override
     public boolean equals(Object o) {
@@ -86,6 +107,7 @@ public class Pet {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
+
         Pet pet = (Pet) o;
         return Objects.equals(getPetId(), pet.getPetId())
                 && Objects.equals(getName(), pet.getName())
@@ -95,6 +117,7 @@ public class Pet {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(getPetId(), getName(), getPetType());
     }
 
@@ -106,4 +129,5 @@ public class Pet {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
 }

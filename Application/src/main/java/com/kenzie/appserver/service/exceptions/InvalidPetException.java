@@ -1,4 +1,5 @@
-package com.kenzie.appserver.service;
+package com.kenzie.appserver.service.exceptions;
+
 
 public class InvalidPetException extends RuntimeException {
     public InvalidPetException(String message) {
