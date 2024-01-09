@@ -14,9 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.cloudinary.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -54,7 +56,19 @@ public class PetController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("/Pet")
+
+    @PutMapping("/{petId}")
+    public ResponseEntity<Pet> updatePet(@PathVariable String petId, @RequestBody Pet updatedPet) {
+        try {
+            updatedPet.setPetId(petId);
+            updatedPet = petService.updatePet(updatedPet);
+            return new ResponseEntity<>(updatedPet, HttpStatus.OK);
+        } catch (InvalidPetException ie){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping
     public ResponseEntity<List<Pet>> getAllPets() {
         // Cast to List as findAll returns Iterable
         List<Pet> pets = petRepository.findAll();
@@ -62,7 +76,7 @@ public class PetController {
     }
 
     // Get a Pet by ID
-    @GetMapping("/petId/{petId}")
+    @GetMapping("/{petId}")
     public ResponseEntity<Pet> getByPetId(@PathVariable String petId) {
         try {
             Pet pet = petService.findByPetId(petId);
@@ -76,14 +90,14 @@ public class PetController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/petType/{petType}")
+    @GetMapping("/{petType}")
     public ResponseEntity<List<Pet>> getByPetType(@PathVariable PetType petType) {
         List<Pet> pets = petService.findByPetType(petType);
         return ResponseEntity.ok(pets);
     }
 
 
-    @DeleteMapping("/petId/{petId}")
+    @DeleteMapping("/{petId}")
     public ResponseEntity<Void> deletePet(@PathVariable("petId") String petId) {
         petService.deletePet(petId);
         return ResponseEntity.status(204).build();
