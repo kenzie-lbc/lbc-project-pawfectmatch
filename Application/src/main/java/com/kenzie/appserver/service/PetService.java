@@ -44,7 +44,7 @@ public class PetService {
 
     // Method to handle saving a new pet
 
-    public Pet createPet(PetCreateRequest petCreateRequest) {
+    public Pet createPet(PetCreateRequest petCreateRequest) throws InvalidPetException {
         if (petCreateRequest == null) {
             throw new InvalidPetException("Pet request cannot be null!");
         }
