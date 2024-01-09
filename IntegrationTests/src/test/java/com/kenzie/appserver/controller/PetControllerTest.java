@@ -64,6 +64,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
+@IntegrationTest
 class PetControllerTest {
     private static final MediaType JSON = MediaType.APPLICATION_JSON;
 
@@ -283,7 +284,7 @@ class PetControllerTest {
         PetCreateRequest petCreateRequest1 = new PetCreateRequest();
         petCreateRequest1.setPetId(UUID.randomUUID().toString());
         petCreateRequest1.setName("Binx");
-        petCreateRequest1.setPetType(PetType.CAT.toString());
+        petCreateRequest1.setPetType(PetType.CAT);
         petCreateRequest1.setImageUrl(UUID.randomUUID().toString());
         petCreateRequest1.setAge(3);
 
@@ -291,7 +292,7 @@ class PetControllerTest {
 
         PetCreateRequest petCreateRequest2 = new PetCreateRequest();
         petCreateRequest2.setPetId(UUID.randomUUID().toString());
-        petCreateRequest2.setPetType(PetType.CAT.toString());
+        petCreateRequest2.setPetType(PetType.CAT);
         petCreateRequest2.setName("Louie");
         petCreateRequest2.setImageUrl(UUID.randomUUID().toString());
         petCreateRequest2.setAge(5);
