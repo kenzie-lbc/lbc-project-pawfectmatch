@@ -4,6 +4,7 @@ package com.kenzie.appserver.controller.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kenzie.appserver.repositories.enums.PetType;
+import com.kenzie.appserver.service.exceptions.InvalidPetException;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,8 +43,17 @@ public class PetCreateRequest {
         return petType;
     }
 
-    public void setPetType(String petType) {
-        this.petType = PetType.valueOf(petType.toUpperCase());
+//    public void setPetType(String petType) {
+//        if (petType == null) {
+//            throw new InvalidPetException("Pet type cannot be null!");
+//        }
+//        this.petType = PetType.valueOf(petType.toUpperCase());
+//    }
+    public void setPetType(PetType petType) {
+                if (petType == null) {
+            throw new InvalidPetException("Pet type cannot be null!");
+        }
+        this.petType = petType;
     }
     public int getAge() {
         return age;

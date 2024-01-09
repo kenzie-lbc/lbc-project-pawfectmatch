@@ -23,11 +23,3 @@ allowing shelters to efficiently manage and showcase the pets that are still in 
 What is in scope for this project? 
 # User 1 (shelter) - Add dog profiles [Name/Age/Image/etc]  
 ```
-
-{
-"petId": "D12345678",
-"name": "string",
-"petType": "DOG",
-"age": 2,
-"imageUrl": "string"
-}

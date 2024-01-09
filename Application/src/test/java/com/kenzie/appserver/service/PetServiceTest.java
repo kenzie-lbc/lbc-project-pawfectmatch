@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Collections;
 import java.util.Optional;
 
+import static com.kenzie.appserver.repositories.enums.PetType.DOG;
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.Assert.*;
@@ -44,6 +45,11 @@ public class PetServiceTest {
     @BeforeEach
     void setup() {
         petRepository = mock(PetRepository.class);
+
+        // Mock the uniqueIdGenerator
+        uniqueIdGenerator = mock(UniqueIdGenerator.class);
+        // Define a behavior: when generatePetId() is called, return a "static" petId"
+        when(uniqueIdGenerator.generatePetId(any(PetType.class))).thenReturn("PETID123");
 
         petService = new PetService(petRepository, cloudinary, uniqueIdGenerator);
     }
@@ -95,36 +101,43 @@ public class PetServiceTest {
     @Test
     void createNewDogTest_validData() {
         //given
-        //String petId = "D54321";
         String name = "Buddy";
-        String type = "dog";
+        PetType petType = DOG;
         int age = 3;
-        String breed = "Labrador";
-
-        PetCreateRequest petCreateRequest = new PetCreateRequest();
+        String imageUrl = "https://example.com/dog.jpg";
 
         Pet expectedPet = new Pet();
-        //expectedPet.setPetId(petId);
         expectedPet.setName(name);
-        expectedPet.setPetType(PetType.DOG);
+        expectedPet.setPetType(DOG);
         expectedPet.setAge(age);
+        expectedPet.setImageUrl(imageUrl);
 
+        PetCreateRequest petCreateRequest = new PetCreateRequest();
+        petCreateRequest.setName(name);
+        petCreateRequest.setPetType(petType);
+        petCreateRequest.setAge(age);
+        petCreateRequest.setImageUrl(imageUrl);
+
+        // setup save method to return your expectedPet object
         when(petRepository.save(any(Pet.class))).thenReturn(expectedPet);
-
         //when
         Pet createdPet = petService.createPet(petCreateRequest);
-
         //then
         assertThat(createdPet).isNotNull();
-        assertThat(createdPet.getName()).isEqualTo(name);
-        assertThat(createdPet.getAge()).isEqualTo(age);
-        assertThat(createdPet.getPetType()).isEqualTo(PetType.DOG);
+        assertThat(createdPet.getName()).isEqualTo(expectedPet.getName());
+        assertThat(createdPet.getAge()).isEqualTo(expectedPet.getAge());
+        assertThat(createdPet.getPetType()).isEqualTo(petType);
+        assertThat(createdPet.getImageUrl()).isEqualTo(expectedPet.getImageUrl());
     }
 
     //sad case create new dog
     @Test
     public void createPet_invalidRequest_throwsInvalidPetException() {
         PetCreateRequest request = new PetCreateRequest();
+        request.setName(null);
+        request.setAge(2);
+        request.setPetType(null);
+        request.setImageUrl(null);
         assertThrows(InvalidPetException.class, () -> petService.createPet(request));
     }
 
@@ -144,22 +157,22 @@ public class PetServiceTest {
     @Test
     public void updatePet_succesfullyUpdates() throws Exception {
         //given
-        Pet existingPet = new Pet("123", "Max", PetType.DOG, 5, "oldImageUrl");
+        Pet existingPet = new Pet("123", "Max", DOG, 5, "oldImageUrl");
         petRepository.save(existingPet);
 
-        Pet updatedPet = new Pet("123", "Max", PetType.DOG, 6, "newImageUrl");
+        Pet updatedPet = new Pet("123", "Max", DOG, 6, "newImageUrl");
         MultipartFile file = mock(MultipartFile.class); // Mock the file upload
         when(file.getBytes()).thenReturn("image data".getBytes());
         when(cloudinary.uploader().upload(any(), anyMap())).thenReturn(Collections.singletonMap("url", "uploadedImageUrl"));
 
         //then
-        Pet resultPet = petService.updatePet(updatedPet, file);
+        Pet resultPet = petService.updatePet(updatedPet);
 
         //when
         verify(cloudinary.uploader()).upload(any(), anyMap()); // Verify image upload
         assertEquals("Max", resultPet.getName());
         assertEquals(6, resultPet.getAge());
-        assertEquals(PetType.DOG, resultPet.getPetType());
+        assertEquals(DOG, resultPet.getPetType());
         assertEquals("uploadedImageUrl", resultPet.getImageUrl());
     }
 
@@ -169,11 +182,10 @@ public class PetServiceTest {
         String petId = "ABC123";
         Pet pet = new Pet();
         pet.setPetId(petId);
-        MultipartFile file = mock(MultipartFile.class);
 
         when(petRepository.findById(petId)).thenReturn(Optional.empty());
 
-        assertThrows(InvalidPetException.class, () -> petService.updatePet(pet, file));
+        assertThrows(InvalidPetException.class, () -> petService.updatePet(pet));
     }
 
     //happy case find all pets
@@ -207,7 +219,7 @@ public class PetServiceTest {
     //happy case converter petCreateResponse
     @Test
     public void convertToPetCreateResponse_mapsPetToResponse() {
-        Pet pet = new Pet("D12345", "Milo", PetType.DOG, 1, "testURL");
+        Pet pet = new Pet("D12345", "Milo", DOG, 1, "testURL");
         PetCreateResponse response = petService.convertToPetCreateResponse(pet);
 
         assertEquals(pet.getPetId(), response.getPetId());
