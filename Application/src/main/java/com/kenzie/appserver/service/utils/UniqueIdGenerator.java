@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Component
 public class UniqueIdGenerator {
-    private final String ALPHANUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final String ALPHANUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private final DynamoDBHelper dynamoDBHelper;
 
 

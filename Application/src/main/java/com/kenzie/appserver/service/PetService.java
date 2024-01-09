@@ -110,7 +110,7 @@ public class PetService {
     }
 
     public void deletePet(String petId) {
-        Pet pet1 = petRepository.findByPetId(petId);
+//        Pet pet1 = petRepository.findByPetId(petId);
 //        if (pet1.isAdopted()) {
         //does adoptPet() add pet to Adopted Pet table?
         petRepository.deleteById(petId);
