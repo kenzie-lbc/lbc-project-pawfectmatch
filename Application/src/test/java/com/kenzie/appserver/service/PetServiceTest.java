@@ -2,6 +2,7 @@ package com.kenzie.appserver.service;
 
 
 import com.cloudinary.Cloudinary;
+import com.kenzie.appserver.controller.PetController;
 import com.kenzie.appserver.controller.UserController;
 import com.kenzie.appserver.controller.model.PetCreateRequest;
 import com.kenzie.appserver.controller.model.PetCreateResponse;
@@ -16,6 +17,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
@@ -39,6 +42,9 @@ public class PetServiceTest {
 
     @Mock
     private Cloudinary cloudinary;
+
+    @Mock
+    private PetController petController;
 
 
     @BeforeEach
@@ -89,7 +95,12 @@ public class PetServiceTest {
 //        Assertions.assertNull(pet, "The example is null when not found");
 //    }
 
-    //petservice unit testing
+
+    /**
+     * ------------------------------------------------------------------------
+     * PET SERVICE UNIT TESTING
+     * ------------------------------------------------------------------------
+     **/
 
     //happy case create new dog
     @Test
@@ -126,6 +137,18 @@ public class PetServiceTest {
     public void createPet_invalidRequest_throwsInvalidPetException() {
         PetCreateRequest request = new PetCreateRequest();
         assertThrows(InvalidPetException.class, () -> petService.createPet(request));
+    }
+
+    //sad case create new dog duplicate ID
+    @Test
+    public void testCreatePetWithDuplicateId() {
+        String duplicatePetId = "existing-pet-id";
+        PetCreateRequest request = new PetCreateRequest();
+        when(petService.createPet(request)).thenThrow(new InvalidPetException("Pet with ID " + duplicatePetId + " already exists"));
+
+        ResponseEntity<PetCreateResponse> response = petController.createPet(request);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
     //happy case find by pet id
@@ -204,6 +227,17 @@ public class PetServiceTest {
         verify(petRepository).deleteById(petId);
     }
 
+    //sad case delete pet
+    @Test
+    void deletePet_invalidPetId_throwsInvalidPetException() {
+        // Given
+        String petId = "nonexistentPetId";
+        doThrow(new InvalidPetException("Invalid Input")).when(petRepository).deleteById(petId);
+
+        // When, Then
+        assertThrows(InvalidPetException.class, () -> petService.deletePet(petId));
+    }
+
     //happy case converter petCreateResponse
     @Test
     public void convertToPetCreateResponse_mapsPetToResponse() {
@@ -215,6 +249,13 @@ public class PetServiceTest {
         assertEquals(pet.getAge(), response.getAge());
     }
 
+
+
+/**
+ * ------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------
+ **/
 
 
 }
