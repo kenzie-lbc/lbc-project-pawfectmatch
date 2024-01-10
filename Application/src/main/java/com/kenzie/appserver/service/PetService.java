@@ -72,8 +72,7 @@ public class PetService {
                 .orElseThrow(() -> new InvalidPetException("Pet not found!"));
     }
 
-    // Method to find pets by type
-    //if statement for isDeleted?
+
     public List<Pet> findByPetType(PetType petType) {
         return petRepository.findByPetType(petType);
 
