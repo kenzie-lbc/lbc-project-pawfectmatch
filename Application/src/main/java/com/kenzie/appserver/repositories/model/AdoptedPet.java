@@ -5,7 +5,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.xspec.S;
 
-@DynamoDBTable(tableName = "Adopted Pet")
+//@DynamoDBTable(tableName = "Adopted Pet")
 public class AdoptedPet {
     private String id;
     private String ownerUsername;
@@ -20,7 +20,7 @@ public class AdoptedPet {
         this.petName = petName;
     }
 
-    @DynamoDBHashKey(attributeName = "Id")
+   // @DynamoDBHashKey(attributeName = "Id")
     public String getId() {
         return id;
     }
@@ -29,7 +29,7 @@ public class AdoptedPet {
         this.id = id;
     }
 
-    @DynamoDBAttribute(attributeName = "Username")
+   // @DynamoDBAttribute(attributeName = "Username")
     public String getOwnerUsername() {
         return ownerUsername;
     }
@@ -38,7 +38,7 @@ public class AdoptedPet {
         this.ownerUsername = ownerUsername;
     }
 
-    @DynamoDBAttribute(attributeName = "Date of Adoption")
+   // @DynamoDBAttribute(attributeName = "Date of Adoption")
     public String getDateOfAdoption() {
         return dateOfAdoption;
     }
@@ -47,7 +47,7 @@ public class AdoptedPet {
         this.dateOfAdoption = dateOfAdoption;
     }
 
-    @DynamoDBAttribute(attributeName = "Pet Name")
+    //@DynamoDBAttribute(attributeName = "Pet Name")
     public String getpetName() {
         return petName;
     }
