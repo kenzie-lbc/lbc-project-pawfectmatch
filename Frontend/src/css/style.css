@@ -176,3 +176,6 @@ li a:hover {
     display: block;
 }
 
+.hidden {
+    display: none;
+}

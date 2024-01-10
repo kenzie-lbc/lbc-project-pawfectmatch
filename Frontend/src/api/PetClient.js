@@ -41,7 +41,11 @@ export default class PetClient  extends BaseClass {
             const response = await this.client.get(`/Pet/${petId}`);
             return response.data;
         } catch (error) {
-            this.handleError("getPet", error, errorCallback)
+            if (error.response && error.response.status === 404) {
+                    errorCallback('Pet not found');
+            } else {
+                this.handleError("getPet", error, errorCallback)
+            }
         }
     }
 

@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Navbar and Social Media Bar</title>
-
     <script type="javascript" src="/pages/pawfectMatch.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <title>Guardian Gateway</title>
@@ -36,7 +34,6 @@
     <h2>Add a Pet!</h2>
     <form class="card-content" id="add-pet-form">
         <p class="form-field">
-
             <label for="pet-name-field">Name</label>
             <input type="text" required class="validated-field" id="pet-name-field">
         </p>
@@ -74,11 +71,30 @@
         <button type="submit">Search</button>
     </form>
 </div>
+<div class="card">
+    <h2>Update Pet by ID</h2>
+    <form class="card-content" id="update-pet-form">
+        <p class="form-field">
+            <label for="updatePet-id-field">Name</label>
+            <input type="text" required class="validated-field" id="updatePet-id-field">
+        </p>
+        <p class="form-field">
+            <label for="updatePet-age-field">Age (Years)</label>
+            <input type="number" class="validated-field" id="updatePet-age-field">
+        </p>
+    </form>
+</div>
 <div class="card" id="pet-profile-result">
     <h2>Pet Profile:</h2>
     <p id="pet-profile-info"></p>
+    <div id="pet-profile" class="hidden"></div>
+
 </div>
+    ...
+
 </body>
+
+
 <!-- Floating Social Media Bar -->
 <footer>
     <aside id="social-media-bar">
