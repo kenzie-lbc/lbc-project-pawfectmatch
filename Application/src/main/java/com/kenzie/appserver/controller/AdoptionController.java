@@ -139,9 +139,7 @@
 //
 //}
 //
-<<<<<<< HEAD
-//
-=======
+
 package com.kenzie.appserver.controller;
 
 import com.kenzie.appserver.controller.model.AdoptionCreateRequest;
@@ -157,9 +155,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-@RequestMapping("/adoptedpets")
-public class AdoptionController {
+//@RestController
+//@RequestMapping("/adoptedpets")
+//public class AdoptionController {
    // private AdoptionService adoptionService;
    // private PetService petService;
 //
@@ -210,7 +208,6 @@ public class AdoptionController {
     }*/
 
 
-}
+//}
 
 
->>>>>>> 71fc260 (integration tests)

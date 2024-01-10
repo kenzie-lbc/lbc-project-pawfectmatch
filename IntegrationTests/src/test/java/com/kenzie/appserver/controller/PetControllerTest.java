@@ -370,6 +370,20 @@ class PetControllerTest {
 //                // THEN
 //                .andExpect(status().isNotFound());
     }
+
+
+
+
+
+    /**
+     * ------------------------------------------------------------------------
+     * PET CONTROLLER TESTS
+     * ------------------------------------------------------------------------
+     **/
+
+
+    //User story:   As a shelter, I want to add new dog profiles to the platform.
+    //happy case
     @Test
     public void getAllPets_Sucessful() throws Exception {
         PetCreateRequest petCreateRequest1 = new PetCreateRequest();

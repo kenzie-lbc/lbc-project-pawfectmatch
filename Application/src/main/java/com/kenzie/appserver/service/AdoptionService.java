@@ -1,23 +1,16 @@
 package com.kenzie.appserver.service;
 
-<<<<<<< HEAD
 //import com.kenzie.appserver.repositories.AdoptionRepository;
 
-=======
-////import com.kenzie.appserver.repositories.AdoptionRepository;
 //
->>>>>>> 71fc260 (integration tests)
 //public class AdoptionService {
 //    private AdoptionService adoptionService;
 //    private UserService userService;
 //    private PetService petService;
-<<<<<<< HEAD
 //    private AdoptionRepository adoptionRepository;
 
-=======
 ////    private AdoptionRepository adoptionRepository;
 //
->>>>>>> 71fc260 (integration tests)
 //public AdoptionService(AdoptionService adoptionService, UserService userService, PetService petService) {
 //    this.adoptionService = adoptionService;
 //    this.userService = userService;
@@ -25,10 +18,7 @@ package com.kenzie.appserver.service;
 //}
 //
 //
-<<<<<<< HEAD
 
-//    public AdoptedPet adoptPet(String petId, String username, String dateOfAdoption) {
-=======
 //
 ////    public AdoptedPet adoptPet(String petId, String username, String dateOfAdoption) {
 ////        // Your code here
@@ -87,7 +77,6 @@ package com.kenzie.appserver.service;
 //
 //
 //    /*public AdoptedPet adoptPet(String id, String username, String dateOfAdoption) {
->>>>>>> 71fc260 (integration tests)
 //        // Your code here
 //        //AdoptedPet pet = adoptionService.findPetById(id);
 //        Pet pet = petService.findPetById(id);
@@ -140,7 +129,6 @@ package com.kenzie.appserver.service;
 //        }
 //
 //        return adoptablePets;
-<<<<<<< HEAD
 //    }
 
 
@@ -198,11 +186,7 @@ package com.kenzie.appserver.service;
 
         return adoptablePets;
     }*/
-
-
-=======
 //    }*/
 //
 //
->>>>>>> 71fc260 (integration tests)
 //}

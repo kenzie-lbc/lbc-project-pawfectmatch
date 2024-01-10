@@ -134,6 +134,10 @@ public class PetService {
         return response;
     }
 
+    public List<Pet> getAllPets() {
+        return petRepository.findAll();
+    }
+
 //    public List<Pet> findAllAdoptablePets() {
 //        List<Pet> adoptablePets = new ArrayList<>();
 //

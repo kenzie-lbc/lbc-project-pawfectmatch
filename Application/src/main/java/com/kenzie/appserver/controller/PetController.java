@@ -56,9 +56,8 @@ public class PetController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-<<<<<<< Updated upstream
 
-    @PutMapping("/{petId}")
+    @PutMapping("/petId/{petId}")
     public ResponseEntity<Pet> updatePet(@PathVariable String petId, @RequestBody Pet updatedPet) {
         try {
             updatedPet.setPetId(petId);
@@ -70,30 +69,15 @@ public class PetController {
     }
 
     @GetMapping
-=======
-<<<<<<< HEAD
-    @GetMapping("/Pet")
->>>>>>> Stashed changes
     public ResponseEntity<List<Pet>> getAllPets() {
         // Cast to List as findAll returns Iterable
         List<Pet> pets = petRepository.findAll();
         return new ResponseEntity<>(pets, HttpStatus.OK);
     }
-=======
-<<<<<<< Updated upstream
-=======
-    @GetMapping("/Pet")
-    public ResponseEntity<List<Pet>> getAllPets() {
-        // Cast to List as findAll returns Iterable
-        List<Pet> pets = petService.findAllPets();
 
-        return new ResponseEntity<>(pets, HttpStatus.OK);
-    }
->>>>>>> Stashed changes
->>>>>>> johnbranch
 
     // Get a Pet by ID
-    @GetMapping("/{petId}")
+    @GetMapping("/petId/{petId}")
     public ResponseEntity<Pet> getByPetId(@PathVariable String petId) {
         try {
             Pet pet = petService.findByPetId(petId);
@@ -107,14 +91,14 @@ public class PetController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/{petType}")
+    @GetMapping("/petType/{petType}")
     public ResponseEntity<List<Pet>> getByPetType(@PathVariable PetType petType) {
         List<Pet> pets = petService.findByPetType(petType);
         return ResponseEntity.ok(pets);
     }
 
 
-    @DeleteMapping("/{petId}")
+    @DeleteMapping("/petId/{petId}")
     public ResponseEntity<Void> deletePet(@PathVariable("petId") String petId) {
         petService.deletePet(petId);
         return ResponseEntity.status(204).build();
