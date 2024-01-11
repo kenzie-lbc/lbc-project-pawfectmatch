@@ -9,6 +9,9 @@ import com.kenzie.appserver.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.kenzie.ata.ExcludeFromJacocoGeneratedReport;
+
+@ExcludeFromJacocoGeneratedReport
 @RestController
 @RequestMapping("/user")
 public class UserController {

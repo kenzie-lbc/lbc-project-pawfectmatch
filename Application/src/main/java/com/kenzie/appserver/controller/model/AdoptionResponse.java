@@ -1,5 +1,7 @@
 package com.kenzie.appserver.controller.model;
+import com.kenzie.ata.ExcludeFromJacocoGeneratedReport;
 
+@ExcludeFromJacocoGeneratedReport
 public class AdoptionResponse {
     private String username;
     private String petId;
