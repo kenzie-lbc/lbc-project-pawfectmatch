@@ -8,7 +8,7 @@ module.exports = {
     usedExports: true
   },
   entry: {
-    examplePage: path.resolve(__dirname, 'src', 'pages', 'examplePage.js'),
+    pawfectMatch: path.resolve(__dirname, 'src', 'pages', 'pawfectMatch.js'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -25,19 +25,34 @@ module.exports = {
     //for example if you sent the request /example/bob to the backend, it will be converted into
     //http://localhost:5001/example/bob and sent to the backend that way.
     //uncomment the following proxy section to make the example work
-//    proxy: [
-//          {
-//            context: [
-//              '/example',
-//            ],
-//            target: 'http://localhost:5001'
-//          }
-//        ]
+   proxy: [
+         {
+           context: [
+             '/Pet',
+           ],
+           target: 'http://localhost:5001'
+         }
+       ]
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: 'index.html',
+      inject: false
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/furry_guardian.html',
+      filename: 'furry_guardian.html',
+      inject: false
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/adopter_portal.html',
+      filename: 'adopter_portal.html',
+      inject: false
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/about.html',
+      filename: 'about.html',
       inject: false
     }),
     new CopyPlugin({

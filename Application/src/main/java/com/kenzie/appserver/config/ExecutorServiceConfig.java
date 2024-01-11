@@ -6,7 +6,9 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
+import com.kenzie.ata.ExcludeFromJacocoGeneratedReport;
 
+@ExcludeFromJacocoGeneratedReport
 @Configuration
 public class ExecutorServiceConfig {
 

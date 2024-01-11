@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="pawfectMatch.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>Guardian Gateway</title>
+</head>
+
+<body>
+<!-- Navigation Bar -->
+<nav id="navbar">
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <!-- Dropdown Trigger -->
+        <li class="dropdown">
+            <a href="#adopt">Adopt</a>
+            <!-- Dropdown Menu -->
+            <div class="dropdown-content">
+                <a href="furry_guardian.html">Guardian Gateway</a>
+                <a href="adopter_portal.html">Adopt-a-Companion</a>
+            </div>
+        </li>
+        <li><a href="#services">Blog</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+        <li><a href="#about">FAQs</a></li>
+        <li><a href="#donations">Donations</a></li>
+    </ul>
+</nav>
+
+<div class="card">
+    <h2>Add a Pet!</h2>
+    <form class="card-content" id="add-pet-form">
+        <p class="form-field">
+            <label for="pet-name-field">Name</label>
+            <input type="text" required class="validated-field" id="pet-name-field">
+        </p>
+        <p class="form-field">
+            <label for="pet-type-field">Type</label>
+            <select id="pet-type-field" class="validated-field">
+                <option value="DOG">Dog</option>
+                <option value="CAT">Cat</option>
+                <option value="BIRD">Bird</option>
+                <option value="REPTILE">Reptile</option>
+                <option value="FISH">Fish</option>
+                <option value="Exotic">Exotic</option>
+            </select>
+        </p>
+        <p class="form-field">
+            <label for="pet-age-field">Age (Years)</label>
+            <input type="number" class="validated-field" id="pet-age-field">
+        </p>
+        <p class="form-field">
+            <label for="pet-image-field">Image</label>
+            <input type="file" id="pet-image-field">
+        </p>
+        <!-- Add more fields as necessary -->
+        <button type="submit">Add Pet</button>
+    </form>
+</div>
+<div class="card">
+    <h2>Search Pets by ID</h2>
+    <form class="card-content" id="search-pet-form">
+        <p class="form-field">
+
+            <label for="pet-id-field">Pet ID</label>
+            <input type="text" required class="validated-field" id="pet-id-field">
+        </p>
+        <button type="submit">Search</button>
+    </form>
+</div>
+<div class="card">
+    <h2>Update Pet by ID</h2>
+    <form class="card-content" id="update-pet-form">
+        <p class="form-field">
+            <label for="updatePet-id-field">Pet ID</label>
+            <input type="text" required class="validated-field" id="updatePet-id-field">
+        </p>
+        <p class="form-field">
+            <label for="updatePet-name-field">Name</label>
+            <input type="text" required class="validated-field" id="updatePet-name-field">
+        </p>
+        <p class="form-field">
+            <label for="updatePet-age-field">Age (Years)</label>
+            <input type="number" class="validated-field" id="updatePet-age-field">
+        </p>
+        <button type="submit">Update Pet</button>
+    </form>
+</div>
+<div class="card" id="pet-profile-result">
+    <h2>Pet Profile:</h2>
+    <p id="pet-profile-info"></p>
+    <div id="pet-profile" class="hidden"></div>
+</div>
+    ...<div class="card">
+    <h2>Delete Pet by ID</h2>
+    <form class="card-content" id="delete-pet-form">
+        <p class="form-field">
+            <label for="deletePet-id-field">Pet ID</label>
+            <input type="text" required class="validated-field" id="deletePet-id-field">
+        </p>
+        <button type="submit">Delete Pet</button>
+    </form>
+</div>
+
+</body>
+
+
+<!-- Floating Social Media Bar -->
+<footer>
+    <aside id="social-media-bar">
+        <ul>
+            <li><a href="https://twitter.com/pawf3ctmatch" target="_blank">Twitter</a></li>
+            <li><a href="https://www.instagram.com/pawfectmatchproject/" target="_blank">Instagram</a></li>
+        </ul>
+    </aside>
+
+</footer>
+
+</html>

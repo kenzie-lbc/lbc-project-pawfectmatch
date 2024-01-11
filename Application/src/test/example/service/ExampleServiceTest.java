@@ -2,7 +2,6 @@ package com.kenzie.appserver.service;
 
 import com.kenzie.appserver.repositories.ExampleRepository;
 import com.kenzie.appserver.repositories.model.ExampleRecord;
-import com.kenzie.appserver.service.model.Example;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,7 @@ import static org.mockito.Mockito.when;
 
 public class ExampleServiceTest {
     private ExampleRepository exampleRepository;
-    private ExampleService exampleService;
+    private PetService exampleService;
 
     @BeforeEach
     void setup() {
