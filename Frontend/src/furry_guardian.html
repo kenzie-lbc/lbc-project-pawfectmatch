@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="javascript" src="/pages/pawfectMatch.js"></script>
+    <script type="text/javascript" src="pawfectMatch.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <title>Guardian Gateway</title>
 </head>
@@ -75,22 +75,35 @@
     <h2>Update Pet by ID</h2>
     <form class="card-content" id="update-pet-form">
         <p class="form-field">
-            <label for="updatePet-id-field">Name</label>
+            <label for="updatePet-id-field">Pet ID</label>
             <input type="text" required class="validated-field" id="updatePet-id-field">
+        </p>
+        <p class="form-field">
+            <label for="updatePet-name-field">Name</label>
+            <input type="text" required class="validated-field" id="updatePet-name-field">
         </p>
         <p class="form-field">
             <label for="updatePet-age-field">Age (Years)</label>
             <input type="number" class="validated-field" id="updatePet-age-field">
         </p>
+        <button type="submit">Update Pet</button>
     </form>
 </div>
 <div class="card" id="pet-profile-result">
     <h2>Pet Profile:</h2>
     <p id="pet-profile-info"></p>
     <div id="pet-profile" class="hidden"></div>
-
 </div>
-    ...
+    ...<div class="card">
+    <h2>Delete Pet by ID</h2>
+    <form class="card-content" id="delete-pet-form">
+        <p class="form-field">
+            <label for="deletePet-id-field">Pet ID</label>
+            <input type="text" required class="validated-field" id="deletePet-id-field">
+        </p>
+        <button type="submit">Delete Pet</button>
+    </form>
+</div>
 
 </body>
 

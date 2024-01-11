@@ -16,9 +16,9 @@ public class ApplicationStartUpListener {
     @EventListener
     public void onApplicationEvent(ContextRefreshedEvent event) {
         // Perform any application start-up tasks
-        PetService petService = event.getApplicationContext().getBean(PetService.class);
-        ConcurrentLinkedQueue<Pet> pets = event.getApplicationContext().getBean(ConcurrentLinkedQueue.class);
-        List<Pet> petList = petService.getAllPets();
-        pets.addAll(petList);
+//        PetService petService = event.getApplicationContext().getBean(PetService.class);
+//        ConcurrentLinkedQueue pets = event.getApplicationContext().getBean(ConcurrentLinkedQueue.class);
+//        List<Pet> petList = petService.getAllPets();
+//        pets.addAll(petList);
     }
 }
