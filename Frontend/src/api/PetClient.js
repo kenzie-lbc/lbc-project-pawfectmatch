@@ -36,9 +36,9 @@ export default class PetClient  extends BaseClass {
      * @param errorCallback (Optional) A function to execute if the call fails.
      * @returns The concert
      */
-    async getPet(id, errorCallback) {
+    async getPet(petId, errorCallback) {
         try {
-            const response = await this.client.get(`/Pet/${petId}`);
+            const response = await this.client.get(`Pet/petId/${petId}`);
             return response.data;
         } catch (error) {
             if (error.response && error.response.status === 404) {
@@ -51,17 +51,16 @@ export default class PetClient  extends BaseClass {
 
 
     async createPet(petData, errorCallback) {
-
         try {
-            // Now, create the pet with the image URL included
-            const body = {
-                name: petData.name,
-                petType: petData.petType,
-                age: petData.age,
-                imageUrl: petData.imageUrl
-            };
+        //     // Now, create the pet with the image URL included
+        //     const body = {
+        //         name: petData.name,
+        //         petType: petData.petType,
+        //         age: petData.age,
+        //         imageUrl: petData.imageUrl
+        //     };
 
-            const response = await this.client.post(`/Pet`, body, {
+            const response = await this.client.post(`Pet`, petData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -71,7 +70,14 @@ export default class PetClient  extends BaseClass {
             this.handleError("createPet", error, errorCallback);
         }
     }
-
+    async updatePet(petId, updatedPetData) {
+        const response = await this.client.put(`Pet/petId/${petId}`, updatedPetData, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        return response.data;
+    }
 
     /**
      * Helper method to log the error and run any error functions.
@@ -86,6 +92,18 @@ export default class PetClient  extends BaseClass {
         }
         if (errorCallback) {
             errorCallback(method + " failed - " + error);
+        }
+    }
+    async deletePet(petId) {
+        try {
+            const response = await this.client.delete(`Pet/petId/${petId}`);
+            this.showMessage(`Deleted pet ${petId}`);
+
+            // Based on what your server returns, you might return the response data or you might just return true
+            return true;
+        } catch (error) {
+            this.handleError("deletePet", error);
+            return null;
         }
     }
 }
