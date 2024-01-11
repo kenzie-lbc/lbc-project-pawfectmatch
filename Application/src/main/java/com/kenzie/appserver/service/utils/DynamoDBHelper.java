@@ -18,6 +18,8 @@ public class DynamoDBHelper {
     }
 
     public boolean doesRecordExist(String tableName, String keyName, String id) {
+        if (tableName == null || keyName == null || id == null || amazonDynamoDB == null)
+            throw new IllegalArgumentException("A null value was provided for a method argument or amazonDynamoDB wasn't initialized properly.");
         Map<String, AttributeValue> queryParams = new HashMap<>();
         queryParams.put(":id", new AttributeValue().withS(id));
         QueryRequest queryRequest = new QueryRequest()

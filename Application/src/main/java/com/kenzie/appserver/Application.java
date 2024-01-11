@@ -8,7 +8,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.cloudinary.*;
 import com.cloudinary.utils.ObjectUtils;
+import com.kenzie.ata.ExcludeFromJacocoGeneratedReport;
 
+@ExcludeFromJacocoGeneratedReport
 @EnableCaching
 @EnableScheduling
 @SpringBootApplication

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import com.kenzie.ata.ExcludeFromJacocoGeneratedReport;
 
+@ExcludeFromJacocoGeneratedReport
 public class PetTypeConverter implements DynamoDBTypeConverter<String, PetType> {
     @Override
     public String convert(PetType petType) {

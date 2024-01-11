@@ -69,7 +69,7 @@ public class UniqueIdGenerator {
         return builder.toString();
     }
 
-    protected String generateUserId(Role role) {
+    public String generateUserId(Role role) {
         String uniqueId = "";
 
         QueryResult result;

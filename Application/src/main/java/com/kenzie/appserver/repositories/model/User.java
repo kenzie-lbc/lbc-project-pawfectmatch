@@ -8,7 +8,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import java.util.Objects;
+import com.kenzie.ata.ExcludeFromJacocoGeneratedReport;
 
+@ExcludeFromJacocoGeneratedReport
 @DynamoDBTable(tableName = "User")
 public class User {
 

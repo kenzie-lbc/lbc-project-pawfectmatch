@@ -23,9 +23,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
+import static com.kenzie.appserver.repositories.enums.PetType.CAT;
 import static com.kenzie.appserver.repositories.enums.PetType.DOG;
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -53,7 +56,8 @@ public class PetServiceTest {
     @BeforeEach
     void setup() {
         petRepository = mock(PetRepository.class);
-
+        petController = new PetController(petService);
+        cloudinary = mock(Cloudinary.class);
         // Mock the uniqueIdGenerator
         uniqueIdGenerator = mock(UniqueIdGenerator.class);
         // Define a behavior: when generatePetId() is called, return a "static" petId"
@@ -106,10 +110,8 @@ public class PetServiceTest {
     public void createPet_invalidRequest_throwsInvalidPetException() {
         // Given
         PetCreateRequest request = new PetCreateRequest();
-        request.setName(null);
+        request.setName("name");
         request.setAge(2);
-        request.setPetType(DOG);
-        request.setImageUrl(null);
 
         // When and then
         assertThrows(InvalidPetException.class, () -> petService.createPet(request));
@@ -120,11 +122,12 @@ public class PetServiceTest {
     public void testCreatePetWithDuplicateId() {
         String duplicatePetId = "existing-pet-id";
         PetCreateRequest request = new PetCreateRequest();
-        when(petService.createPet(request)).thenThrow(new InvalidPetException("Pet with ID " + duplicatePetId + " already exists"));
+        request.setPetType(PetType.DOG);
 
-        ResponseEntity<PetCreateResponse> response = petController.createPet(request);
+        when(petService.createPet(request)).thenThrow(
+                new InvalidPetException("Pet with ID " + duplicatePetId + " already exists"));
 
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertThrows(InvalidPetException.class, () -> petController.createPet(request));
     }
 
     //happy case find by pet id
@@ -132,21 +135,21 @@ public class PetServiceTest {
     @Test
     void findByPetId() {
         // GIVEN
-//        String id = randomUUID().toString();
-//
-//        Pet record = new Pet();
-//        record.setPetId(petId);
-//        record.setName("name");
+        String petId = randomUUID().toString();
+
+        Pet record = new Pet();
+        record.setPetId(petId);
+        record.setName("name");
 
         // TODO - Fix call/methods for petService.getPetById
         // WHEN
-//        when(petRepository.findById(id)).thenReturn(Optional.of(record));
-//        Pet pet = petService.getId(id);
-//
-//        // THEN
-//        Assertions.assertNotNull(pet, "The object is returned");
-//        Assertions.assertEquals(record.getId(), pet.getId(), "The id matches");
-//        Assertions.assertEquals(record.getName(), pet.getName(), "The name matches");
+        when(petRepository.findById(petId)).thenReturn(Optional.of(record));
+        Pet pet = petService.findByPetId(petId);
+
+        // THEN
+        Assertions.assertNotNull(pet, "The object is returned");
+        Assertions.assertEquals(record.getPetId(), pet.getPetId(), "The id matches");
+        Assertions.assertEquals(record.getName(), pet.getName(), "The name matches");
     }
 
     //sad case find by petId
@@ -251,9 +254,79 @@ public class PetServiceTest {
 
 /**
  * ------------------------------------------------------------------------
- *
+ * Find all Dogs/Cats
  * ------------------------------------------------------------------------
  **/
 
+
+    //happy case get dogs
+    @Test
+    void getDogs_validData() {
+        //given
+        Pet dog1 = new Pet();
+        dog1.setPetType(DOG);
+
+        Pet dog2 = new Pet();
+        dog2.setPetType(DOG);
+
+        // setup findByPetType to return list of dogs
+        when(petRepository.findByPetType(DOG)).thenReturn(Arrays.asList(dog1, dog2));
+
+        //when
+        List<Pet> dogs = petService.getDogs();
+
+        //then
+        assertNotNull(dogs);
+        assertEquals(2, dogs.size());
+        assertEquals(DOG, dogs.get(0).getPetType());
+        assertEquals(DOG, dogs.get(1).getPetType());
+    }
+
+    //happy case find cats
+    @Test
+    void findCats_validData() {
+        //given
+        Pet cat1 = new Pet();
+        cat1.setPetType(CAT);
+
+        Pet cat2 = new Pet();
+        cat2.setPetType(CAT);
+
+        // setup findByPetType to return list of dogs
+        when(petRepository.findByPetType(CAT)).thenReturn(Arrays.asList(cat1, cat2));
+
+        //when
+        List<Pet> cats = petService.findCats();
+
+        //then
+        assertNotNull(cats);
+        assertEquals(2, cats.size());
+        assertEquals(CAT, cats.get(0).getPetType());
+        assertEquals(CAT, cats.get(1).getPetType());
+    }
+
+    @Test
+    public void testEqualsAndHashCode() {
+        Pet pet1 = new Pet();
+        pet1.setPetId("1");
+        pet1.setName("Pet1");
+        pet1.setPetType(PetType.DOG);
+
+        Pet pet2 = new Pet();
+        pet2.setPetId("1");
+        pet2.setName("Pet1");
+        pet2.setPetType(PetType.DOG);
+
+        assertTrue("Test equals", pet1.equals(pet2));
+        assertEquals("Test hashCode", pet1.hashCode(), pet2.hashCode());
+
+        Pet pet3 = new Pet();
+        pet3.setPetId("2");
+        pet3.setName("Pet2");
+        pet3.setPetType(PetType.CAT);
+
+        assertFalse("Test equals different", pet1.equals(pet3));
+        assertTrue("Test hashCode different", pet1.hashCode() != pet3.hashCode());
+    }
 
 }
