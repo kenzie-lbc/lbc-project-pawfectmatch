@@ -23,14 +23,46 @@
             </div>
         </li>
         <li><a href="#services">Blog</a></li>
-        <li><a href="#about">About</a></li>
+        <li><a href="about.html">About</a></li>
         <li><a href="#contact">Contact Us</a></li>
         <li><a href="#about">FAQs</a></li>
         <li><a href="#donations">Donations</a></li>
     </ul>
 </nav>
+</br>
+</br>
+</br>
 
-<div class="card">
+<!-- Header -->
+<header>
+    <h1>Pet Shelter</h1>
+    <p>Welcome Furry Guardian!!</p>
+</header>
+
+
+<!-- Action Dropdown Menu -->
+<div class="action-dropdown">
+    <label for="action-select">petSpace</label>
+    <select id="action-select">
+        <option value="choose">What do you want to do?</option>
+        <option value="add-pet">Add a Pet!</option>
+        <option value="search-pet">Search Pets by ID</option>
+        <option value="update-pet">Update Pet by petID</option>
+        <option value="delete-pet">Delete Pet by petID</option>
+    </select>
+</div>
+
+<!-- Choose Pet Action Form -->
+<div class="card" id="choose">
+    <h2>Welcome to the Pet Shelter Management System</h2>
+    <p>Select an action from the dropdown menu above to begin managing pet information.</p>
+    <form class="card-content" id="choose-content">
+        <p class="form-field">
+    </form>
+</div>
+
+<!-- Add Pet Form -->
+<div class="card hidden" id="add-pet">
     <h2>Add a Pet!</h2>
     <form class="card-content" id="add-pet-form">
         <p class="form-field">
@@ -57,10 +89,13 @@
             <input type="file" id="pet-image-field">
         </p>
         <!-- Add more fields as necessary -->
+
         <button type="submit">Add Pet</button>
     </form>
 </div>
-<div class="card">
+
+<!-- Search Pet Form -->
+<div class="card hidden" id="search-pet">
     <h2>Search Pets by ID</h2>
     <form class="card-content" id="search-pet-form">
         <p class="form-field">
@@ -71,7 +106,9 @@
         <button type="submit">Search</button>
     </form>
 </div>
-<div class="card">
+
+<!-- Update Pet Form -->
+<div class="card hidden" id="update-pet">
     <h2>Update Pet by ID</h2>
     <form class="card-content" id="update-pet-form">
         <p class="form-field">
@@ -89,12 +126,9 @@
         <button type="submit">Update Pet</button>
     </form>
 </div>
-<div class="card" id="pet-profile-result">
-    <h2>Pet Profile:</h2>
-    <p id="pet-profile-info"></p>
-    <div id="pet-profile" class="hidden"></div>
-</div>
-    ...<div class="card">
+
+<!-- Delete Pet Form -->
+<div class="card hidden" id="delete-pet">
     <h2>Delete Pet by ID</h2>
     <form class="card-content" id="delete-pet-form">
         <p class="form-field">
@@ -104,6 +138,15 @@
         <button type="submit">Delete Pet</button>
     </form>
 </div>
+
+<!-- Pet Profile -->
+<div class="card" id="pet-profile-result">
+    <h2>Pet Profile:</h2>
+    <p id="pet-profile-info"></p>
+    <div id="pet-profile" class="hidden"></div>
+</div>
+
+<script src="actions.js"></script>
 
 </body>
 

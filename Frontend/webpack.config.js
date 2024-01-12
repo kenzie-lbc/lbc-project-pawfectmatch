@@ -9,6 +9,7 @@ module.exports = {
   },
   entry: {
     pawfectMatch: path.resolve(__dirname, 'src', 'pages', 'pawfectMatch.js'),
+    actions: path.resolve(__dirname, 'src', 'pages', 'actions.js'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -60,7 +61,7 @@ module.exports = {
         {
           from: path.resolve('src/css'),
           to: path.resolve("dist/css")
-        }
+        },
       ]
     }),
     new CleanWebpackPlugin()

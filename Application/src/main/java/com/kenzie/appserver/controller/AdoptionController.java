@@ -142,9 +142,9 @@
 
 package com.kenzie.appserver.controller;
 
-import com.kenzie.appserver.controller.model.AdoptionCreateRequest;
-import com.kenzie.appserver.controller.model.AdoptionResponse;
-import com.kenzie.appserver.repositories.model.AdoptedPet;
+//import com.kenzie.appserver.controller.model.AdoptionCreateRequest;
+//import com.kenzie.appserver.controller.model.AdoptionResponse;
+//import com.kenzie.appserver.repositories.model.AdoptedPet;
 import com.kenzie.appserver.repositories.model.Pet;
 import com.kenzie.appserver.repositories.model.User;
 //import com.kenzie.appserver.service.AdoptionService;
