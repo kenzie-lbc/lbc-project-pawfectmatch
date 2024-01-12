@@ -52,10 +52,11 @@ class PawfectMatch extends BaseClass {
         if (petData) {
             const profileDiv = document.getElementById('pet-profile');
             profileDiv.innerHTML = `
+    <p>Pet ID: ${petData.petId}</p>
       <h3>${petData.name}</h3>
       <img src="${petData.imageUrl}" alt="${petData.name}">
       <p>Age: ${petData.age}</p>
-      <p>Type: ${petData.type}</p>
+      <p>Pet Type: ${petData.petType}</p>
     `;
             profileDiv.classList.remove('hidden');
         }

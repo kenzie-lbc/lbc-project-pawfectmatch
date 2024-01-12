@@ -4,6 +4,10 @@
 ```Run App
 ./gradlew bootRunDev
 ```
+```Run jaCoCo Test Report
+./gradlew jacocotestreport
+```
+
 
 ```PROBLEM STATEMENT
 Many shelters struggle with outdated methods of advertising available pets for adoption, 
