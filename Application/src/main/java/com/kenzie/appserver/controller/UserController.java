@@ -37,9 +37,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<Pet> updatePet(@PathVariable String id, @RequestBody Pet updatedPet) {
-        updatedPet.setPetId(id);
-
+    public ResponseEntity<Pet> updateUser(@PathVariable String id, @RequestBody Pet updatedPet) {
         updatedPet.setPetId(id);
         Pet updatedPetResult = petService.updatePet(updatedPet);
         return ResponseEntity.ok(updatedPetResult);

@@ -1,3 +1,4 @@
+// Furry_Guardian 'action menu' actions
 document.addEventListener('DOMContentLoaded', function() {
     var actionSelect = document.getElementById('action-select');
     var addPetDiv = document.getElementById('add-pet');
